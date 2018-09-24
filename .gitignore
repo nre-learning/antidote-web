@@ -1,0 +1,12 @@
+.terraform/
+.vagrant/
+*.log
+*tfstate*
+*.qcow2*
+*account.json*
+*.retry
+hosts
+venv/
+
+
+target/
