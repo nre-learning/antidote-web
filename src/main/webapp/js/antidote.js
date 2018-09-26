@@ -17,7 +17,8 @@ function getLessonId() {
     var url = new URL(window.location.href);
     var lessonId = url.searchParams.get("lessonId");
     if (lessonId == null || lessonId == "") {
-        console.log("Error: lessonId not provided. Page will not load correctly.")
+        console.log("lessonId not provided, so not attempting to load any lessons on this page.")
+        console.log(url)
         return 0;
     }
     return parseInt(lessonId);
@@ -491,4 +492,13 @@ document.addEventListener('DOMContentLoaded', function () {
         provisionLesson();
     }
 
+    $('#videoModal').on('show.bs.modal', function () {
+      $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/ES_e81C55Cw?autoplay=1&rel=0");
+    });
+    
+    $("#videoModal").on('hidden.bs.modal', function (e) {
+      $("#videoModal iframe").attr("src", null);
+    });
+
 });
+

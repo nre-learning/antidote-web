@@ -129,86 +129,88 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="bs-component">
-                        <section class="jumbotron text-center">
-                            <div class="container">
-                                <h1 class="jumbotron-heading display-4">Automation. Unshackled.</h1>
-                                <p class="lead text-muted">
-                                    Learn automation by doing it. Right now, right here, in the browser.
-                                </p>
-                                <p>
-                                    NRE Labs is a no-strings-attached, community-centered initiative to bring the
-                                    skills
-                                    of automation within reach for everyone.
-                                    Through short, simple exercises, all right here in the browser, you can learn the
-                                    tools, skills, and processes that
-                                    will put you on the path to becoming a Network Reliability Engineer.</p>
-                                <p>
-                                    <a href="#" data-toggle="modal" data-target="#videoModal" class="btn btn-primary my-2">Watch
-                                        Intro Video</a>
-                                    <a href="/courses.html" class="btn btn-secondary my-2">Skip to Courses Overview</a>
-                                </p>
-                            </div>
-                        </section>
+                        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+                            <h1 class="display-4">Courses Overview</h1>
+                            <p class="lead">
+                                Automation isn't just about pushing configs anymore.
+                            </p>
+                            <p>The courses and lessons in NRE Labs is curated by a community of experts that have spent
+                                time using
+                                automation to engineer reliable networks. As a result, the skills you can learn here go
+                                way
+                                beyond the typical "configuration management" automation use case. You'll learn how to
+                                use automation
+                                to become a troubleshooting wizard. You'll get ahead of issues by proactively verifying
+                                that your network
+                                is doing what you expect.
+                            </p>
+                            <p>As a result, NRE Labs is separated into four distinct courses: Fundamentals,
+                                Troubleshooting, Verification, and Configuration.
+                                Take a look at the descriptions below, and decide which one is best for you. Click the
+                                buttons below to jump right into a lesson, right now!
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="bs-component">
-                        <div class="card border-primary mb-3" style="max-width: 20rem;">
-                            <div class="card-header"></div>
-                            <div class="card-body">
-                                <h4 class="card-title">Not just for experts.</h4>
-                                <p class="card-text">NRE Labs assumes nothing about your background or training.
-                                    Everything is contained in the
-                                    browser, and there's something here for everyone.</p>
-                            </div>
+            <div class="container">
+                <div class="card-deck mb-3 text-center">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Fundamentals</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead">Every journey has a beginning.</p>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Version Control with Git</li>
+                                <li>Network REST APIs</li>
+                                <li>Becoming a Python Guru</li>
+                                <li>Config Templates with Jinja</li>
+                            </ul>
+                            <a href="/labs/?lessonId=14&lessonStage=1" role="button" class="btn btn-lg btn-block btn-primary">New? Start here!</a>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="bs-component">
-                        <div class="card border-primary mb-3" style="max-width: 20rem;">
-                            <div class="card-header"></div>
-                            <div class="card-body">
-                                <h4 class="card-title">Paywalls are so 2011.</h4>
-                                <p class="card-text">We don't track you for sales purposes. This is an educational tool
-                                    aimed at helping the industry
-                                    consume automation more readily.</p>
-                            </div>
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Troubleshooting</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead">Get to root cause, lightning fast.</p>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Deconstructing Common Troubleshooting</li>
+                            </ul>
+                            <a role="button" class="btn btn-lg btn-block btn-outline-primary">Try a lesson!</a>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="bs-component">
-                        <div class="card border-primary mb-3" style="max-width: 20rem;">
-                            <div class="card-header"></div>
-                            <div class="card-body">
-                                <h4 class="card-title">Open. Like, for real.</h4>
-                                <p class="card-text">NRE Labs is built on
-                                    <a href="https://github.com/nre-learning/antidote" target="_blank">Antidote,</a> an
-                                    open source project published on Github under an Apache v2 license to
-                                    make industry-wide participation a first-class citizen.</p>
-                            </div>
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Verification</h4>
                         </div>
-
+                        <div class="card-body">
+                            <p class="lead">Make sure your network is behaving.</p>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Network Unit Tests</li>
+                                <li>End-to-end Network Tests</li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <a href="/labs/?lessonId=12&lessonStage=1" role="button" class="btn btn-lg btn-block btn-outline-primary">Try a lesson!</a>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div id="videoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true" style="text-align: center;">
-                <div class="modal-dialog" style="display: inline-block;  max-width: 80%;">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <iframe width="800" height="450" src="https://www.youtube.com/embed/ES_e81C55Cw"
-                                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Configuration</h4>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="close" data-toggle="modal" data-target="#videoModal"
-                                aria-hidden="true">Close</button>
+                        <div class="card-body">
+                            <p class="lead">Ensure reliability through consistency.</p>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Multivendor Automation</li>
+                                <li>Event-Driven Automation</li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <a href="/labs/?lessonId=13&lessonStage=1" role="button" class="btn btn-lg btn-block btn-outline-primary">Try a lesson!</a>
                         </div>
                     </div>
                 </div>
