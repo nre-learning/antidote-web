@@ -137,13 +137,12 @@ function renderLessonCategories() {
 function renderLessonStages() {
     var reqLessonDef = new XMLHttpRequest();
 
-    // TODO(mierdin): This is the first call to syringe, you should either here or elasewhere, handle errors and notify user.
+    // TODO(mierdin): This is the first call to syringe, you should either here or elsewhere, handle errors and notify user.
 
     // Doing synchronous calls for now, need to convert to asynchronous
     reqLessonDef.open("GET", urlRoot + "/syringe/exp/lessondef/" + getLessonId(), false);
     reqLessonDef.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     reqLessonDef.send();
-
     if (reqLessonDef.status != 200) {
         console.log("Unable to get lesson def")
     } else {
@@ -153,57 +152,15 @@ function renderLessonStages() {
         var lessonDefResponse = JSON.parse(reqLessonDef.responseText);
     }
 
-    // var stages = parseInt(lessonDefResponse.Stages)
-
-    // for (var stageId in lessonDefResponse.Stages) {
     for (var i = 0; i < lessonDefResponse.Stages.length; i++) {
-
         stageId = i+1
-
         var sel = document.getElementById("lessonStagesDropdown");
-
         var stageEntry = document.createElement('option');
         stageEntry.innerText = stageId + " - " + lessonDefResponse.Stages[i].Description
-
-        console.log("FOOPPEEEEEEEEEE");
-        console.log(stageId);
-        console.log(getLessonStage());
-
-        if (stageId == getLessonStage()) {
-            // stageEntry.classList.add('active');
-            console.log("eEEEEFDOIFJDOFIDJSOFIJ");
-            console.log(i)
-        }
-
         sel.appendChild(stageEntry);
     }
 
     document.getElementById("lessonStagesDropdown").selectedIndex = getLessonStage() - 1;
-
-    // for (i = 1; i <= stages; i++) {
-
-    //     var stageEntry = document.createElement('li');
-    //     stageEntry.classList.add('page-item');
-
-    //     if (i == getLessonStage()) {
-    //         stageEntry.classList.add('active');
-    //     }
-
-    //     var stageLink = document.createElement('a');
-    //     stageLink.appendChild(document.createTextNode(i));
-    //     stageLink.classList.add('page-link');
-    //     stageLink.href = ".?lessonId=" + getLessonId() + "&lessonStage=" + i;
-    //     stageEntry.appendChild(stageLink);
-
-    //     document.getElementById("lessonStagesPagination").appendChild(stageEntry);
-    // }
-
-
-
-    // <li class="page-item active">
-    //     <a class="page-link" href="#">1</a>
-    // </li>
-
 }
 
 function stageChange() {
@@ -232,10 +189,6 @@ async function requestLesson() {
     data.sessionId = getSession();
     data.lessonStage = getLessonStage();
 
-    console.log("Sent lesson ID:" + data.lessonId);
-    console.log("Sent session ID:" + data.sessionId);
-    console.log("Sent lesson stage:" + data.lessonStage);
-
     var json = JSON.stringify(data);
 
     // Send lesson request
@@ -250,7 +203,6 @@ async function requestLesson() {
         xhttp.send(json);
 
         if (xhttp.status != 200) {
-            console.log("POST waiting a second.")
             await sleep(1000);
             continue;
         }
@@ -262,7 +214,6 @@ async function requestLesson() {
     // get livelesson
     for (; ;) {
         response = JSON.parse(xhttp.responseText);
-        console.log("Received lesson UUID from syringe: " + response.id)
 
         // Here we go get the livelesson we requested, verify it's ready, and once it is, start wiring up endpoints.
         var xhttp2 = new XMLHttpRequest();
@@ -271,20 +222,15 @@ async function requestLesson() {
         xhttp2.send();
 
         if (xhttp2.status != 200) {
-            console.log("GET waiting a second.")
-            await sleep(2000);
+            await sleep(500);
             continue;
         }
-
-        console.log("Received lesson information from syringe:")
-        console.log(JSON.parse(xhttp2.responseText));
 
         var response2 = JSON.parse(xhttp2.responseText);
 
         if (!response2.Ready) {
-            console.log("GET received data, but lesson not ready. Attempt #" + attempts)
             attempts++;
-            await sleep(2000);
+            await sleep(500);
             continue;
         }
 
@@ -305,6 +251,18 @@ async function requestLesson() {
         endpoints = sort("Name", endpoints);
         renderLabGuide(response2.LabGuide);
 
+        var diagramButton = document.getElementById("btnOpenLessonDiagram");
+        var diagram = document.getElementById("lessonDiagramImg");
+        if (response2.LessonDiagram == null) {
+            diagram.src = "/images/error.png";
+            diagramButton.disabled = true;
+            diagramButton.innerText = "No Lesson Diagram";
+        } else {
+            diagram.src = response2.LessonDiagram;
+            diagramButton.disabled = false;
+            diagramButton.innerText = "Open Lesson Diagram";
+        }
+
         // TODO(mierdin) need to check to see if there are stages left. Otherwise syringe will assume stage 1 (once I handle this on that end too)
         var nextLessonStage = parseInt(getLessonStage()) + 1
 
@@ -313,15 +271,14 @@ async function requestLesson() {
         // for some reason, even though the syringe health checks work,
         // we still can't connect right away. Adding short sleep to account for this for now
         // TODO try removing this now that the health check is SSH based
-        await sleep(4000);
+        await sleep(1000);
         addTabs(endpoints);
-        $("#exampleModal").modal("hide");
+        $("#busyModal").modal("hide");
         break;
     }
 }
 
 function renderLabGuide(url) {
-
     var lgGetter = new XMLHttpRequest();
     lgGetter.open('GET', url, false);
     lgGetter.send();
@@ -329,14 +286,6 @@ function renderLabGuide(url) {
     var converter = new showdown.Converter();
     var labHtml = converter.makeHtml(lgGetter.responseText);
     document.getElementById("labGuide").innerHTML = labHtml;
-
-
-
-    
-
-    // console.log("Rendered to HTML");
-    // console.log(lgGetter.responseText);
-    // console.log(labHtml);
 }
 
 function rescale(browserDisp, guacDisp) {
@@ -435,38 +384,15 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// async function closeModal() {
-//     await sleep(1000);
-//     $("#exampleModal").modal("hide");
-// }
-
 function provisionLesson() {
     var modal = document.getElementById("modal-body");
     modal.removeChild(modal.firstChild);
     var modalMessage = document.createTextNode(getRandomModalMessage());
     modal.appendChild(modalMessage);
-    // $("#exampleModal").modal("show");
-    $('#exampleModal').modal({backdrop: 'static', keyboard: false})  
+    $('#busyModal').modal({backdrop: 'static', keyboard: false})  
 
     requestLesson();
-
-    // $("#exampleModal").modal("hide");
 }
-
-
-async function guacInitRetry(endpoints) {
-    for (; ;) {
-        var guacSuccess = guacInit(endpoints);
-        if (guacSuccess == true) {
-            break;
-        }
-        console.log("Still can't connect. Trying again in a second.")
-        await sleep(1000);
-    }
-    console.log("Successfully connected to all guac terminals")
-    $("#exampleModal").modal("hide");
-}
-
 
 var terminals = {};
 function guacInit(endpoints) {

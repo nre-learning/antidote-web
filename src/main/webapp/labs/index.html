@@ -124,6 +124,8 @@
             <ul id="lessonStagesPagination" class="pagination pagination-sm"></ul> -->
             <select onchange="stageChange()" style="width: 50%; float: left;" class="form-control" id="lessonStagesDropdown">
             </select>
+            <button id="btnOpenLessonDiagram" data-toggle="modal" data-target="#lessonDiagramModal" type="button" class="btn btn-primary">Open
+                Lesson Diagram</button>
         </div>
         <div style="width: 50%; float: right;">
             <p style="float: center; color: #FF7133;">NRE Labs is in early alpha status. Please bear with us as we
@@ -134,12 +136,11 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="busyModal" tabindex="-1" role="dialog" aria-labelledby="busyModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Please wait...</h5>
+                    <h5 class="modal-title" id="busyModalLabel">Please wait...</h5>
                 </div>
                 <img class="modal-image" src="../images/flask.gif" style="max-width: 100px;">
                 <div id="modal-body" class="modal-body">
@@ -151,7 +152,22 @@
                 </div>
                 <div class="modal-footer">
                     <div id="modal-body" class="modal-body" style="color: red;">Note that some lessons take a few
-                        minutes to initially start. Please be patient, we're doing some pretty crazy stuff back here (/me tears a strip of duct tape).</div>
+                        minutes to initially start. Please be patient, we're doing some pretty crazy stuff back here
+                        (/me tears a strip of duct tape).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lessonDiagramModal" class="modal fade bd-example-modal-lg show" tabindex="-1" role="dialog" aria-hidden="true"
+        aria-labelledby="myLargeModalLabel" style="text-align: center;">
+        <div class="modal-dialog modal-lg" style="display: inline-block; max-width: 80%;">
+            <div class="modal-content" style="max-width: 100%;"><img id="lessonDiagramImg" class="modal-image" src="/images/error.png"
+                    style="max-width: 1500px;">
+                <div class="modal-footer">
+
+                    <button id="btnCloseLessonDiagram" type="button" data-toggle="modal" data-target="#lessonDiagramModal"
+                        class="btn btn-primary">Close diagram</button>
                 </div>
             </div>
         </div>
