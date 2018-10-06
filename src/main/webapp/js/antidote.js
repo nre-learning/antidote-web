@@ -1,4 +1,4 @@
-// Will be overridden on page load
+// Will be overridden on page load. This is just the default
 var urlRoot = "https://labs.networkreliability.engineering"
 
 // This function generates a unique session ID so we can make sure you consistently connect to your lab resources on the back-end.
@@ -60,6 +60,10 @@ function runSnippetInTab(tabName, snippetIndex) {
         terminals[tabName].guac.sendKeyEvent(1, keysym);
         terminals[tabName].guac.sendKeyEvent(0, keysym);
     }
+}
+
+function gotoTab(tabName) {
+    $('.nav-tabs a[href="#' + tabName + '"]').tab('show')
 }
 
 function makeid() {
@@ -162,18 +166,18 @@ function renderLessonStages() {
     }
 
     document.getElementById("lessonStagesDropdown").selectedIndex = getLessonStage() - 1;
+
+    return lessonDefResponse.Stages.length;
 }
 
 function stageChange() {
-    // var sel = document.getElementById("lessonStagesDropdown").value = "poop";
-    // alert("poop");
     var newStage = parseInt(document.getElementById("lessonStagesDropdown").selectedIndex) + 1;
     window.location.href = ".?lessonId=" + getLessonId() + "&lessonStage=" + newStage;
 }
 
 async function requestLesson() {
 
-    renderLessonStages()
+    var lessonStageCount = renderLessonStages()
 
     var myNode = document.getElementById("tabHeaders");
     while (myNode.firstChild) {
@@ -195,19 +199,30 @@ async function requestLesson() {
     // Send lesson request
     // TODO(mierdin): for all these loops, need to break if we either get a non 200 status for too long,
     // or if the lesson fails to provision (ready: true) before a timeout. Can't just loop endlessly.
-    for (; ;) {
-        var xhttp = new XMLHttpRequest();
+    // for (; ;) {
+    //     var xhttp = new XMLHttpRequest();
 
-        // Doing synchronous calls for now, need to convert to asynchronous
-        xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
-        xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-        xhttp.send(json);
+    //     // Doing synchronous calls for now, need to convert to asynchronous
+    //     xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
+    //     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    //     xhttp.send(json);
 
-        if (xhttp.status != 200) {
-            await sleep(1000);
-            continue;
-        }
-        break;
+    //     if (xhttp.status != 200) {
+    //         await sleep(1000);
+    //         continue;
+    //     }
+    //     break;
+    // }
+
+    // Send lesson request
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send(json);
+
+    if (xhttp.status != 200) {
+        $("#errorModal").modal("show");
+        return
     }
 
     var attempts = 1;
@@ -264,10 +279,13 @@ async function requestLesson() {
             diagramButton.innerText = "Open Lesson Diagram";
         }
 
-        // TODO(mierdin) need to check to see if there are stages left. Otherwise syringe will assume stage 1 (once I handle this on that end too)
         var nextLessonStage = parseInt(getLessonStage()) + 1
-
-        document.getElementById("gotoNextStage").href = "/labs/?lessonId=" + getLessonId() + "&lessonStage=" + nextLessonStage
+        if (nextLessonStage <= lessonStageCount) {
+            document.getElementById("gotoNextStage").href = "/labs/?lessonId=" + getLessonId() + "&lessonStage=" + nextLessonStage
+            $("#gotoNextStage").removeClass('disabled');
+        } else {
+            $("#gotoNextStage").addClass('disabled');
+        }
 
         // for some reason, even though the syringe health checks work,
         // we still can't connect right away. Adding short sleep to account for this for now
@@ -342,7 +360,7 @@ function addTabs(endpoints) {
     }
 
     for (var i = 0; i < endpoints.length; i++) {
-        if (endpoints[i].Type == "NOTEBOOK") {
+        if (endpoints[i].Type == "IFRAME") {
             console.log("Adding " + endpoints[i].Name);
             var newTabHeader = document.createElement("LI");
             newTabHeader.classList.add('nav-item');
@@ -362,6 +380,7 @@ function addTabs(endpoints) {
 
             var newTabContent = document.createElement("DIV");
             newTabContent.id = endpoints[i].Name;
+            newTabContent.style = "width: 100%; height: 100%;"
             newTabContent.classList.add('tab-pane', 'fade');
             if (i == 0) {
                 newTabContent.classList.add('active', 'show');
@@ -369,9 +388,9 @@ function addTabs(endpoints) {
 
             var iframe = document.createElement('iframe');
             iframe.width = "100%"
-            iframe.height = "600px"
+            iframe.height = "100%"
             iframe.frameBorder = "0"
-            iframe.src = "https://vip.labs.networkreliability.engineering:" + String(endpoints[i].Port) + "/notebooks/lesson-" + getLessonId() + "/stage" + getLessonStage() + "/notebook.ipynb"
+            iframe.src = String(endpoints[i].IframeDetails.Protocol) + "://vip.labs.networkreliability.engineering:" + String(endpoints[i].IframeDetails.Port) + String(endpoints[i].IframeDetails.URI)
             newTabContent.appendChild(iframe);
             document.getElementById("myTabContent").appendChild(newTabContent);
 
@@ -493,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     $('#videoModal').on('show.bs.modal', function () {
-      $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/ES_e81C55Cw?autoplay=1&rel=0");
+      $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/YhbWBX71yGQ?autoplay=1&rel=0");
     });
     
     $("#videoModal").on('hidden.bs.modal', function (e) {

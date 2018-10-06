@@ -54,7 +54,7 @@
     <div class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a href="/" class="navbar-brand">
-                <img src="../images/nre-logo-long.png"></a>
+                <img src="/images/nrelabs_long.png" style="height: 37px;" /></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -67,7 +67,7 @@
                             <span class="caret"></span>
                         </a>
                         <div id="introMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item" href="#">Fundamentals</a>
+                            <a class="dropdown-item disabled" href="#">Fundamentals</a>
                             <div class="dropdown-divider"></div>
                         </div>
                     </li>
@@ -77,8 +77,9 @@
                             <span class="caret"></span>
                         </a>
                         <div id="troubleshootingMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item" href="#">Troubleshooting</a>
+                            <a class="dropdown-item disabled" href="#">Troubleshooting</a>
                             <div class="dropdown-divider"></div>
+                            <a class="dropdown-item disabled" href="#">Coming Soon!</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -87,7 +88,7 @@
                             <span class="caret"></span>
                         </a>
                         <div id="verificationMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item" href="#">Verification</a>
+                            <a class="dropdown-item disabled" href="#">Verification</a>
                             <div class="dropdown-divider"></div>
                         </div>
                     </li>
@@ -97,7 +98,7 @@
                             <span class="caret"></span>
                         </a>
                         <div id="configurationMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item" href="#">Configuration</a>
+                            <a class="dropdown-item disabled" href="#">Configuration</a>
                             <div class="dropdown-divider"></div>
                         </div>
                     </li>
@@ -108,10 +109,10 @@
                         <a class="nav-link" href="/courses.html">Courses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="http://antidoteproject.readthedocs.io/">Docs</a>
+                        <a class="nav-link" href="/stats/">Stats</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="/stats/">Stats</a>
+                        <a class="nav-link" target="_blank" href="http://antidoteproject.readthedocs.io/">Docs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" target="_blank" href="https://twitter.com/NRELabs">Follow on Twitter!</a>
@@ -139,13 +140,13 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="busyModal" tabindex="-1" role="dialog" aria-labelledby="busyModalLabel" aria-hidden="true">
+    <div id="busyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="busyModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="busyModalLabel">Please wait...</h5>
                 </div>
-                <img class="modal-image" src="../images/flask.gif" style="max-width: 100px;">
+                <img class="modal-image" src="/images/flask.gif" style="max-width: 150px;">
                 <div id="modal-body" class="modal-body">
                     Please wait...
                 </div>
@@ -176,6 +177,31 @@
         </div>
     </div>
 
+    <div id="errorModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Please wait...</h5>
+                </div>
+                <img class="modal-image" src="/images/error.png" style="max-width: 150px;">
+                <div id="modal-body" class="modal-body">
+                    Please wait...
+                </div>
+                <div class="progress" style="width: 90%; margin: 0 auto;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                </div>
+                <div class="modal-footer">
+                    <div id="modal-body" class="modal-body" style="color: red;">Note that some lessons take a few
+                        minutes to initially start. Please be patient, we're doing some pretty crazy stuff back here
+                        (/me tears a strip of duct tape).</div>
+                    <button id="btnCloseErrorModal" type="button" data-toggle="modal" data-target="#errorModal"
+                        class="btn btn-primary">Close error message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="panel-container">
 
         <div class="panel-left content resizable" style="transition: all 0s ease 0s; width: 40%;">
@@ -185,22 +211,18 @@
                 in this lesson!</a>
         </div>
 
-
-        <div class="splitter" style="touch-action: none;">
-        </div>
-
         <div class="panel-right" style="height: 100%; width: 60%">
             <span class="resize-warning">Use the tabs below to use this lesson's resources. Play around and explore,
                 they're yours!
             </span>
 
-            <div id="tabPane" class="bs-component">
+            <div id="tabPane" class="bs-component" style="position: relative;">
                 <ul id="tabHeaders" class="nav nav-tabs">
                     <li class="nav-item">
                         <a class="nav-link active show" data-toggle="tab" href="#start"></a>
                     </li>
                 </ul>
-                <div id="myTabContent" class="tab-content">
+                <div id="myTabContent" class="tab-content" style="position: absolute; height: 100%; width: 100%;">
                     <div class="tab-pane fade active show" id="start" style="height: 100%;">
                         <!-- <p>Select "request lab" to the left to start this lab</p> -->
                         <img class="imgcenter" src="https://labs.networkreliability.engineering/images/nrelabs.png" />

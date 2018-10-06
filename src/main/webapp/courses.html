@@ -51,7 +51,7 @@
     <div class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a href="/" class="navbar-brand">
-                <img src="/images/nre-logo-long.png"></a>
+                <img src="/images/nrelabs_long.png" style="height: 37px;" /></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -64,7 +64,7 @@
                             <span class="caret"></span>
                         </a>
                         <div id="introMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item" href="#">Fundamentals</a>
+                            <a class="dropdown-item disabled" href="#">Fundamentals</a>
                             <div class="dropdown-divider"></div>
                         </div>
                     </li>
@@ -74,8 +74,9 @@
                             <span class="caret"></span>
                         </a>
                         <div id="troubleshootingMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item" href="#">Troubleshooting</a>
+                            <a class="dropdown-item disabled" href="#">Troubleshooting</a>
                             <div class="dropdown-divider"></div>
+                            <a class="dropdown-item disabled" href="#">Coming Soon!</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -84,7 +85,7 @@
                             <span class="caret"></span>
                         </a>
                         <div id="verificationMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item" href="#">Verification</a>
+                            <a class="dropdown-item disabled" href="#">Verification</a>
                             <div class="dropdown-divider"></div>
                         </div>
                     </li>
@@ -94,7 +95,7 @@
                             <span class="caret"></span>
                         </a>
                         <div id="configurationMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item" href="#">Configuration</a>
+                            <a class="dropdown-item disabled" href="#">Configuration</a>
                             <div class="dropdown-divider"></div>
                         </div>
                     </li>
@@ -105,10 +106,10 @@
                         <a class="nav-link" href="/courses.html">Courses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="http://antidoteproject.readthedocs.io/">Docs</a>
+                        <a class="nav-link" href="/stats/">Stats</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="/stats/">Stats</a>
+                        <a class="nav-link" target="_blank" href="http://antidoteproject.readthedocs.io/">Docs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" target="_blank" href="https://twitter.com/NRELabs">Follow on Twitter!</a>
@@ -134,9 +135,9 @@
                             <p class="lead">
                                 Automation isn't just about pushing configs anymore.
                             </p>
-                            <p>The courses and lessons in NRE Labs is curated by a community of experts that have spent
+                            <p>The courses and lessons in NRE Labs are curated by a community of experts that have spent
                                 time using
-                                automation to engineer reliable networks. As a result, the skills you can learn here go
+                                automation to engineer reliable networks. The skills you can learn here go
                                 way
                                 beyond the typical "configuration management" automation use case. You'll learn how to
                                 use automation
@@ -145,8 +146,9 @@
                                 is doing what you expect.
                             </p>
                             <p>As a result, NRE Labs is separated into four distinct courses: Fundamentals,
-                                Troubleshooting, Verification, and Configuration.
-                                Take a look at the descriptions below, and decide which one is best for you. Click the
+                                Troubleshooting, Verification, and Configuration. We have a few lessons in each category
+                                now, but we'll be releasing new lessons all the time in the near future!
+                                Take a look at the descriptions below and decide which one is best for you. Click the
                                 buttons below to jump right into a lesson, right now!
                             </p>
                         </div>
@@ -163,12 +165,10 @@
                         <div class="card-body">
                             <p class="lead">Every journey has a beginning.</p>
                             <ul class="list-unstyled mt-3 mb-4">
-                                <li>Version Control with Git</li>
-                                <li>Network REST APIs</li>
-                                <li>Becoming a Python Guru</li>
-                                <li>Config Templates with Jinja</li>
+                                <li>REST APIs and Python</li>
+                                <li>Introduction to YAML</li>
                             </ul>
-                            <a href="/labs/?lessonId=14&lessonStage=1" role="button" class="btn btn-lg btn-block btn-primary">New? Start here!</a>
+                            <a href="/labs/?lessonId=19&lessonStage=1" role="button" class="btn btn-lg btn-block btn-primary">New? Start here!</a>
                         </div>
                     </div>
                     <div class="card mb-4 box-shadow">
@@ -178,9 +178,9 @@
                         <div class="card-body">
                             <p class="lead">Get to root cause, lightning fast.</p>
                             <ul class="list-unstyled mt-3 mb-4">
-                                <li>Deconstructing Common Troubleshooting</li>
+                                <li>Deconstructed Troubleshooting Workflows</li>
                             </ul>
-                            <a role="button" class="btn btn-lg btn-block btn-outline-primary">Try a lesson!</a>
+                            <a href="/labs/?lessonId=21&lessonStage=1" role="button" class="disabled btn btn-lg btn-block btn-outline-primary">Coming Soon!</a>
                         </div>
                     </div>
                     <div class="card mb-4 box-shadow">
@@ -248,8 +248,7 @@
                     </ul> -->
 
                     <p>Built by the
-                        <a href="https://github.com/orgs/nre-learning/people" target="_blank">NRE Learning Team</a> at
-                        <a href="https://www.juniper.net/us/en/solutions/automation/" target="_blank">Juniper Networks</a>.</p>
+                        <a href="https://github.com/orgs/nre-learning/people" target="_blank">NRE Learning Team</a>
                     <p>Theme by
                         <a href="http://thomaspark.co">Thomas Park</a>. Theme code released under the
                         <a href="https://github.com/thomaspark/bootswatch/blob/master/LICENSE">MIT License</a>.</p>
