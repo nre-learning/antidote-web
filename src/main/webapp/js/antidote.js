@@ -148,13 +148,14 @@ function renderLessonStages() {
     reqLessonDef.open("GET", urlRoot + "/syringe/exp/lessondef/" + getLessonId(), false);
     reqLessonDef.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     reqLessonDef.send();
-    if (reqLessonDef.status != 200) {
-        console.log("Unable to get lesson def")
-    } else {
-        console.log("Received stage information from syringe:")
-        console.log(JSON.parse(reqLessonDef.responseText));
+    var lessonDefResponse = JSON.parse(reqLessonDef.responseText);
 
-        var lessonDefResponse = JSON.parse(reqLessonDef.responseText);
+    if (reqLessonDef.status != 200) {
+        var errorMessage = document.getElementById("error-modal-body");
+        errorMessage.innerText = "Error retrieving lesson stages: " + lessonDefResponse["error"];
+        $("#busyModal").modal("hide");
+        $("#errorModal").modal("show");
+        return 0;
     }
 
     for (var i = 0; i < lessonDefResponse.Stages.length; i++) {
@@ -178,6 +179,11 @@ function stageChange() {
 async function requestLesson() {
 
     var lessonStageCount = renderLessonStages()
+
+    // Obviously a problem happened, just return
+    if (lessonStageCount == 0) {
+        return
+    }
 
     var myNode = document.getElementById("tabHeaders");
     while (myNode.firstChild) {
@@ -220,7 +226,12 @@ async function requestLesson() {
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send(json);
 
+    response = JSON.parse(xhttp.responseText);
+
     if (xhttp.status != 200) {
+        var errorMessage = document.getElementById("error-modal-body");
+        errorMessage.innerText = "Error with initial lesson request: " + response["error"];
+        $("#busyModal").modal("hide");
         $("#errorModal").modal("show");
         return
     }
@@ -229,7 +240,6 @@ async function requestLesson() {
 
     // get livelesson
     for (; ;) {
-        response = JSON.parse(xhttp.responseText);
 
         // Here we go get the livelesson we requested, verify it's ready, and once it is, start wiring up endpoints.
         var xhttp2 = new XMLHttpRequest();
@@ -237,14 +247,26 @@ async function requestLesson() {
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
-        if (xhttp2.status != 200) {
-            await sleep(500);
-            continue;
+        if (xhttp.status != 200) {
+            var errorMessage = document.getElementById("error-modal-body");
+            errorMessage.innerText = "Error retrieving requested lesson: " + response["error"];
+            $("#busyModal").modal("hide");
+            $("#errorModal").modal("show");
+            return
         }
 
         var response2 = JSON.parse(xhttp2.responseText);
 
         if (!response2.Ready) {
+
+            if (attempts > 1200) {
+                var errorMessage = document.getElementById("error-modal-body");
+                errorMessage.innerText = "Timeout waiting for lesson to become ready.";
+                $("#busyModal").modal("hide");
+                $("#errorModal").modal("show");
+                return
+            }
+
             attempts++;
             await sleep(500);
             continue;
@@ -290,7 +312,7 @@ async function requestLesson() {
         // for some reason, even though the syringe health checks work,
         // we still can't connect right away. Adding short sleep to account for this for now
         // TODO try removing this now that the health check is SSH based
-        await sleep(1000);
+        await sleep(2000);
         addTabs(endpoints);
         $("#busyModal").modal("hide");
         break;
@@ -462,21 +484,17 @@ function guacInit(endpoints) {
         }
     }
 
-    // This is a HORRIBLY inefficient approach but javascript is blazing fast so *shrug*
-    // (just kidding we should revisit this sometime. (TODO))
-    mouse = new Guacamole.Mouse(thisTerminal.guac.getDisplay().getElement());
-    mouse.onmousedown =
-        mouse.onmouseup =
-        mouse.onmousemove = function (mouseState) {
-            var tabs = document.getElementById("myTabContent").children;
-            for (var i = 0; i < tabs.length; i++) {
-                var tab = tabs[i];
-                if (tab.classList.contains("show")) {
-                    console.log(terminals[tab.id])
-                    terminals[tab.id].sendMouseState(mouseState);
-                }
-            }
-        };
+    var tabs = document.getElementById("myTabContent").children;
+    for (var i = 0; i < tabs.length; i++) {
+        var tab = tabs[i];
+        terminals[tab.id].mouse = new Guacamole.Mouse(terminals[tab.id].guac.getDisplay().getElement());
+
+        terminals[tab.id].mouse.onmousedown =
+            terminals[tab.id].mouse.onmouseup =
+            terminals[tab.id].mouse.onmousemove = function (mouseState) {
+                terminals[tab.id].guac.sendMouseState(mouseState);
+            };
+    }
 
     var keyboard = new Guacamole.Keyboard(document);
     keyboard.onkeydown = function (keysym) {
