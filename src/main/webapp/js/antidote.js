@@ -448,7 +448,7 @@ function guacInit(endpoints) {
                 password = "antidotepassword"
             }
 
-            connectData = endpoints[i].Host + ";" + endpoints[i].Port + ";" + String(document.getElementById("tabPane").offsetWidth) + ";" + String(document.getElementById("tabPane").offsetHeight - 42) + ";" + username + ";" + password;
+            connectData = endpoints[i].Host + ";" + endpoints[i].Port + ";" + String(document.getElementById("myTabContent").offsetWidth) + ";" + String(document.getElementById("myTabContent").offsetHeight - 42) + ";" + username + ";" + password;
             thisTerminal.guac.connect(connectData);
 
             thisTerminal.display.appendChild(thisTerminal.guac.getDisplay().getElement());
