@@ -437,14 +437,18 @@ function guacInit(endpoints) {
                 return false
             };
 
+            //TODO get from API
+            var username = ""
             var password = ""
             if (endpoints[i].Type == "DEVICE") {
+                username = "root"
                 password = "VR-netlab9"
             } else if (endpoints[i].Type == "UTILITY") {
+                username = "antidote"
                 password = "antidotepassword"
             }
 
-            connectData = endpoints[i].Host + ";" + endpoints[i].Port + ";" + String(document.getElementById("tabPane").offsetWidth) + ";" + String(document.getElementById("tabPane").offsetHeight - 42) + ";" + password;
+            connectData = endpoints[i].Host + ";" + endpoints[i].Port + ";" + String(document.getElementById("tabPane").offsetWidth) + ";" + String(document.getElementById("tabPane").offsetHeight - 42) + ";" + username + ";" + password;
             thisTerminal.guac.connect(connectData);
 
             thisTerminal.display.appendChild(thisTerminal.guac.getDisplay().getElement());

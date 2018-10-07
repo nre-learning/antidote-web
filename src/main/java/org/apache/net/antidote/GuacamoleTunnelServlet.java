@@ -31,6 +31,7 @@ public class GuacamoleTunnelServlet
         String devicePort = "";
         Integer width = 0;
         Integer height = 0;
+        String username = "";
         String password = "";
         try {
             BufferedReader reader = request.getReader();
@@ -44,7 +45,8 @@ public class GuacamoleTunnelServlet
             devicePort = data[1];
             width = Integer.parseInt(data[2]);
             height = Integer.parseInt(data[3]);
-            password = data[4];
+            username = data[4];
+            password = data[5];
 
             reader.close();
         } catch (IOException e) {
@@ -59,7 +61,7 @@ public class GuacamoleTunnelServlet
         guacConfig.setProtocol("ssh");
         guacConfig.setParameter("hostname", deviceIP);
         guacConfig.setParameter("port", devicePort);
-        guacConfig.setParameter("username", "root");
+        guacConfig.setParameter("username", username);
         guacConfig.setParameter("password", password);
 
         // TODO(mierdin): Temporary fix for now, we're passing screen height and width in connection data. Think there should be a better way
