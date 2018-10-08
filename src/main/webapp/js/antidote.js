@@ -118,7 +118,17 @@ function renderLessonCategories() {
             xhttp.open("POST", urlRoot + "/syringe/exp/lessondef", false);
             xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
             xhttp.send(json);
+
             response = JSON.parse(xhttp.responseText);
+
+            if (xhttp.status != 200) {
+                var errorMessage = document.getElementById("error-modal-body");
+                errorMessage.innerText = "Error retrieving lesson categories: " + response["error"];
+                $("#busyModal").modal("hide");
+                $("#errorModal").modal("show");
+                return
+            }
+
             console.log("Received lesson defs(" + catName + ") fom syringe:")
             console.log(response)
         
