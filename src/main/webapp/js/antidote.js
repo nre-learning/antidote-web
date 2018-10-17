@@ -497,6 +497,11 @@ function guacInit(endpoints) {
     var tabs = document.getElementById("myTabContent").children;
     for (var i = 0; i < tabs.length; i++) {
         var tab = tabs[i];
+
+        // TODO(mierdin): Obviously this only works if the tab is named "jupyter". Should come up with better long-term solution soon.
+        if (tab.id == "jupyter") {
+            continue
+        }
         terminals[tab.id].mouse = new Guacamole.Mouse(terminals[tab.id].guac.getDisplay().getElement());
 
         terminals[tab.id].mouse.onmousedown =
