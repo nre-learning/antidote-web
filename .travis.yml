@@ -1,0 +1,5 @@
+language: java
+install:
+  - check-changelog.sh
+  - mvn package
+sudo: false
