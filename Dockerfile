@@ -1,8 +1,7 @@
 FROM maven:3.5.2-jdk-8-alpine AS MAVEN_TOOL_CHAIN
 COPY pom.xml /tmp/
 COPY src /tmp/src/
-ARG COMMIT_SHA
-RUN sed -i "s/{{version}}/$COMMIT_SHA/g" /tmp/src/main/webapp/index.html
+RUN sed -i "s/{{version}}/$GIT_SHA1/g" /tmp/src/main/webapp/index.html
 WORKDIR /tmp/
 RUN mvn package
 

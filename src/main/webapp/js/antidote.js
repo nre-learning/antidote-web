@@ -576,9 +576,9 @@ function appendPTRBanner() {
     console.log(buildInfo)
 
     var commits = {
-        "antidote": buildInfo.AntidoteSha,
+        "antidote": buildInfo.antidoteSha,
         "antidote-web": String(document.currentScript),
-        "syringe": buildInfo.BuildSha,
+        "syringe": buildInfo.buildSha,
     }
 
     var antidoteLink = "<a target='_blank' href='https://github.com/nre-learning/antidote/commit/" + commits.antidote + "'>" + commits.antidote.substring(0,7); + "</a>"
