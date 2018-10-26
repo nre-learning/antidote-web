@@ -563,7 +563,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function appendPTRBanner() {
 
     var buildInfoReq = new XMLHttpRequest();
-    buildInfoReq.open("GET", urlRoot + "/syringe/exp/syringeinfo/", false);
+    buildInfoReq.open("GET", urlRoot + "/syringe/exp/syringeinfo", false);
     buildInfoReq.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     buildInfoReq.send();
 
