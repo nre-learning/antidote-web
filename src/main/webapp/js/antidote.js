@@ -575,14 +575,18 @@ function appendPTRBanner() {
 
     console.log(buildInfo)
 
+    var scripts = document.getElementsByTagName('script');
+    var lastScript = scripts[scripts.length-1];
+    var scriptName = lastScript.src;
+
     var commits = {
         "antidote": buildInfo.antidoteSha,
-        "antidote-web": String(document.currentScript),
+        "antidoteweb": scriptName.split("?")[1],
         "syringe": buildInfo.buildSha,
     }
 
     var antidoteLink = "<a target='_blank' href='https://github.com/nre-learning/antidote/commit/" + commits.antidote + "'>" + commits.antidote.substring(0,7); + "</a>"
-    var antidoteWebLink = "<a target='_blank' href='https://github.com/nre-learning/antidote-web/commit/" + commits.antidote-web + "'>" + commits.antidote-web.substring(0,7); + "</a>"
+    var antidoteWebLink = "<a target='_blank' href='https://github.com/nre-learning/antidote-web/commit/" + commits.antidoteweb + "'>" + commits.antidoteweb.substring(0,7); + "</a>"
     var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/syringe/commit/" + commits.syringe + "'>" + commits.syringe.substring(0,7); + "</a>"
 
     var ptrBanner = document.createElement("DIV");
