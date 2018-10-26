@@ -3,6 +3,9 @@ RUN apt-get update && apt-get install -y git
 COPY . /tmp/antidote-web
 WORKDIR /tmp/antidote-web
 RUN sed -i "s/{{version}}/$(git rev-parse HEAD)/g" /tmp/antidote-web/src/main/webapp/index.html
+RUN sed -i "s/{{version}}/$(git rev-parse HEAD)/g" /tmp/antidote-web/src/main/webapp/courses.html
+RUN sed -i "s/{{version}}/$(git rev-parse HEAD)/g" /tmp/antidote-web/src/main/webapp/stats/index.html
+RUN sed -i "s/{{version}}/$(git rev-parse HEAD)/g" /tmp/antidote-web/src/main/webapp/labs/index.html
 RUN mvn package
 
 FROM guacamole/guacamole
