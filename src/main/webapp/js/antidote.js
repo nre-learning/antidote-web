@@ -556,8 +556,9 @@ document.addEventListener('DOMContentLoaded', function () {
       $("#videoModal iframe").attr("src", null);
     });
 
-    appendPTRBanner();
-
+    if (urlRoot.substring(0,11) == "https://ptr") {
+        appendPTRBanner();
+    }
 });
 
 function appendPTRBanner() {
@@ -585,9 +586,9 @@ function appendPTRBanner() {
         "syringe": buildInfo.buildSha,
     }
 
-    var antidoteLink = "<a target='_blank' href='https://github.com/nre-learning/antidote/commit/" + commits.antidote + "'>" + commits.antidote.substring(0,7); + "</a>"
-    var antidoteWebLink = "<a target='_blank' href='https://github.com/nre-learning/antidote-web/commit/" + commits.antidoteweb + "'>" + commits.antidoteweb.substring(0,7); + "</a>"
-    var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/syringe/commit/" + commits.syringe + "'>" + commits.syringe.substring(0,7); + "</a>"
+    var antidoteLink = "<a target='_blank' href='https://github.com/nre-learning/antidote/commit/" + commits.antidote + "'>" + commits.antidote.substring(0,7) + "</a>"
+    var antidoteWebLink = "<a target='_blank' href='https://github.com/nre-learning/antidote-web/commit/" + commits.antidoteweb + "'>" + commits.antidoteweb.substring(0,7) + "</a>"
+    var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/syringe/commit/" + commits.syringe + "'>" + commits.syringe.substring(0,7) + "</a>"
 
     var ptrBanner = document.createElement("DIV");
     ptrBanner.id = "ptrBanner"
