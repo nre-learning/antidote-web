@@ -257,7 +257,7 @@ async function requestLesson() {
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
-        if (xhttp.status != 200) {
+        if (xhttp2.status != 200) {
             var errorMessage = document.getElementById("error-modal-body");
             errorMessage.innerText = "Error retrieving requested lesson: " + response["error"];
             $("#busyModal").modal("hide");
@@ -556,5 +556,45 @@ document.addEventListener('DOMContentLoaded', function () {
       $("#videoModal iframe").attr("src", null);
     });
 
+    if (urlRoot.substring(0,11) == "https://ptr") {
+        appendPTRBanner();
+    }
 });
+
+function appendPTRBanner() {
+
+    var buildInfoReq = new XMLHttpRequest();
+    buildInfoReq.open("GET", urlRoot + "/syringe/exp/syringeinfo", false);
+    buildInfoReq.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    buildInfoReq.send();
+
+    if (buildInfoReq.status != 200) {
+        console.log("Unable to get build info")
+        return
+    }
+    var buildInfo = JSON.parse(buildInfoReq.responseText);
+
+    console.log(buildInfo)
+
+    var scripts = document.getElementsByTagName('script');
+    var lastScript = scripts[scripts.length-1];
+    var scriptName = lastScript.src;
+
+    var commits = {
+        "antidote": buildInfo.antidoteSha,
+        "antidoteweb": scriptName.split("?")[1],
+        "syringe": buildInfo.buildSha,
+    }
+
+    var antidoteLink = "<a target='_blank' href='https://github.com/nre-learning/antidote/commit/" + commits.antidote + "'>" + commits.antidote.substring(0,7) + "</a>"
+    var antidoteWebLink = "<a target='_blank' href='https://github.com/nre-learning/antidote-web/commit/" + commits.antidoteweb + "'>" + commits.antidoteweb.substring(0,7) + "</a>"
+    var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/syringe/commit/" + commits.syringe + "'>" + commits.syringe.substring(0,7) + "</a>"
+
+    var ptrBanner = document.createElement("DIV");
+    ptrBanner.id = "ptrBanner"
+    ptrBanner.style = "background-color: black;"
+    ptrBanner.innerHTML = '<span style="color: red;"><p>NRE Labs Public Test Realm. Antidote: ' + antidoteLink + ' | Antidote-Web: ' + antidoteWebLink + ' | Syringe: ' + syringeLink + '</p></span>'
+
+    document.body.appendChild(ptrBanner)
+}
 
