@@ -99,52 +99,41 @@ function getRandomModalMessage() {
 
 function renderLessonCategories() {
 
-    var categories = {
-        "introductory": "introMenu",
-        "troubleshooting": "troubleshootingMenu",
-        "verification": "verificationMenu",
-        "configuration": "configurationMenu"
-    };
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", urlRoot + "/syringe/exp/lessondef/all", false);
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send();
 
-    // Go through each category
-    for (var catName in categories) {
+    if (xhttp.status != 200) {
+        var errorMessage = document.getElementById("error-modal-body");
+        errorMessage.innerText = "Error retrieving lesson categories: " + response["error"];
+        $("#busyModal").modal("hide");
+        $("#errorModal").modal("show");
+        return
+    }
 
-        if (categories.hasOwnProperty(catName)) {
-            var data = {
-                "Category": catName
-            };
-            var json = JSON.stringify(data);
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("POST", urlRoot + "/syringe/exp/lessondef", false);
-            xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-            xhttp.send(json);
+    categories = JSON.parse(xhttp.responseText).lessonCategories;
+    console.log("Received lesson defs fom syringe: ")
+    console.log(categories)
 
-            response = JSON.parse(xhttp.responseText);
+    for (var category in categories) {
+        var lessonDefs = categories[category].lessonDefs;
 
-            if (xhttp.status != 200) {
-                var errorMessage = document.getElementById("error-modal-body");
-                errorMessage.innerText = "Error retrieving lesson categories: " + response["error"];
-                $("#busyModal").modal("hide");
-                $("#errorModal").modal("show");
-                return
-            }
+        for (var i = 0; i < lessonDefs.length; i++) {
+            console.log("Adding lesson to menu - " + lessonDefs[i].LessonName)
+            var lessonLink = document.createElement('a');
+            lessonLink.appendChild(document.createTextNode(lessonDefs[i].LessonName));
+            lessonLink.classList.add('dropdown-item');
+            lessonLink.href = "/labs/?lessonId=" + lessonDefs[i].LessonId + "&lessonStage=1";
+            document.getElementById(category+"Menu").appendChild(lessonLink);
+        }
 
-            console.log("Received lesson defs(" + catName + ") fom syringe:")
-            console.log(response)
-        
-            var lessondefs = response.lessondefs;
-            if (lessondefs) {
-                for (var i = 0; i < lessondefs.length; i++) {
-                    console.log("Adding lesson to menu - " + lessondefs[i].LessonName)
-                    var lessonLink = document.createElement('a');
-                    // lessonLink.appendChild(document.createTextNode("Lesson " + lessondefs[i].LessonId + " - " + lessondefs[i].LessonName));
-                    lessonLink.appendChild(document.createTextNode(lessondefs[i].LessonName));
-                    lessonLink.classList.add('dropdown-item');
-                    lessonLink.href = "/labs/?lessonId=" + lessondefs[i].LessonId + "&lessonStage=1";
-                    document.getElementById(categories[catName]).appendChild(lessonLink);
-                }
-            }
-
+        // Populate quick start button with a random lesson
+        var quickStartButton = document.getElementById("btn"+category);
+        if (quickStartButton) {
+            var rand = Math.floor(Math.random() * categories[category].lessonDefs.length)
+            var randLessonId = categories[category].lessonDefs[rand].LessonId
+            quickStartButton.href = "/labs/?lessonId=" + randLessonId + "&lessonStage=1"
         }
     }
 }
