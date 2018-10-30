@@ -506,9 +506,11 @@ function guacInit(endpoints) {
 
         terminals[tab.id].mouse.onmousedown =
             terminals[tab.id].mouse.onmouseup =
-            terminals[tab.id].mouse.onmousemove = function (mouseState) {
-                terminals[tab.id].guac.sendMouseState(mouseState);
-            };
+            terminals[tab.id].mouse.onmousemove = function(id) {
+                return function (mouseState) {
+                    terminals[id].guac.sendMouseState(mouseState);
+                }
+            }(tab.id);
     }
 
     var keyboard = new Guacamole.Keyboard(document);
