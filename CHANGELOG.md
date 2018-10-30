@@ -6,6 +6,7 @@
 
 ### Other
 
+* Fix issue nre-learning/antidote#105
 
 ## 0.1.2 - October 29, 2018
 
