@@ -2,6 +2,8 @@
 
 ## In development
 
+* Added randomization to courses buttons, improved client-side handling of lessondefs [#18](https://github.com/nre-learning/antidote-web/pull/18)
+
 ### Curriculum
 
 ### Other
