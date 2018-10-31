@@ -8,7 +8,7 @@
 
 ### Other
 
-* Fix issue nre-learning/antidote#105
+* Fix mouse issues in terminal pane [#17](https://github.com/nre-learning/antidote-web/pull/17)
 
 ## 0.1.2 - October 29, 2018
 
