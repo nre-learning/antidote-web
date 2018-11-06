@@ -2,13 +2,9 @@
 
 ## In development
 
-* Added randomization to courses buttons, improved client-side handling of lessondefs [#18](https://github.com/nre-learning/antidote-web/pull/18)
-
-### Curriculum
-
-### Other
-
 * Fix mouse issues in terminal pane [#17](https://github.com/nre-learning/antidote-web/pull/17)
+* Added randomization to courses buttons, improved client-side handling of lessondefs [#18](https://github.com/nre-learning/antidote-web/pull/18)
+* Moved mouse handler to previous loop that checks endpoint type (bugfix) [#19](https://github.com/nre-learning/antidote-web/pull/19)
 
 ## 0.1.2 - October 29, 2018
 

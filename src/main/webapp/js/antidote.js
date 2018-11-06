@@ -445,9 +445,11 @@ function guacInit(endpoints) {
 
             var tunnel = new Guacamole.HTTPTunnel("../tunnel")
 
-            console.log("Adding guac configuration for " + endpoints[i].Name)
+            var epName = endpoints[i].Name;
 
-            thisTerminal.display = document.getElementById("display" + endpoints[i].Name);
+            console.log("Adding guac configuration for " + epName)
+
+            thisTerminal.display = document.getElementById("display" + epName);
             thisTerminal.guac = new Guacamole.Client(
                 tunnel
             );
@@ -479,32 +481,23 @@ function guacInit(endpoints) {
                 thisTerminal.guac.disconnect();
             }
 
-            terminals[endpoints[i].Name] = thisTerminal
+            thisTerminal.mouse = new Guacamole.Mouse(thisTerminal.guac.getDisplay().getElement());
+
+            thisTerminal.mouse.onmousedown =
+                thisTerminal.mouse.onmouseup =
+                thisTerminal.mouse.onmousemove = function(id) {
+                    return function (mouseState) {
+                        terminals[id].guac.sendMouseState(mouseState);
+                    }
+                }(epName);
+
+            terminals[epName] = thisTerminal
         }
     }
 
     var tabs = document.getElementById("myTabContent").children;
-    for (var i = 0; i < tabs.length; i++) {
-        var tab = tabs[i];
-
-        // TODO(mierdin): Obviously this only works if the tab is named "jupyter". Should come up with better long-term solution soon.
-        if (tab.id == "jupyter") {
-            continue
-        }
-        terminals[tab.id].mouse = new Guacamole.Mouse(terminals[tab.id].guac.getDisplay().getElement());
-
-        terminals[tab.id].mouse.onmousedown =
-            terminals[tab.id].mouse.onmouseup =
-            terminals[tab.id].mouse.onmousemove = function(id) {
-                return function (mouseState) {
-                    terminals[id].guac.sendMouseState(mouseState);
-                }
-            }(tab.id);
-    }
-
     var keyboard = new Guacamole.Keyboard(document);
     keyboard.onkeydown = function (keysym) {
-        var tabs = document.getElementById("myTabContent").children;
         for (var i = 0; i < tabs.length; i++) {
             var tab = tabs[i];
             if (tab.classList.contains("show")) {
@@ -514,7 +507,6 @@ function guacInit(endpoints) {
         }
     };
     keyboard.onkeyup = function (keysym) {
-        var tabs = document.getElementById("myTabContent").children;
         for (var i = 0; i < tabs.length; i++) {
             var tab = tabs[i];
             if (tab.classList.contains("show")) {
