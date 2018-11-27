@@ -271,7 +271,7 @@ async function requestLesson() {
             continue;
         }
 
-        var endpoints = response2.Endpoints;
+        var endpoints = response2.LiveEndpoints;
 
         var sort = function (prop, arr) {
             return arr.sort(function (a, b) {
@@ -411,10 +411,10 @@ function addTabs(endpoints) {
             iframe.width = "100%"
             iframe.height = "100%"
             iframe.frameBorder = "0"
-            iframe.src = String(endpoints[i].IframeDetails.Protocol) + "://vip.labs.networkreliability.engineering:" + String(endpoints[i].IframeDetails.Port) + String(endpoints[i].IframeDetails.URI)
+            iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-" + endpoints[i].Name + endpoints[i].IframePath
             newTabContent.appendChild(iframe);
-            document.getElementById("myTabContent").appendChild(newTabContent);
 
+            document.getElementById("myTabContent").appendChild(newTabContent);
             console.log("Added " + endpoints[i].Name);
         }
     }
