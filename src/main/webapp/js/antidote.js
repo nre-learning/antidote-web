@@ -157,11 +157,10 @@ function renderLessonStages() {
         return 0;
     }
 
-    for (var i = 0; i < lessonDefResponse.Stages.length; i++) {
-        stageId = i+1
+    for (var i = 1; i < lessonDefResponse.Stages.length; i++) {
         var sel = document.getElementById("lessonStagesDropdown");
         var stageEntry = document.createElement('option');
-        stageEntry.innerText = stageId + " - " + lessonDefResponse.Stages[i].Description
+        stageEntry.innerText = i + " - " + lessonDefResponse.Stages[i].Description
         sel.appendChild(stageEntry);
     }
 
