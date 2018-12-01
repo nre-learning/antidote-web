@@ -196,12 +196,30 @@
         </div>
     </div>
 
+    <div id="lessonVideoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lessonVideoModalLabel"
+        aria-hidden="true" style="text-align: center;">
+        <div class="modal-dialog" style="display: inline-block;  max-width: 80%;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <iframe id="lessonVideoIframe" width="800" height="450" src=""
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="close" data-toggle="modal" data-target="#lessonVideoModal"
+                        aria-hidden="true">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="panel-container">
 
         <div class="panel-left content resizable" style="transition: all 0s ease 0s; width: 40%;">
-
+            <button id="btnOpenLessonVideo" data-toggle="modal" data-target="#lessonVideoModal" style="display: none; text-align: center;" type="button" class="btn btn-info">
+                RECOMMENDED: Click here to watch lesson video first!
+            </button>
             <article id="labGuide" class="post" itemscope="" itemtype="http://schema.org/BlogPosting"></article>
-            <a id="gotoNextStage" class="btn btn-primary btn-lg btn-block" href="#" role="button">Go to the next stage
+            <a id="gotoNextStage" class="btn btn-primary btn-lg btn-block" href="#" role="button">Go to the next lab
                 in this lesson!</a>
         </div>
 

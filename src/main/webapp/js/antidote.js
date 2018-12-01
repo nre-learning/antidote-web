@@ -299,6 +299,13 @@ async function requestLesson() {
             diagramButton.innerText = "Open Lesson Diagram";
         }
 
+        // Position the video button if a video is present for this lesson
+        if (response2.LessonVideo != null) {
+            document.getElementById("btnOpenLessonVideo").style = "text-align: center;"
+            document.getElementById("lessonVideoIframe").src = response2.LessonVideo;
+            document.getElementById("labGuide").style="padding-top: 10px;"
+        }
+
         var nextLessonStage = parseInt(getLessonStage()) + 1
         if (nextLessonStage <= lessonStageCount) {
             document.getElementById("gotoNextStage").href = "/labs/?lessonId=" + getLessonId() + "&lessonStage=" + nextLessonStage
@@ -376,11 +383,7 @@ function addTabs(endpoints) {
             document.getElementById("myTabContent").appendChild(newTabContent);
 
             console.log("Added " + endpoints[i].Name);
-        }
-    }
-
-    for (var i = 0; i < endpoints.length; i++) {
-        if (endpoints[i].Type == "IFRAME") {
+        } else if (endpoints[i].Type == "IFRAME") {
             console.log("Adding " + endpoints[i].Name);
             var newTabHeader = document.createElement("LI");
             newTabHeader.classList.add('nav-item');
@@ -536,6 +539,11 @@ document.addEventListener('DOMContentLoaded', function () {
     
     $("#videoModal").on('hidden.bs.modal', function (e) {
       $("#videoModal iframe").attr("src", null);
+    });
+
+    $("#lessonVideoModal").on('hidden.bs.modal', function (e) {
+        // Just reset the `src` attribute, which will "un-play" the video
+        $("#lessonVideoModal iframe").attr("src", document.getElementById("lessonVideoIframe"));
     });
 
     if (urlRoot.substring(0,11) == "https://ptr") {
