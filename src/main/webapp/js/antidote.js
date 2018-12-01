@@ -340,7 +340,34 @@ function rescale(browserDisp, guacDisp) {
     guacDisp.scale(scale);
 }
 
+function sortEndpoints(endpoints) {
+
+    var sortedEndpoints = [];
+
+    for (var i = 0; i < endpoints.length; i++) {
+        if (endpoints[i].Type == "UTILITY") {
+            sortedEndpoints.push(endpoints[i]);
+        }
+    }
+
+    for (var i = 0; i < endpoints.length; i++) {
+        if (endpoints[i].Type == "DEVICE") {
+            sortedEndpoints.push(endpoints[i]);
+        }
+    }
+
+    for (var i = 0; i < endpoints.length; i++) {
+        if (endpoints[i].Type == "IFRAME") {
+            sortedEndpoints.push(endpoints[i]);
+        }
+    }
+
+    return sortedEndpoints
+}
+
 function addTabs(endpoints) {
+
+    endpoints = sortEndpoints(endpoints);
 
     // Add Devices tabs
     for (var i = 0; i < endpoints.length; i++) {
