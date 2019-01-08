@@ -2,6 +2,9 @@
 
 ## In development
 
+
+## 0.1.4 - January 08, 2019
+
 - Minor fix to the iframe path based on recent syringe changes [#20](https://github.com/nre-learning/antidote-web/pull/20)
 - Adding lesson video modal; sorting tabs [#21](https://github.com/nre-learning/antidote-web/pull/21)
 
