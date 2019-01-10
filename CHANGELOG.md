@@ -2,6 +2,7 @@
 
 ## In development
 
+- Simplified authentication by using consistent credentials, statically [#23](https://github.com/nre-learning/antidote-web/pull/23)
 
 ## 0.1.4 - January 08, 2019
 
