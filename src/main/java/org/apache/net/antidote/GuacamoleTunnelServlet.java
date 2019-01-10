@@ -31,8 +31,6 @@ public class GuacamoleTunnelServlet
         String devicePort = "";
         Integer width = 0;
         Integer height = 0;
-        String username = "";
-        String password = "";
         try {
             BufferedReader reader = request.getReader();
             String connectData = reader.readLine();
