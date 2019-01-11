@@ -324,13 +324,9 @@ async function requestLesson() {
     }
 }
 
-function renderLabGuide(url) {
-    var lgGetter = new XMLHttpRequest();
-    lgGetter.open('GET', url, false);
-    lgGetter.send();
-
+function renderLabGuide(labGuideText) {
     var converter = new showdown.Converter();
-    var labHtml = converter.makeHtml(lgGetter.responseText);
+    var labHtml = converter.makeHtml(labGuideText);
     document.getElementById("labGuide").innerHTML = labHtml;
 }
 

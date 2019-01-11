@@ -3,6 +3,7 @@
 ## In development
 
 - Simplified authentication by using consistent credentials, statically [#23](https://github.com/nre-learning/antidote-web/pull/23)
+- Render lab guide directly from Syringe API [#24](https://github.com/nre-learning/antidote-web/pull/24)
 
 ## 0.1.4 - January 08, 2019
 
