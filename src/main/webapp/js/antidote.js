@@ -108,7 +108,7 @@ function renderLessonCategories() {
         var errorMessage = document.getElementById("error-modal-body");
         errorMessage.innerText = "Error retrieving lesson categories: " + response["error"];
         $("#busyModal").modal("hide");
-        $("#errorModal").modal("show");
+        $('#errorModal').modal({backdrop: 'static', keyboard: false})
         return
     }
 
@@ -153,7 +153,7 @@ function renderLessonStages() {
         var errorMessage = document.getElementById("error-modal-body");
         errorMessage.innerText = "Error retrieving lesson stages: " + lessonDefResponse["error"];
         $("#busyModal").modal("hide");
-        $("#errorModal").modal("show");
+        $('#errorModal').modal({backdrop: 'static', keyboard: false})
         return 0;
     }
 
@@ -166,7 +166,7 @@ function renderLessonStages() {
 
     document.getElementById("lessonStagesDropdown").selectedIndex = getLessonStage() - 1;
 
-    return lessonDefResponse.Stages.length;
+    return lessonDefResponse.Stages.length - 1;
 }
 
 function stageChange() {
@@ -230,7 +230,7 @@ async function requestLesson() {
         var errorMessage = document.getElementById("error-modal-body");
         errorMessage.innerText = "Error with initial lesson request: " + response["error"];
         $("#busyModal").modal("hide");
-        $("#errorModal").modal("show");
+        $('#errorModal').modal({backdrop: 'static', keyboard: false})
         return
     }
 
@@ -242,6 +242,7 @@ async function requestLesson() {
         // Here we go get the livelesson we requested, verify it's ready, and once it is, start wiring up endpoints.
         var xhttp2 = new XMLHttpRequest();
         xhttp2.open("GET", urlRoot + "/syringe/exp/livelesson/" + response.id, false);
+        // xhttp2.open("GET", "https://ptr.labs.networkreliability.engineering/syringe/exp/livelesson/12-jjtigg867ghr3gye", false);
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
@@ -249,7 +250,7 @@ async function requestLesson() {
             var errorMessage = document.getElementById("error-modal-body");
             errorMessage.innerText = "Error retrieving requested lesson: " + response["error"];
             $("#busyModal").modal("hide");
-            $("#errorModal").modal("show");
+            $('#errorModal').modal({backdrop: 'static', keyboard: false})
             return
         }
 
@@ -263,7 +264,7 @@ async function requestLesson() {
                 var errorMessage = document.getElementById("error-modal-body");
                 errorMessage.innerText = "Timeout waiting for lesson to become ready.";
                 $("#busyModal").modal("hide");
-                $("#errorModal").modal("show");
+                $('#errorModal').modal({backdrop: 'static', keyboard: false})
                 return
             }
 
@@ -296,6 +297,8 @@ async function requestLesson() {
         }
 
         var nextLessonStage = parseInt(getLessonStage()) + 1
+        console.log(nextLessonStage)
+        console.log(lessonStageCount)
         if (nextLessonStage <= lessonStageCount) {
             document.getElementById("gotoNextStage").href = "/labs/?lessonId=" + getLessonId() + "&lessonStage=" + nextLessonStage
             $("#gotoNextStage").removeClass('disabled');
