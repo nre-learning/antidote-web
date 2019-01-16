@@ -7,6 +7,7 @@
 - Add notice that mobile isn't yet supported [#25](https://github.com/nre-learning/antidote-web/pull/25)
 - Add more detail to the progress modal based on Syringe API changes  [#27](https://github.com/nre-learning/antidote-web/pull/27)
 - Fixed a few navigational bugs and broken link to Github issues on the error modal [#28](https://github.com/nre-learning/antidote-web/pull/28)
+- Added logic to highlight Juniper-specific lessons [#29](https://github.com/nre-learning/antidote-web/pull/29)
 
 ## 0.1.4 - January 08, 2019
 
