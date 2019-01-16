@@ -253,9 +253,11 @@ async function requestLesson() {
             return
         }
 
-        var response2 = JSON.parse(xhttp2.responseText);
+        var liveLessonDetails = JSON.parse(xhttp2.responseText);
 
-        if (!response2.Ready) {
+        updateProgressModal(liveLessonDetails);
+
+        if (liveLessonDetails.LiveLessonStatus != "READY") {
 
             if (attempts > 1200) {
                 var errorMessage = document.getElementById("error-modal-body");
@@ -270,39 +272,26 @@ async function requestLesson() {
             continue;
         }
 
-        var endpoints = response2.LiveEndpoints;
+        var endpoints = liveLessonDetails.LiveEndpoints;
 
-        var sort = function (prop, arr) {
-            return arr.sort(function (a, b) {
-                if (a[prop] < b[prop]) {
-                    return -1;
-                } else if (a[prop] > b[prop]) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-        };
-
-        endpoints = sort("Name", endpoints);
-        renderLabGuide(response2.LabGuide);
+        renderLabGuide(liveLessonDetails.LabGuide);
 
         var diagramButton = document.getElementById("btnOpenLessonDiagram");
         var diagram = document.getElementById("lessonDiagramImg");
-        if (response2.LessonDiagram == null) {
+        if (liveLessonDetails.LessonDiagram == null) {
             diagram.src = "/images/error.png";
             diagramButton.disabled = true;
             diagramButton.innerText = "No Lesson Diagram";
         } else {
-            diagram.src = response2.LessonDiagram;
+            diagram.src = liveLessonDetails.LessonDiagram;
             diagramButton.disabled = false;
             diagramButton.innerText = "Open Lesson Diagram";
         }
 
         // Position the video button if a video is present for this lesson
-        if (response2.LessonVideo != null) {
+        if (liveLessonDetails.LessonVideo != null) {
             document.getElementById("btnOpenLessonVideo").style = "text-align: center;"
-            document.getElementById("lessonVideoIframe").src = response2.LessonVideo;
+            document.getElementById("lessonVideoIframe").src = liveLessonDetails.LessonVideo;
             document.getElementById("labGuide").style="padding-top: 10px;"
         }
 
@@ -324,6 +313,47 @@ async function requestLesson() {
     }
 }
 
+function updateProgressModal(liveLessonDetails) {
+
+    var pBar = document.getElementById("liveLessonProgress");
+
+    var statusMessageElement = document.getElementById("lessonStatus");
+    switch(liveLessonDetails.LiveLessonStatus) {
+        case "INITIAL_BOOT":
+          totalEndpoints = 0;
+          reachableEndpoints = 0;
+          for (var property in liveLessonDetails.LiveEndpoints) {
+              totalEndpoints++;
+              if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
+                  reachableEndpoints++;
+              }
+          }
+          statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable...(" + reachableEndpoints + "/" + totalEndpoints + ")"
+          pBar.style = "width: 33%"
+          break;
+        case "CONFIGURATION":
+          statusMessageElement.innerText = "Configuring endpoints for this lesson..."
+          pBar.style = "width: 66%"
+          break;
+        case "READY":
+          statusMessageElement.innerText = "Almost ready!"
+          pBar.style = "width: 100%"
+          break;
+        default:
+          // Shouldn't need this since we're getting rid of the default nil value on the syringe side, but just in case...
+          totalEndpoints = 0;
+          reachableEndpoints = 0;
+          for (var property in liveLessonDetails.LiveEndpoints) {
+              totalEndpoints++;
+              if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
+                  reachableEndpoints++;
+              }
+          }
+          statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable (" + reachableEndpoints + "/" + totalEndpoints + ")"
+          pBar.style = "width: 33%"
+      }
+}
+
 function renderLabGuide(labGuideText) {
     var converter = new showdown.Converter();
     var labHtml = converter.makeHtml(labGuideText);
@@ -340,21 +370,21 @@ function sortEndpoints(endpoints) {
 
     var sortedEndpoints = [];
 
-    for (var i = 0; i < endpoints.length; i++) {
-        if (endpoints[i].Type == "UTILITY") {
-            sortedEndpoints.push(endpoints[i]);
+    for (var ep in endpoints) {
+        if (endpoints[ep].Type == "UTILITY") {
+            sortedEndpoints.push(endpoints[ep]);
         }
     }
 
-    for (var i = 0; i < endpoints.length; i++) {
-        if (endpoints[i].Type == "DEVICE") {
-            sortedEndpoints.push(endpoints[i]);
+    for (var ep in endpoints) {
+        if (endpoints[ep].Type == "DEVICE") {
+            sortedEndpoints.push(endpoints[ep]);
         }
     }
 
-    for (var i = 0; i < endpoints.length; i++) {
-        if (endpoints[i].Type == "IFRAME") {
-            sortedEndpoints.push(endpoints[i]);
+    for (var ep in endpoints) {
+        if (endpoints[ep].Type == "IFRAME") {
+            sortedEndpoints.push(endpoints[ep]);
         }
     }
 
