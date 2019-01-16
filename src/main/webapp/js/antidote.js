@@ -122,9 +122,18 @@ function renderLessonCategories() {
         for (var i = 0; i < lessonDefs.length; i++) {
             console.log("Adding lesson to menu - " + lessonDefs[i].LessonName)
             var lessonLink = document.createElement('a');
-            lessonLink.appendChild(document.createTextNode(lessonDefs[i].LessonName));
             lessonLink.classList.add('dropdown-item');
             lessonLink.href = "/labs/?lessonId=" + lessonDefs[i].LessonId + "&lessonStage=1";
+
+            if (lessonDefs[i].JuniperSpecific == true) {
+                var juniperImg = document.createElement('img');
+                juniperImg.src = "/images/juniper-avatar-17x17.gif"
+                juniperImg.alt="Juniper-Specific Lesson"
+                juniperImg.style="height:17px"
+                lessonLink.appendChild(juniperImg);
+            }
+
+            lessonLink.appendChild(document.createTextNode(lessonDefs[i].LessonName));
             document.getElementById(category+"Menu").appendChild(lessonLink);
         }
 
@@ -296,6 +305,10 @@ async function requestLesson() {
             document.getElementById("labGuide").style="padding-top: 10px;"
         }
 
+        if (liveLessonDetails.JuniperSpecific == true) {
+            addJuniperAlert()
+        }
+
         var nextLessonStage = parseInt(getLessonStage()) + 1
         console.log(nextLessonStage)
         console.log(lessonStageCount)
@@ -314,6 +327,13 @@ async function requestLesson() {
         $("#busyModal").modal("hide");
         break;
     }
+}
+
+function addJuniperAlert() {
+    var juniperAlert = document.createElement("DIV");
+    juniperAlert.classList.add('alert', 'alert-dismissible', 'alert-info');
+    juniperAlert.innerHTML = '<button type="button" class="close" data-dismiss="alert">&times;</button><p class="mb-0">This lesson is more focused on technology specific to Juniper. <a target="_blank" href="/juniper.html" class="alert-link">Click here</a> for more info about Juniper-specific lessons.</p>';
+    document.getElementById("leftPanel").insertBefore(juniperAlert, document.getElementById("leftPanel").firstChild);
 }
 
 function updateProgressModal(liveLessonDetails) {

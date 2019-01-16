@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>NRE Labs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-120903857-1']);
+        _gaq.push(['_setDomainName', "labs.networkreliability.engineering"]);
+        _gaq.push(['_setAllowLinker', true]);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
+    <script type="text/javascript" src="/js/antidote.js?{{version}}"></script>
+
+    <link rel="apple-touch-icon" sizes="57x57" href="icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="manifest" href="icons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+    <div class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <img src="/images/nrelabs_long.png" style="height: 37px;" /></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
+                            <img src="/images/intro_selected.png" style="height:30px">
+                            <span class="caret"></span>
+                        </a>
+                        <div id="introductoryMenu" class="dropdown-menu" aria-labelledby="labs">
+                            <a class="dropdown-item disabled" href="#">Fundamentals</a>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
+                            <img src="/images/tshoot_selected.png" style="height:30px">
+                            <span class="caret"></span>
+                        </a>
+                        <div id="troubleshootingMenu" class="dropdown-menu" aria-labelledby="labs">
+                            <a class="dropdown-item disabled" href="#">Troubleshooting</a>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
+                            <img src="/images/verify_selected.png" style="height:30px">
+                            <span class="caret"></span>
+                        </a>
+                        <div id="verificationMenu" class="dropdown-menu" aria-labelledby="labs">
+                            <a class="dropdown-item disabled" href="#">Verification</a>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
+                            <img src="/images/configure_selected.png" style="height:30px">
+                            <span class="caret"></span>
+                        </a>
+                        <div id="configurationMenu" class="dropdown-menu" aria-labelledby="labs">
+                            <a class="dropdown-item disabled" href="#">Configuration</a>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/courses.html">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/stats/">Stats</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" href="http://antidoteproject.readthedocs.io/">Docs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" href="https://twitter.com/NRELabs">Follow on Twitter!</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        <!-- Containers
+      ================================================== -->
+        <div class="bs-docs-section">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bs-component">
+                        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
+                            <h1 class="display-4">Juniper-Specific Lessons</h1>
+                            <!-- <p class="lead">
+                                Automation isn't just about pushing configs anymore.
+                            </p> -->
+                            <p>NRE Labs is sponsored by Juniper Networks, Inc. What does this mean? In short, it means
+                                Juniper paid for the engineering time and the cloud bills to make it all possible.
+                            </p>
+                            <p>
+                                However, NRE Labs is not and will not be a Juniper product pitch. Juniper Networks
+                                has plenty of other resources available for customers to explore Juniper products in detail.
+                                The workflow is king here, not a product or platform.
+                            </p>
+                            <p>
+                                That said, there are some lessons which do apply mostly or only to Juniper infrastructure.
+                                In the interest of keeping everything above board, we provide disclaimers on each lesson
+                                when this is true. Even for these lessons, however, the workflow is king. You won't see
+                                technology presented for its own sake. Even for Juniper-specific lessons, the workflow
+                                will fit firmly within the overall path to Network Reliability Engineering, as one
+                                option among many.
+                            </p>
+                            <p>
+                                We hope this makes it a little more clear when a lesson uses a particular workflow that
+                                can only be achieved using Juniper's automation tools. We will strive to meet
+                                two primary expectations for these lessons:
+                            </p>
+                            <ul>
+                                    <li>The workflow is king. No isolated product pitches - everything fits into a greater context of working towards NRE.</li>
+                                    <li>Whenever possible, these lessons will provide links to other lessons or resources where alternatives can be used, and provide pros/cons of each approach.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <footer id="footer">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <p>Built by the
+                        <a href="https://github.com/orgs/nre-learning/people" target="_blank">NRE Learning Team</a>
+                        <p>Theme by
+                            <a href="http://thomaspark.co">Thomas Park</a>. Theme code released under the
+                            <a href="https://github.com/thomaspark/bootswatch/blob/master/LICENSE">MIT License</a>.</p>
+                        <p>The
+                            <a href="https://github.com/nre-learning/antidote" target="_blank">Antidote Project</a> is
+                            published under Apache v2.</p>
+                        <p>Sponsored by Juniper Networks, Inc. Your use of this site is governed by the <a href="https://labs.networkreliability.engineering/nrelabs_agreement.pdf"
+                                target="_blank">Terms of Use.</a></p>
+                </div>
+            </div>
+
+        </footer>
+
+
+    </div>
+</body>
+
+</html>
