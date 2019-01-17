@@ -306,7 +306,8 @@ async function requestLesson() {
         }
 
         if (liveLessonDetails.JuniperSpecific == true) {
-            addJuniperAlert()
+            var juniperTooltip = document.getElementById('juniperTooltip');
+            juniperTooltip.style = "";
         }
 
         var nextLessonStage = parseInt(getLessonStage()) + 1
@@ -329,12 +330,6 @@ async function requestLesson() {
     }
 }
 
-function addJuniperAlert() {
-    var juniperAlert = document.createElement("DIV");
-    juniperAlert.classList.add('alert', 'alert-dismissible', 'alert-info');
-    juniperAlert.innerHTML = '<button type="button" class="close" data-dismiss="alert">&times;</button><p class="mb-0">This lesson is more focused on technology specific to Juniper. <a target="_blank" href="/juniper.html" class="alert-link">Click here</a> for more info about Juniper-specific lessons.</p>';
-    document.getElementById("leftPanel").insertBefore(juniperAlert, document.getElementById("leftPanel").firstChild);
-}
 
 function updateProgressModal(liveLessonDetails) {
 

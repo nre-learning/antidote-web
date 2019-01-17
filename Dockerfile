@@ -6,6 +6,7 @@ RUN sed -i "s/{{version}}/$(git rev-parse HEAD)/g" /tmp/antidote-web/src/main/we
 RUN sed -i "s/{{version}}/$(git rev-parse HEAD)/g" /tmp/antidote-web/src/main/webapp/courses.html
 RUN sed -i "s/{{version}}/$(git rev-parse HEAD)/g" /tmp/antidote-web/src/main/webapp/stats/index.html
 RUN sed -i "s/{{version}}/$(git rev-parse HEAD)/g" /tmp/antidote-web/src/main/webapp/labs/index.html
+RUN sed -i "s/{{version}}/$(git rev-parse HEAD)/g" /tmp/antidote-web/src/main/webapp/juniper.html
 RUN mvn package
 
 FROM guacamole/guacamole
