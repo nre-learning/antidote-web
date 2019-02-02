@@ -1,5 +1,6 @@
 // Will be overridden on page load. This is just the default
 var urlRoot = "https://labs.networkreliability.engineering"
+var LESSONS = {};
 
 // This function generates a unique session ID so we can make sure you consistently connect to your lab resources on the back-end.
 // We're not doing anything nefarious with this ID - this is just to make sure you have a good experience on the front-end.
@@ -44,7 +45,7 @@ function runSnippetInTab(tabName, snippetIndex) {
     // is this really the best way?
     // For each character in the given string
     var snippetText = document.getElementById('labGuide').getElementsByTagName('pre')[parseInt(snippetIndex)].innerText;
-    for (var i=0; i < snippetText.length; i++) {
+    for (var i = 0; i < snippetText.length; i++) {
 
         // Get current codepoint
         var codepoint = snippetText.charCodeAt(i);
@@ -80,7 +81,7 @@ function makeid() {
 }
 
 function getRandomModalMessage() {
- 
+
     // Include memes? https://imgur.com/gallery/y0LQyOV
     var messages = [
         "Sweeping technical debt under the rug...",
@@ -97,43 +98,48 @@ function getRandomModalMessage() {
     return messages[Math.floor(Math.random() * messages.length)];
 }
 
-function renderLessonCategories() {
+function getLessonCategories() {
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", urlRoot + "/syringe/exp/lessondef/all", false);
+    xhttp.open("GET", urlRoot + "/exp/lessondef", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send();
+
+    response = JSON.parse(xhttp.responseText);
 
     if (xhttp.status != 200) {
         var errorMessage = document.getElementById("error-modal-body");
         errorMessage.innerText = "Error retrieving lesson categories: " + response["error"];
         $("#busyModal").modal("hide");
-        $('#errorModal').modal({backdrop: 'static', keyboard: false})
+        $('#errorModal').modal({ backdrop: 'static', keyboard: false })
         return
     }
 
-    categories = JSON.parse(xhttp.responseText).lessonCategories;
-    console.log("Received lesson defs fom syringe: ")
-    console.log(categories)
+    // Store contents of response to global "LESSONS" variable as object indexed by lesson ID
+    LESSONS = {}
+    for (var i = 0; i < response.lessonDefs.length; i++) {
+        LESSONS[response.lessonDefs[i].LessonId] = response.lessonDefs[i]
+    }
+}
 
-    for (var category in categories) {
-        var lessonDefs = categories[category].lessonDefs;
+// renderLessonCategories downloads a full list of lesson definitions, and stores them in memory
+// It will also populate the Advisor page with categorized lessons
+function renderLessonCategories() {
 
-        for (var i = 0; i < lessonDefs.length; i++) {
-            console.log("Adding lesson to menu - " + lessonDefs[i].LessonName)
+    for (var i in LESSONS) {
+        if (LESSONS.hasOwnProperty(i)) {
+
+            console.log("Adding lesson to menu - " + LESSONS[i].LessonName)
             var lessonLink = document.createElement('a');
-            lessonLink.appendChild(document.createTextNode(lessonDefs[i].LessonName));
-            lessonLink.classList.add('dropdown-item');
-            lessonLink.href = "/labs/?lessonId=" + lessonDefs[i].LessonId + "&lessonStage=1";
-            document.getElementById(category+"Menu").appendChild(lessonLink);
-        }
+            lessonLink.appendChild(document.createTextNode(LESSONS[i].LessonName));
+            // lessonLink.classList.add('dropdown-item');
+            lessonLink.href = "/labs/?lessonId=" + LESSONS[i].LessonId + "&lessonStage=1";
 
-        // Populate quick start button with a random lesson
-        var quickStartButton = document.getElementById("btn"+category);
-        if (quickStartButton) {
-            var rand = Math.floor(Math.random() * categories[category].lessonDefs.length)
-            var randLessonId = categories[category].lessonDefs[rand].LessonId
-            quickStartButton.href = "/labs/?lessonId=" + randLessonId + "&lessonStage=1"
+            var lessonListItem = document.createElement('li')
+            lessonListItem.classList.add('list-group-item')
+            lessonListItem.appendChild(lessonLink)
+
+            document.getElementById("lessonlist" + LESSONS[i].Category).appendChild(lessonListItem);
         }
     }
 }
@@ -144,7 +150,7 @@ function renderLessonStages() {
     // TODO(mierdin): This is the first call to syringe, you should either here or elsewhere, handle errors and notify user.
 
     // Doing synchronous calls for now, need to convert to asynchronous
-    reqLessonDef.open("GET", urlRoot + "/syringe/exp/lessondef/" + getLessonId(), false);
+    reqLessonDef.open("GET", urlRoot + "/exp/lessondef/" + getLessonId(), false);
     reqLessonDef.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     reqLessonDef.send();
     var lessonDefResponse = JSON.parse(reqLessonDef.responseText);
@@ -153,7 +159,7 @@ function renderLessonStages() {
         var errorMessage = document.getElementById("error-modal-body");
         errorMessage.innerText = "Error retrieving lesson stages: " + lessonDefResponse["error"];
         $("#busyModal").modal("hide");
-        $('#errorModal').modal({backdrop: 'static', keyboard: false})
+        $('#errorModal').modal({ backdrop: 'static', keyboard: false })
         return 0;
     }
 
@@ -207,7 +213,7 @@ async function requestLesson() {
     //     var xhttp = new XMLHttpRequest();
 
     //     // Doing synchronous calls for now, need to convert to asynchronous
-    //     xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
+    //     xhttp.open("POST", urlRoot + "/exp/livelesson", false);
     //     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     //     xhttp.send(json);
 
@@ -220,7 +226,7 @@ async function requestLesson() {
 
     // Send lesson request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
+    xhttp.open("POST", urlRoot + "/exp/livelesson", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send(json);
 
@@ -230,7 +236,7 @@ async function requestLesson() {
         var errorMessage = document.getElementById("error-modal-body");
         errorMessage.innerText = "Error with initial lesson request: " + response["error"];
         $("#busyModal").modal("hide");
-        $('#errorModal').modal({backdrop: 'static', keyboard: false})
+        $('#errorModal').modal({ backdrop: 'static', keyboard: false })
         return
     }
 
@@ -241,8 +247,8 @@ async function requestLesson() {
 
         // Here we go get the livelesson we requested, verify it's ready, and once it is, start wiring up endpoints.
         var xhttp2 = new XMLHttpRequest();
-        xhttp2.open("GET", urlRoot + "/syringe/exp/livelesson/" + response.id, false);
-        // xhttp2.open("GET", "https://ptr.labs.networkreliability.engineering/syringe/exp/livelesson/12-jjtigg867ghr3gye", false);
+        xhttp2.open("GET", urlRoot + "/exp/livelesson/" + response.id, false);
+        // xhttp2.open("GET", "https://ptr.labs.networkreliability.engineering/exp/livelesson/12-jjtigg867ghr3gye", false);
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
@@ -250,7 +256,7 @@ async function requestLesson() {
             var errorMessage = document.getElementById("error-modal-body");
             errorMessage.innerText = "Error retrieving requested lesson: " + response["error"];
             $("#busyModal").modal("hide");
-            $('#errorModal').modal({backdrop: 'static', keyboard: false})
+            $('#errorModal').modal({ backdrop: 'static', keyboard: false })
             return
         }
 
@@ -264,7 +270,7 @@ async function requestLesson() {
                 var errorMessage = document.getElementById("error-modal-body");
                 errorMessage.innerText = "Timeout waiting for lesson to become ready.";
                 $("#busyModal").modal("hide");
-                $('#errorModal').modal({backdrop: 'static', keyboard: false})
+                $('#errorModal').modal({ backdrop: 'static', keyboard: false })
                 return
             }
 
@@ -293,7 +299,7 @@ async function requestLesson() {
         if (liveLessonDetails.LessonVideo != null) {
             document.getElementById("btnOpenLessonVideo").style = "text-align: center;"
             document.getElementById("lessonVideoIframe").src = liveLessonDetails.LessonVideo;
-            document.getElementById("labGuide").style="padding-top: 10px;"
+            document.getElementById("labGuide").style = "padding-top: 10px;"
         }
 
         var nextLessonStage = parseInt(getLessonStage()) + 1
@@ -321,40 +327,40 @@ function updateProgressModal(liveLessonDetails) {
     var pBar = document.getElementById("liveLessonProgress");
 
     var statusMessageElement = document.getElementById("lessonStatus");
-    switch(liveLessonDetails.LiveLessonStatus) {
+    switch (liveLessonDetails.LiveLessonStatus) {
         case "INITIAL_BOOT":
-          totalEndpoints = 0;
-          reachableEndpoints = 0;
-          for (var property in liveLessonDetails.LiveEndpoints) {
-              totalEndpoints++;
-              if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
-                  reachableEndpoints++;
-              }
-          }
-          statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable...(" + reachableEndpoints + "/" + totalEndpoints + ")"
-          pBar.style = "width: 33%"
-          break;
+            totalEndpoints = 0;
+            reachableEndpoints = 0;
+            for (var property in liveLessonDetails.LiveEndpoints) {
+                totalEndpoints++;
+                if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
+                    reachableEndpoints++;
+                }
+            }
+            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable...(" + reachableEndpoints + "/" + totalEndpoints + ")"
+            pBar.style = "width: 33%"
+            break;
         case "CONFIGURATION":
-          statusMessageElement.innerText = "Configuring endpoints for this lesson..."
-          pBar.style = "width: 66%"
-          break;
+            statusMessageElement.innerText = "Configuring endpoints for this lesson..."
+            pBar.style = "width: 66%"
+            break;
         case "READY":
-          statusMessageElement.innerText = "Almost ready!"
-          pBar.style = "width: 100%"
-          break;
+            statusMessageElement.innerText = "Almost ready!"
+            pBar.style = "width: 100%"
+            break;
         default:
-          // Shouldn't need this since we're getting rid of the default nil value on the syringe side, but just in case...
-          totalEndpoints = 0;
-          reachableEndpoints = 0;
-          for (var property in liveLessonDetails.LiveEndpoints) {
-              totalEndpoints++;
-              if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
-                  reachableEndpoints++;
-              }
-          }
-          statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable (" + reachableEndpoints + "/" + totalEndpoints + ")"
-          pBar.style = "width: 33%"
-      }
+            // Shouldn't need this since we're getting rid of the default nil value on the syringe side, but just in case...
+            totalEndpoints = 0;
+            reachableEndpoints = 0;
+            for (var property in liveLessonDetails.LiveEndpoints) {
+                totalEndpoints++;
+                if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
+                    reachableEndpoints++;
+                }
+            }
+            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable (" + reachableEndpoints + "/" + totalEndpoints + ")"
+            pBar.style = "width: 33%"
+    }
 }
 
 function renderLabGuide(labGuideText) {
@@ -426,7 +432,7 @@ function addTabs(endpoints) {
             }
             // newTabContent.height="350px";
             // newTabContent.style.height = "350px";
-            newTabContent.style="height: 100%;";
+            newTabContent.style = "height: 100%;";
 
             var newGuacDiv = document.createElement("DIV");
             newGuacDiv.id = "display" + endpoints[i].Name
@@ -488,7 +494,7 @@ function provisionLesson() {
     modal.removeChild(modal.firstChild);
     var modalMessage = document.createTextNode(getRandomModalMessage());
     modal.appendChild(modalMessage);
-    $('#busyModal').modal({backdrop: 'static', keyboard: false})  
+    $('#busyModal').modal({ backdrop: 'static', keyboard: false })
 
     requestLesson();
 }
@@ -532,7 +538,7 @@ function guacInit(endpoints) {
 
             thisTerminal.mouse.onmousedown =
                 thisTerminal.mouse.onmouseup =
-                thisTerminal.mouse.onmousemove = function(id) {
+                thisTerminal.mouse.onmousemove = function (id) {
                     return function (mouseState) {
                         terminals[id].guac.sendMouseState(mouseState);
                     }
@@ -570,47 +576,14 @@ function guacInit(endpoints) {
 // Big honkin regex from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
 function isMobile() {
     var check = false;
-    (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+    (function (a) { if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true; })(navigator.userAgent || navigator.vendor || window.opera);
     return check;
 };
-
-// Run all this once the DOM is fully rendered so we can get a handle on the DIVs
-document.addEventListener('DOMContentLoaded', function () {
-
-    urlRoot = window.location.href.split('/').slice(0, 3).join('/');
-
-    renderLessonCategories()
-
-    if (getLessonId() != 0) {
-        if (isMobile() == true) {
-            alert("WARNING - NRE Labs doesn't yet support mobile. You can continue, but it likely won't work. Mobile support coming soon!")
-        }    
-
-        provisionLesson();
-    }
-
-    $('#videoModal').on('show.bs.modal', function () {
-      $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/YhbWBX71yGQ?autoplay=1&rel=0");
-    });
-    
-    $("#videoModal").on('hidden.bs.modal', function (e) {
-      $("#videoModal iframe").attr("src", null);
-    });
-
-    $("#lessonVideoModal").on('hidden.bs.modal', function (e) {
-        // Just reset the `src` attribute, which will "un-play" the video
-        $("#lessonVideoModal iframe").attr("src", document.getElementById("lessonVideoIframe"));
-    });
-
-    if (urlRoot.substring(0,11) == "https://ptr") {
-        appendPTRBanner();
-    }
-});
 
 function appendPTRBanner() {
 
     var buildInfoReq = new XMLHttpRequest();
-    buildInfoReq.open("GET", urlRoot + "/syringe/exp/syringeinfo", false);
+    buildInfoReq.open("GET", urlRoot + "/exp/syringeinfo", false);
     buildInfoReq.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     buildInfoReq.send();
 
@@ -623,7 +596,7 @@ function appendPTRBanner() {
     console.log(buildInfo)
 
     var scripts = document.getElementsByTagName('script');
-    var lastScript = scripts[scripts.length-1];
+    var lastScript = scripts[scripts.length - 1];
     var scriptName = lastScript.src;
 
     var commits = {
@@ -632,9 +605,9 @@ function appendPTRBanner() {
         "syringe": buildInfo.buildSha,
     }
 
-    var antidoteLink = "<a target='_blank' href='https://github.com/nre-learning/antidote/commit/" + commits.antidote + "'>" + commits.antidote.substring(0,7) + "</a>"
-    var antidoteWebLink = "<a target='_blank' href='https://github.com/nre-learning/antidote-web/commit/" + commits.antidoteweb + "'>" + commits.antidoteweb.substring(0,7) + "</a>"
-    var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/syringe/commit/" + commits.syringe + "'>" + commits.syringe.substring(0,7) + "</a>"
+    var antidoteLink = "<a target='_blank' href='https://github.com/nre-learning/antidote/commit/" + commits.antidote + "'>" + commits.antidote.substring(0, 7) + "</a>"
+    var antidoteWebLink = "<a target='_blank' href='https://github.com/nre-learning/antidote-web/commit/" + commits.antidoteweb + "'>" + commits.antidoteweb.substring(0, 7) + "</a>"
+    var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/commit/" + commits.syringe + "'>" + commits.syringe.substring(0, 7) + "</a>"
 
     var ptrBanner = document.createElement("DIV");
     ptrBanner.id = "ptrBanner"
@@ -643,4 +616,181 @@ function appendPTRBanner() {
 
     document.body.appendChild(ptrBanner)
 }
+
+
+
+function searchBox(e) {
+
+    searchResults = document.getElementById("searchResults")
+
+    var options = {
+        shouldSort: true,
+        includeScore: true,
+        threshold: 0.6,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+            "LessonName"
+        ]
+    };
+
+    //TODO(mierdin): Need to figure out how to search on description and tags
+
+    var fuse = new Fuse(LESSONS, options); // "list" is the item array
+    var results = fuse.search(e.target.value);
+
+    while (searchResults.firstChild) {
+        searchResults.removeChild(searchResults.firstChild);
+    }
+
+
+    // TODO (mierdin): Limit this to like 3 or 4
+    for (var result in results) {
+        var resultItem = results[result].item
+
+        var searchResultItem = document.createElement('a');
+        searchResultItem.classList.add('list-group-item');
+        searchResultItem.classList.add('list-group-item-action');
+        searchResultItem.style = "text-align:left;z-index: 1;"
+        searchResultItem.href = "/advisor/courseplan.html?lessonId=" + resultItem.LessonId;
+
+        var lessonTitle = document.createElement('h4');
+        lessonTitle.innerText = resultItem.LessonName
+        searchResultItem.appendChild(lessonTitle);
+
+        var lessonTitle = document.createElement('p');
+        lessonTitle.innerText = resultItem.Description
+        searchResultItem.appendChild(lessonTitle);
+
+        var badgesDiv = document.createElement('div');
+
+        var categoryBadge = document.createElement('span');
+        categoryBadge.classList.add('badge');
+        // categoryBadge.classList.add('badge-pill');
+        categoryBadge.classList.add('badge-primary');
+        categoryBadge.style = "margin-right: 10px;"
+        categoryBadge.innerText = "Category: " + resultItem.Category
+        badgesDiv.appendChild(categoryBadge);
+
+        var collectionBadge = document.createElement('span');
+        collectionBadge.classList.add('badge');
+        // collectionBadge.classList.add('badge-pill');
+        collectionBadge.classList.add('badge-info');
+        collectionBadge.style = "margin-right: 10px;"
+        collectionBadge.innerText = "Collection: " + resultItem.Collection
+        badgesDiv.appendChild(collectionBadge);
+
+        searchResultItem.appendChild(badgesDiv);
+
+        // Do something with this?
+        // results[result].score
+        searchResults.appendChild(searchResultItem)
+    }
+}
+
+// getLessonDeps is designed to take a lesson ID as a parameter and return a list of lesson IDs
+// that this lesson depends on. The returned list will include the provided lesson ID as well.
+function getLessonDeps(lessonId) {
+
+    for (var lesson in alldefs) {
+
+    }
+
+}
+
+
+
+
+
+// // Run all this once the DOM is fully rendered so we can get a handle on the DIVs
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     // urlRoot = window.location.href.split('/').slice(0, 3).join('/');
+//     urlRoot = "http://127.0.0.1:8086"
+
+//     renderLessonCategories()
+
+//     if (getLessonId() != 0) {
+//         if (isMobile() == true) {
+//             alert("WARNING - NRE Labs doesn't yet support mobile. You can continue, but it likely won't work. Mobile support coming soon!")
+//         }    
+
+//         provisionLesson();
+//     }
+
+//     $('#videoModal').on('show.bs.modal', function () {
+//       $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/YhbWBX71yGQ?autoplay=1&rel=0");
+//     });
+
+//     $("#videoModal").on('hidden.bs.modal', function (e) {
+//       $("#videoModal iframe").attr("src", null);
+//     });
+
+//     $("#lessonVideoModal").on('hidden.bs.modal', function (e) {
+//         // Just reset the `src` attribute, which will "un-play" the video
+//         $("#lessonVideoModal iframe").attr("src", document.getElementById("lessonVideoIframe"));
+//     });
+
+//     if (urlRoot.substring(0,11) == "https://ptr") {
+//         appendPTRBanner();
+//     }
+
+//     $('#searchBox').on('input',function(e){
+//         searchBox(e)
+//     });
+// });
+
+
+function getPrereqs(lessonId) {
+    var reqLessonPrereqs = new XMLHttpRequest();
+
+    // TODO(mierdin): This is the first call to syringe, you should either here or elsewhere, handle errors and notify user.
+
+    // Doing synchronous calls for now, need to convert to asynchronous
+    reqLessonPrereqs.open("GET", urlRoot + "/exp/lessondef/" + getLessonId() + "/prereqs", false);
+    reqLessonPrereqs.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    reqLessonPrereqs.send();
+    var prereqs = JSON.parse(reqLessonPrereqs.responseText).prereqs;
+
+    if (reqLessonPrereqs.status != 200) {
+        var errorMessage = document.getElementById("error-modal-body");
+        errorMessage.innerText = "Error retrieving lesson stages: " + prereqs["error"];
+        $("#busyModal").modal("hide");
+        $('#errorModal').modal({ backdrop: 'static', keyboard: false })
+        return 0;
+    }
+
+    console.log("GOT PREREQS - " + prereqs)
+
+    for (var i = 0; i < prereqs.length; i++) {
+        var strengthDiv = document.createElement('div');
+        strengthDiv.id = "strength-" + prereqs[i]
+        strengthDiv.classList.add('modal-body');
+
+        var strengthQuestion = document.createElement('h4');
+        strengthQuestion.innerText = "How well do you know " + LESSONS[prereqs[i]].Slug + "?"
+        strengthDiv.appendChild(strengthQuestion);
+
+        var strengthSlider = document.createElement('input')
+        strengthSlider.id = "slider-" + prereqs[i]
+        strengthSlider.type="text"
+        console.log(strengthSlider)
+        strengthDiv.appendChild(strengthSlider);
+
+        document.getElementById('strengthsFinder-body').appendChild(strengthDiv)
+
+        var slider = new Slider("#" + "slider-" + prereqs[i], {
+            step: 1,
+            ticks: [1, 2, 3, 4, 5],
+            min: 1,
+            max: 5,
+            id: "slider-" + prereqs[i],
+            value: 3
+        });
+    }
+
+}
+
 
