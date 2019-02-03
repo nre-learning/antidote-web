@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/timeline.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.0/bootstrap-slider.min.js"></script>
@@ -39,15 +40,29 @@
             // urlRoot = window.location.href.split('/').slice(0, 3).join('/');
             urlRoot = "http://127.0.0.1:8086"
 
+            // TODO(mierdin): throw error if no lesson ID provided
+
             if (urlRoot.substring(0, 11) == "https://ptr") {
                 appendPTRBanner();
             }
+
+            $('#strengthsFinder').modal({ backdrop: 'static', keyboard: false })
 
             getLessonCategories()
 
             getPrereqs()
 
-            $('#strengthsFinder').modal({ backdrop: 'static', keyboard: false })
+            var lessonSlug = LESSONS[getLessonId()].Slug
+            var planTitle = document.getElementById('plantitle')
+            planTitle.innerText = "Your Journey to " + lessonSlug
+
+            $('#planNamebox').on('input', function (e) {
+                if (e.target.value == "") {
+                    planTitle.innerText = "Your Journey to " + lessonSlug
+                } else {
+                    planTitle.innerText = e.target.value + "'s Journey to " + lessonSlug
+                }
+            });
 
         });
     </script>
@@ -149,35 +164,40 @@
 
 
         <div class="bs-docs-section">
-            <div class="timeline">
-                <div class="timeline-container timeline-left">
-                    <div class="timeline-content">
-                        <h2>2017</h2>
-                        <p>Lorem ipsum..</p>
-                    </div>
-                </div>
-                <div class="timeline-container timeline-right">
-                    <div class="timeline-content">
-                        <h2>2016</h2>
-                        <p>Lorem ipsum..</p>
-                    </div>
+
+            <div class="jumbotron">
+                <h1 class="display-4">Your Custom Learning Plan.</h1>
+                <p class="lead">Based on the suggested prerequisites for the lesson you selected, and your existing
+                    strengths,
+                    we've curated a custom learning path for you to get where you need to be.
+                </p>
+                <hr class="my-4">
+                <p>Scroll down for the lesson plan, or use the options below to print or send this plan.</p>
+                <p style="display: flex;max-width:500px" class="lead">
+                    <input id="planNamebox" class="form-control" style="font-size:30px;margin-right:10px;" type="text"
+                        placeholder="Enter your name..." aria-label="planNamebox">
+                    <button class="btn btn-primary btn-lg" onclick="window.print();" role="button">Print</button>
+                </p>
+            </div>
+            <div id="timeline" class="timeline">
+                <div style="margin:10px;display:inline;position:absolute;">
+                    <h3 style="max-width: 500px;" id="plantitle">Your Journey to Greatness</h3>
+                    <a href="https://labs.networkreliability.engineering">https://labs.networkreliability.engineering</a>
                 </div>
             </div>
-
         </div>
 
         <div id="strengthsFinder" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="strengthsFinderLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header" >
+                    <div class="modal-header">
                         <h5 class="modal-title" id="strengthsFinderLabel">Identify your strengths</h5>
                     </div>
                     <!-- <img class="modal-image" src="/images/error.png" style="max-width: 150px;"> -->
 
                     <div class="modal-body" style="text-align: center;">
-                        <p>The lesson you selected has a few prerequisites. Evaluate your current strengths, so we can
-                            cater a lesson plan most relevant to you!</p>
+                        <p>Answer the following questions, so we can construct a lesson plan most relevant to you!</p>
                     </div>
 
                     <!-- This needs to have a max-height with a scroll -->
@@ -185,8 +205,8 @@
                     </div>
                     <div class="modal-footer">
                         <div id="modal-body" class="modal-body" style="text-align: right;">
-                            <button type="button" class="btn btn-outline-primary">Skip</button>
-                            <button type="button" class="btn btn-primary">Submit</button>
+                            <button id="btnSkip" type="button" onclick="buildLessonPlan({})" class="btn btn-outline-primary">Skip</button>
+                            <button id="btnSubmit" type="button" onclick="buildLessonPlan(getStrengths())" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </div>

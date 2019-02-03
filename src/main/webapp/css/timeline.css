@@ -8,11 +8,26 @@ body {
   font-family: Helvetica, sans-serif; */
 }
 
+/* Override jumbotron padding */
+.jumbotron {
+  padding: 2rem 2rem;
+  padding-top: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+}
+
 /* The actual timeline (the vertical ruler) */
 .timeline {
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+  border-style: solid;
+  max-height: 900px;
+  overflow: auto;
+  margin-bottom: 2rem;
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -25,6 +40,7 @@ body {
   bottom: 0;
   left: 50%;
   margin-left: -3px;
+  z-index: 1;
 }
 
 /* Container around content */
@@ -46,7 +62,7 @@ body {
   border: 4px solid #FF9F55;
   top: 15px;
   border-radius: 50%;
-  z-index: 1;
+  z-index: 2;
 }
 
 /* Place the container to the left */
@@ -68,9 +84,9 @@ body {
   width: 0;
   z-index: 1;
   right: 30px;
-  border: medium solid red;
+  border: medium solid #78C2AD;
   border-width: 10px 0 10px 10px;
-  border-color: transparent transparent transparent red;
+  border-color: transparent transparent transparent #78C2AD;
 }
 
 /* Add arrows to the right container (pointing left) */
@@ -82,22 +98,49 @@ body {
   width: 0;
   z-index: 1;
   left: 30px;
-  border: medium solid red;
+  border: medium solid #78C2AD;
   border-width: 10px 10px 10px 0;
-  border-color: transparent red transparent transparent;
+  border-color: transparent #78C2AD transparent transparent;
 }
 
 /* Fix the circle for containers on the right side */
 .timeline-right::after {
-  left: -16px;
+  left: -12px;
 }
 
 /* The actual content */
-.timeline-content {
+.timeline-content-low {
   padding: 20px 30px;
-  background-color: red;
   position: relative;
-  border-radius: 6px;
+  border-color: rgb(255, 158, 158);
+  border-radius: 20px;
+  border-style: solid;
+}
+
+.timeline-content-mid {
+  padding: 20px 30px;
+  position: relative;
+  border-color: rgb(255, 217, 147);
+  border-radius: 20px;
+  border-style: solid;
+}
+
+.timeline-content-high {
+  padding: 20px 30px;
+  position: relative;
+  border-color: rgb(154, 255, 154);
+  border-radius: 20px;
+  border-style: solid;
+}
+
+.timeline-header {
+  display: flex;
+}
+
+.btn-timeline-info {
+  height: 40px;
+  width: 40px;
+  margin-right: 10px;
 }
 
 /* Media queries - Responsive timeline on screens less than 600px wide */
@@ -130,5 +173,21 @@ body {
 /* Make all right containers behave like the left ones */
   .timeline-right {
     left: 0%;
+  }
+}
+
+@media print {
+
+  .jumbotron, .navbar, .btn-timeline-info, #footer {
+    display: none;
+  }
+
+  .timeline {
+    max-height: none;
+  }
+
+  .timeline::after {
+    border-color: rgb(4, 214, 109);;
+    border-style: solid;
   }
 }

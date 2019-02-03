@@ -1,6 +1,7 @@
 // Will be overridden on page load. This is just the default
 var urlRoot = "https://labs.networkreliability.engineering"
 var LESSONS = {};
+var LESSONS_ARRAY = [];
 
 // This function generates a unique session ID so we can make sure you consistently connect to your lab resources on the back-end.
 // We're not doing anything nefarious with this ID - this is just to make sure you have a good experience on the front-end.
@@ -115,10 +116,16 @@ function getLessonCategories() {
         return
     }
 
-    // Store contents of response to global "LESSONS" variable as object indexed by lesson ID
+
     LESSONS = {}
+    LESSONS_ARRAY = []
     for (var i = 0; i < response.lessonDefs.length; i++) {
+
+        // Store contents of response to global "LESSONS" variable as object indexed by lesson ID
         LESSONS[response.lessonDefs[i].LessonId] = response.lessonDefs[i]
+
+        // Also push to lesson array
+        LESSONS_ARRAY.push(response.lessonDefs[i])
     }
 }
 
@@ -638,8 +645,13 @@ function searchBox(e) {
 
     //TODO(mierdin): Need to figure out how to search on description and tags
 
-    var fuse = new Fuse(LESSONS, options); // "list" is the item array
+    // http://fusejs.io/
+    var fuse = new Fuse(LESSONS_ARRAY, options);
     var results = fuse.search(e.target.value);
+
+
+    console.log(LESSONS_ARRAY)
+    console.log(results)
 
     while (searchResults.firstChild) {
         searchResults.removeChild(searchResults.firstChild);
@@ -654,7 +666,7 @@ function searchBox(e) {
         searchResultItem.classList.add('list-group-item');
         searchResultItem.classList.add('list-group-item-action');
         searchResultItem.style = "text-align:left;z-index: 1;"
-        searchResultItem.href = "/advisor/courseplan.html?lessonId=" + resultItem.LessonId;
+        searchResultItem.href = "../advisor/courseplan.html?lessonId=" + resultItem.LessonId;
 
         var lessonTitle = document.createElement('h4');
         lessonTitle.innerText = resultItem.LessonName
@@ -742,6 +754,7 @@ function getLessonDeps(lessonId) {
 //     });
 // });
 
+var PREREQS = [];
 
 function getPrereqs(lessonId) {
     var reqLessonPrereqs = new XMLHttpRequest();
@@ -764,6 +777,14 @@ function getPrereqs(lessonId) {
 
     console.log("GOT PREREQS - " + prereqs)
 
+    PREREQS = prereqs;
+
+    // function updateStrengthLabels() {
+    //     for (var i = 0; i < prereqs.length; i++) {
+
+    //     } 
+    // }
+
     for (var i = 0; i < prereqs.length; i++) {
         var strengthDiv = document.createElement('div');
         strengthDiv.id = "strength-" + prereqs[i]
@@ -775,22 +796,140 @@ function getPrereqs(lessonId) {
 
         var strengthSlider = document.createElement('input')
         strengthSlider.id = "slider-" + prereqs[i]
-        strengthSlider.type="text"
-        console.log(strengthSlider)
+        strengthSlider.type = "text"
+        strengthSlider.classList.add('strength-slider');
         strengthDiv.appendChild(strengthSlider);
+
+        var strengthLabel = document.createElement('span')
+        strengthLabel.id = "slider-label-" + prereqs[i]
+        // strengthLabel.innerText = "I don't know it at all."
+        strengthDiv.appendChild(strengthLabel);
 
         document.getElementById('strengthsFinder-body').appendChild(strengthDiv)
 
+        // https://seiyria.com/bootstrap-slider/
         var slider = new Slider("#" + "slider-" + prereqs[i], {
             step: 1,
             ticks: [1, 2, 3, 4, 5],
             min: 1,
             max: 5,
             id: "slider-" + prereqs[i],
-            value: 3
+            value: 0
+        });
+        slider.on("slide", function (sliderValue) {
+            console.log("POOP")
+            console.log(x)
+            console.log("slider-label-" + prereqs[i])
+            console.log(document.getElementById("slider-label-" + prereqs[i]))
+            document.getElementById("slider-label-" + prereqs[i]).innerText = sliderValue;
         });
     }
 
 }
 
+function getStrengths() {
+    var strengths = {}
+
+    var sliders = document.getElementsByClassName("strength-slider");
+
+    for (var i = 0; i < sliders.length; i++) {
+        strengths[sliders[i].id.split("-")[1]] = sliders[i].value
+    }
+
+    return strengths
+}
+
+function createTimelineElement(strengthStatus, lessonId, lessonName, lessonDescription) {
+    var tlContent = document.createElement('div')
+    tlContent.classList.add('timeline-content');
+
+    if (strengthStatus <= 3) {
+        tlContent.classList.add('timeline-content-low');
+    } else if (strengthStatus == 4) {
+        tlContent.classList.add('timeline-content-mid');
+    } else {
+        tlContent.classList.add('timeline-content-high');
+    }
+
+    var hdrDiv = document.createElement('div')
+    hdrDiv.classList.add("timeline-header")
+
+    var infoButton = document.createElement('button')
+    infoButton.type = "button"
+    infoButton.classList.add("btn")
+    infoButton.classList.add("btn-info")
+    infoButton.classList.add("btn-timeline-info")
+    infoButton.setAttribute('data-toggle', "tooltip");
+    infoButton.setAttribute('data-placement', "top");
+    infoButton.setAttribute('data-original-title', lessonDescription);
+
+    infoButton.innerHTML = "<code>&#9432;</code>"
+    hdrDiv.appendChild(infoButton)
+
+    var hdr = document.createElement('h2')
+    hdr.innerHTML = '<a href="/labs/?lessonId=' + lessonId + '" target="_blank">' + lessonName + '</a>'
+    hdrDiv.appendChild(hdr)
+
+    tlContent.appendChild(hdrDiv)
+
+    var desc = document.createElement('p')
+    desc.innerText = "TBD"
+    tlContent.appendChild(desc)
+
+    return tlContent
+}
+
+function buildLessonPlan(strengths) {
+
+    var btnSubmit = document.getElementById("btnSubmit");
+    var btnSkip = document.getElementById("btnSkip");
+
+    btnSubmit.disabled = true
+    btnSubmit.innerText = "Please wait..."
+    btnSkip.disabled = true
+
+
+    var timelineArray = PREREQS;
+    timelineArray.push(getLessonId())
+
+    var lastdirectionleft = true;
+    for (var i = 0; i < timelineArray.length; i++) {
+        var tlContainer = document.createElement('div')
+        tlContainer.classList.add('timeline-container');
+
+        if (lastdirectionleft) {
+            tlContainer.classList.add('timeline-right');
+            lastdirectionleft = false
+        } else {
+            tlContainer.classList.add('timeline-left');
+            lastdirectionleft = true
+        }
+
+        // Default strength to 1, override if strength was actually provided in slider
+        var strength = 1;
+        if ((timelineArray[i] in strengths)) {
+            strength = strengths[timelineArray[i]]
+        }
+
+        tlContainer.appendChild(createTimelineElement(
+            strength,
+            timelineArray[i],
+            LESSONS[timelineArray[i]].LessonName,
+            LESSONS[timelineArray[i]].Description
+        ))
+
+        document.getElementById("timeline").appendChild(tlContainer)
+    }
+
+    // Initialize all tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    $("#strengthsFinder").modal("hide");
+}
+
+function customizeLessonPlan() {
+    // Update title as well as text in plan
+}
 

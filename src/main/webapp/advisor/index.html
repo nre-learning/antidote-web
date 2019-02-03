@@ -44,6 +44,8 @@
             $('#searchBox').on('input', function (e) {
                 searchBox(e)
             });
+
+            
         });
     </script>
 
@@ -161,7 +163,7 @@
             <div class="container text-center" style="width:50%;">
                 <input id="searchBox" class="form-control" style="font-size:30px;" type="text" placeholder="I want to learn..."
                     aria-label="Search">
-                <div style="position:absolute;" id="searchResults" class="list-group"></div>
+                <div style="position:absolute;max-width:600px;" id="searchResults" class="list-group"></div>
                 <p style="margin:10px;">Search for what you want to learn above, or browse Lessons Below:</p>
             </div>
 
