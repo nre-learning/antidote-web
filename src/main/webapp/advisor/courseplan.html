@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/bootstrap.css" media="screen">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/timeline.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
@@ -37,8 +38,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // urlRoot = window.location.href.split('/').slice(0, 3).join('/');
-            urlRoot = "http://127.0.0.1:8086"
+            urlRoot = window.location.href.split('/').slice(0, 3).join('/');
+            // urlRoot = "http://127.0.0.1:8086"
 
             // TODO(mierdin): throw error if no lesson ID provided
 
@@ -96,52 +97,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
-                            <img src="/images/intro_selected.png" style="height:30px">
-                            <span class="caret"></span>
-                        </a>
-                        <div id="introductoryMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item disabled" href="#">Fundamentals</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
-                            <img src="/images/tshoot_selected.png" style="height:30px">
-                            <span class="caret"></span>
-                        </a>
-                        <div id="troubleshootingMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item disabled" href="#">Troubleshooting</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
-                            <img src="/images/verify_selected.png" style="height:30px">
-                            <span class="caret"></span>
-                        </a>
-                        <div id="verificationMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item disabled" href="#">Verification</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
-                            <img src="/images/configure_selected.png" style="height:30px">
-                            <span class="caret"></span>
-                        </a>
-                        <div id="configurationMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item disabled" href="#">Configuration</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                </ul>
-
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/courses.html">Courses</a>
+                        <a href="/advisor/index.html" class="btn btn-secondary">Search Lessons</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/stats/">Stats</a>
@@ -153,7 +111,6 @@
                         <a class="nav-link" target="_blank" href="https://twitter.com/NRELabs">Follow on Twitter!</a>
                     </li>
                 </ul>
-
             </div>
         </div>
     </div>
@@ -161,7 +118,6 @@
 
 
     <div class="container">
-
 
         <div class="bs-docs-section">
 
@@ -180,8 +136,8 @@
                 </p>
             </div>
             <div id="timeline" class="timeline">
-                <div style="margin:10px;display:inline;position:absolute;">
-                    <h3 style="max-width: 500px;" id="plantitle">Your Journey to Greatness</h3>
+                <div style="margin:10px;">
+                    <h1 style="max-width: 700px;" id="plantitle">Your Journey to Greatness</h1>
                     <a href="https://labs.networkreliability.engineering">https://labs.networkreliability.engineering</a>
                 </div>
             </div>

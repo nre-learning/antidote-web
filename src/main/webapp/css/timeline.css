@@ -25,8 +25,10 @@ body {
   border-radius: 5px;
   box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
   border-style: solid;
-  max-height: 900px;
-  overflow: auto;
+  padding-bottom: 10px;
+  /* max-height: 900px; */
+  /* overflow: auto; */
+  overflow: hidden;
   margin-bottom: 2rem;
 }
 
@@ -36,11 +38,12 @@ body {
   position: absolute;
   width: 6px;
   background-color: rgb(4, 214, 109);
-  top: 0;
+  top: 100px;
   bottom: 0;
-  left: 50%;
+  left: 10%;
   margin-left: -3px;
   z-index: 1;
+  height: 90%;
 }
 
 /* Container around content */
@@ -48,7 +51,8 @@ body {
   padding: 10px 40px;
   position: relative;
   background-color: inherit;
-  width: 50%;
+  width: 70%;
+  top: 10px;
 }
 
 /* The circles on the timeline */
@@ -72,7 +76,7 @@ body {
 
 /* Place the container to the right */
 .timeline-right {
-  left: 50%;
+  left: 10%;
 }
 
 /* Add arrows to the left container (pointing right) */
@@ -112,25 +116,36 @@ body {
 .timeline-content-low {
   padding: 20px 30px;
   position: relative;
-  border-color: rgb(255, 158, 158);
+  border-color: rgb(249, 99, 99);
+  background-color: rgb(255, 215, 215);
   border-radius: 20px;
   border-style: solid;
+  border-width: 7px;
+  height: 100%;
 }
 
 .timeline-content-mid {
   padding: 20px 30px;
   position: relative;
-  border-color: rgb(255, 217, 147);
+  border-color: rgb(255, 180, 21);
+  background-color: rgb(252, 255, 147);
   border-radius: 20px;
   border-style: solid;
+  border-width: 7px;
 }
 
 .timeline-content-high {
   padding: 20px 30px;
   position: relative;
-  border-color: rgb(154, 255, 154);
+  border-color: rgb(44, 208, 0);
+  background-color: rgb(154, 255, 154);
   border-radius: 20px;
   border-style: solid;
+  border-width: 7px;
+}
+
+.timeline-content a {
+  font-size: 40px;
 }
 
 .timeline-header {

@@ -102,7 +102,7 @@ function getRandomModalMessage() {
 function getLessonCategories() {
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", urlRoot + "/exp/lessondef", false);
+    xhttp.open("GET", urlRoot + "/syringe/exp/lessondef", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send();
 
@@ -157,7 +157,7 @@ function renderLessonStages() {
     // TODO(mierdin): This is the first call to syringe, you should either here or elsewhere, handle errors and notify user.
 
     // Doing synchronous calls for now, need to convert to asynchronous
-    reqLessonDef.open("GET", urlRoot + "/exp/lessondef/" + getLessonId(), false);
+    reqLessonDef.open("GET", urlRoot + "/syringe/exp/lessondef/" + getLessonId(), false);
     reqLessonDef.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     reqLessonDef.send();
     var lessonDefResponse = JSON.parse(reqLessonDef.responseText);
@@ -220,7 +220,7 @@ async function requestLesson() {
     //     var xhttp = new XMLHttpRequest();
 
     //     // Doing synchronous calls for now, need to convert to asynchronous
-    //     xhttp.open("POST", urlRoot + "/exp/livelesson", false);
+    //     xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
     //     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     //     xhttp.send(json);
 
@@ -233,7 +233,7 @@ async function requestLesson() {
 
     // Send lesson request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", urlRoot + "/exp/livelesson", false);
+    xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send(json);
 
@@ -254,8 +254,8 @@ async function requestLesson() {
 
         // Here we go get the livelesson we requested, verify it's ready, and once it is, start wiring up endpoints.
         var xhttp2 = new XMLHttpRequest();
-        xhttp2.open("GET", urlRoot + "/exp/livelesson/" + response.id, false);
-        // xhttp2.open("GET", "https://ptr.labs.networkreliability.engineering/exp/livelesson/12-jjtigg867ghr3gye", false);
+        xhttp2.open("GET", urlRoot + "/syringe/exp/livelesson/" + response.id, false);
+        // xhttp2.open("GET", "https://ptr.labs.networkreliability.engineering/syringe/exp/livelesson/12-jjtigg867ghr3gye", false);
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
@@ -590,7 +590,7 @@ function isMobile() {
 function appendPTRBanner() {
 
     var buildInfoReq = new XMLHttpRequest();
-    buildInfoReq.open("GET", urlRoot + "/exp/syringeinfo", false);
+    buildInfoReq.open("GET", urlRoot + "/syringe/exp/syringeinfo", false);
     buildInfoReq.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     buildInfoReq.send();
 
@@ -603,7 +603,7 @@ function appendPTRBanner() {
     console.log(buildInfo)
 
     var scripts = document.getElementsByTagName('script');
-    var lastScript = scripts[scripts.length - 1];
+    var lastScript = scripts[scripts.length - 2];
     var scriptName = lastScript.src;
 
     var commits = {
@@ -762,7 +762,7 @@ function getPrereqs(lessonId) {
     // TODO(mierdin): This is the first call to syringe, you should either here or elsewhere, handle errors and notify user.
 
     // Doing synchronous calls for now, need to convert to asynchronous
-    reqLessonPrereqs.open("GET", urlRoot + "/exp/lessondef/" + getLessonId() + "/prereqs", false);
+    reqLessonPrereqs.open("GET", urlRoot + "/syringe/exp/lessondef/" + getLessonId() + "/prereqs", false);
     reqLessonPrereqs.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     reqLessonPrereqs.send();
     var prereqs = JSON.parse(reqLessonPrereqs.responseText).prereqs;
@@ -817,10 +817,6 @@ function getPrereqs(lessonId) {
             value: 0
         });
         slider.on("slide", function (sliderValue) {
-            console.log("POOP")
-            console.log(x)
-            console.log("slider-label-" + prereqs[i])
-            console.log(document.getElementById("slider-label-" + prereqs[i]))
             document.getElementById("slider-label-" + prereqs[i]).innerText = sliderValue;
         });
     }
@@ -843,19 +839,27 @@ function createTimelineElement(strengthStatus, lessonId, lessonName, lessonDescr
     var tlContent = document.createElement('div')
     tlContent.classList.add('timeline-content');
 
+    var descriptionText = "";
+
     if (strengthStatus <= 3) {
         tlContent.classList.add('timeline-content-low');
+        descriptionText = '<p style="font-size: 40px;color:#fa6e6e;"><i class="fas fa-hiking" style="float: right;font-size:70px;color: #fa6e6e;"></i>Let\'s get learning.</p>'
     } else if (strengthStatus == 4) {
         tlContent.classList.add('timeline-content-mid');
+        descriptionText = '<p style="font-size: 40px;color:#ffbc15;"><i class="fas fa-search" style="float: right;font-size:70px;color: #ffbc15;"></i>Let\'s do a quick review.</p>'
     } else {
         tlContent.classList.add('timeline-content-high');
+        descriptionText = '<p style="font-size: 40px;color:#00d000;"><i class="fas fa-award" style="float: right;font-size:70px;color: #00d000;"></i>You\'re an expert!</p>'
     }
+
+
 
     var hdrDiv = document.createElement('div')
     hdrDiv.classList.add("timeline-header")
 
     var infoButton = document.createElement('button')
     infoButton.type = "button"
+    infoButton.style = "padding: 4px;"
     infoButton.classList.add("btn")
     infoButton.classList.add("btn-info")
     infoButton.classList.add("btn-timeline-info")
@@ -863,7 +867,7 @@ function createTimelineElement(strengthStatus, lessonId, lessonName, lessonDescr
     infoButton.setAttribute('data-placement', "top");
     infoButton.setAttribute('data-original-title', lessonDescription);
 
-    infoButton.innerHTML = "<code>&#9432;</code>"
+    infoButton.innerHTML = '<i class="fa fa-info-circle" style="font-size:30px">'
     hdrDiv.appendChild(infoButton)
 
     var hdr = document.createElement('h2')
@@ -872,8 +876,9 @@ function createTimelineElement(strengthStatus, lessonId, lessonName, lessonDescr
 
     tlContent.appendChild(hdrDiv)
 
-    var desc = document.createElement('p')
-    desc.innerText = "TBD"
+    var desc = document.createElement('div')
+    desc.innerHTML = descriptionText
+    desc.style = "text-align: center;"
     tlContent.appendChild(desc)
 
     return tlContent
@@ -897,16 +902,18 @@ function buildLessonPlan(strengths) {
         var tlContainer = document.createElement('div')
         tlContainer.classList.add('timeline-container');
 
-        if (lastdirectionleft) {
-            tlContainer.classList.add('timeline-right');
-            lastdirectionleft = false
-        } else {
-            tlContainer.classList.add('timeline-left');
-            lastdirectionleft = true
-        }
+        // All pointing right for now. The code below alternated for us.
+        // if (lastdirectionleft) {
+        //     tlContainer.classList.add('timeline-right');
+        //     lastdirectionleft = false
+        // } else {
+        //     tlContainer.classList.add('timeline-left');
+        //     lastdirectionleft = true
+        // }
+        tlContainer.classList.add('timeline-right');
 
-        // Default strength to 1, override if strength was actually provided in slider
-        var strength = 1;
+        // Default strength to 3, override if strength was actually provided in slider
+        var strength = 3;
         if ((timelineArray[i] in strengths)) {
             strength = strengths[timelineArray[i]]
         }
@@ -928,8 +935,3 @@ function buildLessonPlan(strengths) {
 
     $("#strengthsFinder").modal("hide");
 }
-
-function customizeLessonPlan() {
-    // Update title as well as text in plan
-}
-
