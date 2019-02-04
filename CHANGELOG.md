@@ -2,6 +2,7 @@
 
 ## In development
 
+- Finally implement clipboard functionality; formally establish toolbar [31](https://github.com/nre-learning/antidote-web/pull/31)
 
 ## 0.2.0 - January 24, 2019
 
