@@ -289,11 +289,14 @@ async function requestLesson() {
             diagramButton.innerText = "Open Lesson Diagram";
         }
 
-        // Position the video button if a video is present for this lesson
-        if (liveLessonDetails.LessonVideo != null) {
-            document.getElementById("btnOpenLessonVideo").style = "text-align: center;"
+        var videoButton = document.getElementById("btnOpenLessonVideo");
+        if (liveLessonDetails.LessonVideo == null) {
+            videoButton.disabled = true;
+            videoButton.innerText = "No Lesson Video";
+        } else {
             document.getElementById("lessonVideoIframe").src = liveLessonDetails.LessonVideo;
-            document.getElementById("labGuide").style="padding-top: 10px;"
+            videoButton.disabled = false;
+            videoButton.innerText = "Lesson Video";
         }
 
         var nextLessonStage = parseInt(getLessonStage()) + 1

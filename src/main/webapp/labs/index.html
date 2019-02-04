@@ -15,8 +15,8 @@
     <script>
         // Initialize all tooltips
         $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
 
     <script>
@@ -133,17 +133,21 @@
         <div style="width: 40%; float: left;">
             <select onchange="stageChange()" style="width: 60%; float: left;margin-right:10px" class="form-control" id="lessonStagesDropdown">
             </select>
-            <button id="btnOpenLessonDiagram" data-toggle="modal" data-target="#lessonDiagramModal" type="button" class="btn btn-primary">Open
-                Lesson Diagram</button>
         </div>
         <div style="width: 60%; float: right;">
             <div style="float:right;">
-                <button type="button" class="btn btn-secondary btn-sm"
-                data-toggle= "tooltip"
-                data-placement="left"
-                data-original-title="NRE Labs is in early alpha status. Please bear with us as we continue working to make it awesome.">Tech Preview</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left"
+                    data-original-title="NRE Labs is in early alpha status. Please bear with us as we continue working to make it awesome.">Tech
+                    Preview</button>
             </div>
             <div style="float:left;">
+
+                <button id="btnOpenLessonDiagram" data-toggle="modal" data-target="#lessonDiagramModal" type="button"
+                    class="btn btn-info" disabled=true>
+                    No Lesson Diagram</button>
+                <button id="btnOpenLessonVideo" data-toggle="modal" data-target="#lessonVideoModal" type="button" class="btn btn-info" disabled=true>
+                    No Lesson Video
+                </button>
                 <button onclick="copy()" type="button" class="btn btn-primary btn-sm">Copy</button>
                 <button onclick="paste()" type="button" class="btn btn-primary btn-sm">Paste</button>
             </div>
@@ -233,10 +237,6 @@
     <div class="panel-container">
 
         <div class="panel-left content resizable" style="transition: all 0s ease 0s; width: 40%;">
-            <button id="btnOpenLessonVideo" data-toggle="modal" data-target="#lessonVideoModal" style="display: none; text-align: center;"
-                type="button" class="btn btn-info">
-                RECOMMENDED: Click here to watch lesson video first!
-            </button>
             <article id="labGuide" class="post" itemscope="" itemtype="http://schema.org/BlogPosting"></article>
             <a id="gotoNextStage" class="btn btn-primary btn-lg btn-block" href="#" role="button">Go to the next lab
                 in this lesson!</a>
