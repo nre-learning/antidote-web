@@ -8,6 +8,22 @@ body {
   font-family: Helvetica, sans-serif; */
 }
 
+.list-group-item {
+  height: 70px;
+}
+
+.list-group-flush:first-child .list-group-item:first-child {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: rgba(0, 0, 0, 0.125);
+}
+
+.list-group-flush:last-child .list-group-item:last-child {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgba(0, 0, 0, 0.125);
+}
+
 /* Override jumbotron padding */
 .jumbotron {
   padding: 2rem 2rem;
