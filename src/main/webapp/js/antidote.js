@@ -493,6 +493,55 @@ function provisionLesson() {
     requestLesson();
 }
 
+
+function paste(){
+    navigator.clipboard.readText().then(
+        clipText => pasteSend(clipText));
+}
+
+function pasteSend(text) {
+
+    var tabs = document.getElementById("myTabContent").children;
+    var tabId = 0;
+    for (var i = 0; i < tabs.length; i++) {
+        if (tabs[i].classList.contains("show")) {
+            tabId = tabs[i].id
+            break
+        }
+    }
+
+    // Open stream
+    var stream = terminals[tab.id].guac.createClipboardStream("text/plain");
+    var writer = new Guacamole.StringWriter(stream);
+
+    // Send text chunks
+    for (var i = 0; i < text.length; i += 4096) {
+        writer.sendText(text.substring(i, i+4096));
+    }
+
+    // Close stream
+    writer.sendEnd();
+}
+
+// We only want to copy text to the user's clipboard when they click the "Copy" button.
+// So, we're storing the results of the clipboard event handler in this variable, and whenever
+// the user clicks "Copy", we simply use the contents of this variable at that time.
+var guacStagingClipboard = "";
+
+// This function merely copies the contents of the above variable into the clipboard of the user.
+// We're using the "execCommand" method, so we have to create a dummy input box to store the value in,
+// while we call the copy command.
+function copy() {
+    var dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.style = "display: none;"
+    dummy.setAttribute('value', guacStagingClipboard);
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+}
+
+
 var terminals = {};
 function guacInit(endpoints) {
 
@@ -517,6 +566,14 @@ function guacInit(endpoints) {
                 console.log("Problem connecting to the remote endpoint.");
                 return false
             };
+
+            function ingestStream(stream, mimetype) {
+                console.log(stream);
+                stream.onblob = function (data) {
+                    guacStagingClipboard = atob(data)
+                }
+            }
+            thisTerminal.guac.onclipboard = ingestStream
 
             connectData = endpoints[i].Host + ";" + endpoints[i].Port + ";" + String(document.getElementById("myTabContent").offsetWidth) + ";" + String(document.getElementById("myTabContent").offsetHeight - 42);
             thisTerminal.guac.connect(connectData);
