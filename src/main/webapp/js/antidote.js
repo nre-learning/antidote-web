@@ -300,7 +300,7 @@ async function requestLesson() {
         } else {
             diagram.src = liveLessonDetails.LessonDiagram;
             diagramButton.disabled = false;
-            diagramButton.innerText = "Open Lesson Diagram";
+            diagramButton.innerText = "Lesson Diagram";
         }
 
         var videoButton = document.getElementById("btnOpenLessonVideo");
@@ -309,6 +309,11 @@ async function requestLesson() {
             videoButton.innerText = "No Lesson Video";
         } else {
             document.getElementById("lessonVideoIframe").src = liveLessonDetails.LessonVideo;
+
+            $('#lessonVideoModal').on('show.bs.modal', function () {
+                $("#lessonVideoModal iframe").attr("src", liveLessonDetails.LessonVideo);
+            });
+
             videoButton.disabled = false;
             videoButton.innerText = "Lesson Video";
         }
