@@ -6,9 +6,9 @@
     <title>NRE Labs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="../css/bootstrap.css" media="screen">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/lablayout.css">
+    <link rel="stylesheet" href="/css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/lablayout.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
@@ -38,23 +38,58 @@
     <script type="text/javascript" src="/guacamole-common-js/all.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
     <script type="text/javascript" src="/js/antidote.js?{{version}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
 
-    <link rel="apple-touch-icon" sizes="57x57" href="../icons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="../icons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="../icons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="../icons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="../icons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="../icons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="../icons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="../icons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../icons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../icons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="../icons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16x16.png">
-    <link rel="manifest" href="../icons/manifest.json">
+            urlRoot = window.location.href.split('/').slice(0, 3).join('/');
+
+            renderLessonCategories()
+
+            if (getLessonId() != 0) {
+                if (isMobile() == true) {
+                    alert("WARNING - NRE Labs doesn't yet support mobile. You can continue, but it likely won't work. Mobile support coming soon!")
+                }
+
+                provisionLesson();
+            }
+
+            $('#videoModal').on('show.bs.modal', function () {
+                $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/YhbWBX71yGQ?autoplay=1&rel=0");
+            });
+
+            $("#videoModal").on('hidden.bs.modal', function (e) {
+                $("#videoModal iframe").attr("src", null);
+            });
+
+            $("#lessonVideoModal").on('hidden.bs.modal', function (e) {
+                // Just reset the `src` attribute, which will "un-play" the video
+                $("#lessonVideoModal iframe").attr("src", document.getElementById("lessonVideoIframe"));
+            });
+            
+
+            if (urlRoot.substring(0, 11) == "https://ptr") {
+                appendPTRBanner();
+            }
+        });
+    </script>
+
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/icons/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="../icons/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 </head>
 
@@ -68,52 +103,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
-                            <img src="/images/intro_selected.png" style="height:30px">
-                            <span class="caret"></span>
-                        </a>
-                        <div id="introductoryMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item disabled" href="#">Fundamentals</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
-                            <img src="/images/tshoot_selected.png" style="height:30px">
-                            <span class="caret"></span>
-                        </a>
-                        <div id="troubleshootingMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item disabled" href="#">Troubleshooting</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
-                            <img src="/images/verify_selected.png" style="height:30px">
-                            <span class="caret"></span>
-                        </a>
-                        <div id="verificationMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item disabled" href="#">Verification</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="labs">
-                            <img src="/images/configure_selected.png" style="height:30px">
-                            <span class="caret"></span>
-                        </a>
-                        <div id="configurationMenu" class="dropdown-menu" aria-labelledby="labs">
-                            <a class="dropdown-item disabled" href="#">Configuration</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                </ul>
-
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/courses.html">Courses</a>
+                        <a href="/advisor/index.html" class="btn btn-secondary">Search Lessons</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/stats/">Stats</a>
@@ -212,7 +204,7 @@
                         you this lesson right now. Please post the details of what lesson you were accessing, as well
                         as the above error message as a <a target="_blank" href="https://github.com/nre-learning/antidote/issues/new">Github
                             issue</a>. In the meantime, try
-                        refreshing this page, or <a target="_blank" href="https://ptr.labs.networkreliability.engineering/courses.html">trying
+                        refreshing this page, or <a target="_blank" href="/advisor/">searching for
                             another lesson.</a></div>
                 </div>
             </div>
