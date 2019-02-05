@@ -28,6 +28,24 @@
     </script>
 
     <script type="text/javascript" src="/js/antidote.js?{{version}}"></script>
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+    
+                urlRoot = window.location.href.split('/').slice(0, 3).join('/');
+    
+                $('#videoModal').on('show.bs.modal', function () {
+                    $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/YhbWBX71yGQ?autoplay=1&rel=0");
+                });
+    
+                $("#videoModal").on('hidden.bs.modal', function (e) {
+                    $("#videoModal iframe").attr("src", null);
+                });
+    
+                if (urlRoot.substring(0, 11) == "https://ptr") {
+                    appendPTRBanner();
+                }
+            });
+        </script>
 
     <link rel="apple-touch-icon" sizes="57x57" href="icons/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">

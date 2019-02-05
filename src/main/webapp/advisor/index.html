@@ -42,11 +42,22 @@
                 appendPTRBanner();
             }
 
+            // Only handles text changes. See below.
             $('#searchBox').on('input', function (e) {
                 searchBox(e)
             });
+            // This was what I had to do to get arrow keys registered.
+            // var searchBox = document.getElementById('searchBox');
+            // searchBox.onkeydown = searchBox.onkeyup = searchBox.onkeypress = searchBox;
 
-
+            // Reset search results when a click is made
+            $('body').click(function () {
+                document.getElementById('searchBox').value = ""
+                searchResults = document.getElementById("searchResults")
+                while (searchResults.firstChild) {
+                    searchResults.removeChild(searchResults.firstChild);
+                }
+            });
         });
     </script>
 
@@ -108,24 +119,29 @@
                 <div class="col-lg-12">
                     <div class="bs-component">
                         <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-                            <h1 class="display-4">NRE Labs Advisor</h1>
-                            <p class="lead">
-                                Get a customized learning path.
-                            </p>
+                            <div class="container text-center" style="max-width: 650px;padding:  25px;border-radius: 10px;border-style:  solid;">
+                                <h1 class="display-4">NRE Labs Advisor</h1>
+                                <p class="lead">
+                                    Get a customized learning path.
+                                </p>
+                                <input id="searchBox" class="form-control" style="font-size:30px;" type="text"
+                                    placeholder="I want to learn..." aria-label="Search">
+                                <div id="searchResults" class="list-group"></div>
+                                <p style="margin:10px;">Use the box above to say what you want to learn, and we'll work with you to build a relevant learning path. Try "Python" or "StackStorm"!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="container text-center" style="max-width:500px;">
-                <input id="searchBox" class="form-control" style="font-size:30px;" type="text" placeholder="I want to learn..."
-                    aria-label="Search">
-                <div style="position:absolute;max-width:600px;" id="searchResults" class="list-group"></div>
-                <p style="margin:10px;">Search for what you want to learn above, or browse lessons below:</p>
-            </div>
+            <hr />
 
-            <div class="container">
+            <div class="text-center container">
+
+                <h1>Lesson Catalog</h1>
+                <p style="margin:10px;">Already know what lesson you're looking for? That's awesome - all lessons are linked directly below.</p>
                 <div class="card-deck mb-3 text-center">
+
                     <div class="card mb-4 box-shadow">
                         <h3 class="card-header">Fundamentals</h3>
                         <div class="card-body" style="flex: none;">

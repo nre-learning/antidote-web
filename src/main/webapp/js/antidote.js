@@ -720,22 +720,19 @@ function searchBox(e) {
         ]
     };
 
+    // Handle keyboard events like this, so folks can arrow down to the one they want?
+    // if (e.code == "ArrowDown") {}
+
     //TODO(mierdin): Need to figure out how to search on description and tags
 
     // http://fusejs.io/
     var fuse = new Fuse(LESSONS_ARRAY, options);
     var results = fuse.search(e.target.value);
 
-
-    console.log(LESSONS_ARRAY)
-    console.log(results)
-
     while (searchResults.firstChild) {
         searchResults.removeChild(searchResults.firstChild);
     }
 
-
-    // TODO (mierdin): Limit this to like 3 or 4
     for (var result in results) {
         var resultItem = results[result].item
 
@@ -757,19 +754,18 @@ function searchBox(e) {
 
         var categoryBadge = document.createElement('span');
         categoryBadge.classList.add('badge');
-        // categoryBadge.classList.add('badge-pill');
         categoryBadge.classList.add('badge-primary');
         categoryBadge.style = "margin-right: 10px;"
         categoryBadge.innerText = "Category: " + resultItem.Category
         badgesDiv.appendChild(categoryBadge);
 
-        var collectionBadge = document.createElement('span');
-        collectionBadge.classList.add('badge');
-        // collectionBadge.classList.add('badge-pill');
-        collectionBadge.classList.add('badge-info');
-        collectionBadge.style = "margin-right: 10px;"
-        collectionBadge.innerText = "Collection: " + resultItem.Collection
-        badgesDiv.appendChild(collectionBadge);
+        // FUTURE
+        // var collectionBadge = document.createElement('span');
+        // collectionBadge.classList.add('badge');
+        // collectionBadge.classList.add('badge-info');
+        // collectionBadge.style = "margin-right: 10px;"
+        // collectionBadge.innerText = "Collection: " + resultItem.Collection
+        // badgesDiv.appendChild(collectionBadge);
 
         searchResultItem.appendChild(badgesDiv);
 
@@ -778,58 +774,6 @@ function searchBox(e) {
         searchResults.appendChild(searchResultItem)
     }
 }
-
-// getLessonDeps is designed to take a lesson ID as a parameter and return a list of lesson IDs
-// that this lesson depends on. The returned list will include the provided lesson ID as well.
-function getLessonDeps(lessonId) {
-
-    for (var lesson in alldefs) {
-
-    }
-
-}
-
-
-
-
-
-// // Run all this once the DOM is fully rendered so we can get a handle on the DIVs
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     // urlRoot = window.location.href.split('/').slice(0, 3).join('/');
-//     urlRoot = "http://127.0.0.1:8086"
-
-//     renderLessonCategories()
-
-//     if (getLessonId() != 0) {
-//         if (isMobile() == true) {
-//             alert("WARNING - NRE Labs doesn't yet support mobile. You can continue, but it likely won't work. Mobile support coming soon!")
-//         }    
-
-//         provisionLesson();
-//     }
-
-//     $('#videoModal').on('show.bs.modal', function () {
-//       $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/YhbWBX71yGQ?autoplay=1&rel=0");
-//     });
-
-//     $("#videoModal").on('hidden.bs.modal', function (e) {
-//       $("#videoModal iframe").attr("src", null);
-//     });
-
-//     $("#lessonVideoModal").on('hidden.bs.modal', function (e) {
-//         // Just reset the `src` attribute, which will "un-play" the video
-//         $("#lessonVideoModal iframe").attr("src", document.getElementById("lessonVideoIframe"));
-//     });
-
-//     if (urlRoot.substring(0,11) == "https://ptr") {
-//         appendPTRBanner();
-//     }
-
-//     $('#searchBox').on('input',function(e){
-//         searchBox(e)
-//     });
-// });
 
 var PREREQS = [];
 
@@ -842,7 +786,11 @@ function getPrereqs(lessonId) {
     reqLessonPrereqs.open("GET", urlRoot + "/syringe/exp/lessondef/" + getLessonId() + "/prereqs", false);
     reqLessonPrereqs.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     reqLessonPrereqs.send();
+
     var prereqs = JSON.parse(reqLessonPrereqs.responseText).prereqs;
+    if (prereqs == null){
+        prereqs = []
+    }
 
     if (reqLessonPrereqs.status != 200) {
         var errorMessage = document.getElementById("error-modal-body");
@@ -852,15 +800,16 @@ function getPrereqs(lessonId) {
         return 0;
     }
 
-    console.log("GOT PREREQS - " + prereqs)
+    // No need to show strength sliders, this is a leson without prereqs.
+    if (prereqs.length == 0) {
+        buildLessonPlan({})
+        $('#strengthsFinder').modal("hide")
+        return 0;
+    }
+
+    $('#strengthsFinder').modal({ backdrop: 'static', keyboard: false })
 
     PREREQS = prereqs;
-
-    // function updateStrengthLabels() {
-    //     for (var i = 0; i < prereqs.length; i++) {
-
-    //     } 
-    // }
 
     for (var i = 0; i < prereqs.length; i++) {
         var strengthDiv = document.createElement('div');

@@ -12,6 +12,14 @@ body {
   height: 70px;
 }
 
+#searchResults {
+  position:absolute;
+  max-width:600px;
+  max-height: 900px;
+  overflow-y: auto;
+  z-index: 4;
+}
+
 .list-group-flush:first-child .list-group-item:first-child {
   border-top-width: 1px;
   border-top-style: solid;
