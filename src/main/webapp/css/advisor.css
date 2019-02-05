@@ -8,7 +8,7 @@ body {
   font-family: Helvetica, sans-serif; */
 }
 
-.list-group-item {
+.list-categories.list-group-item {
   height: 70px;
 }
 

@@ -144,6 +144,7 @@ function renderLessonCategories() {
 
             var lessonListItem = document.createElement('li')
             lessonListItem.classList.add('list-group-item')
+            lessonListItem.classList.add('list-categories');
             lessonListItem.appendChild(lessonLink)
 
             document.getElementById("lessonlist" + LESSONS[i].Category).appendChild(lessonListItem);
@@ -526,17 +527,34 @@ function pasteSend(text) {
         }
     }
 
-    // Open stream
-    var stream = terminals[tab.id].guac.createClipboardStream("text/plain");
-    var writer = new Guacamole.StringWriter(stream);
-
+    // Open stream (not doing this anymore, this modified the remote clipboard, and user still had to right click.
+    // Opting to just write characters via keypress.)
+    // var stream = terminals[tabId].guac.createClipboardStream("text/plain");
+    // var writer = new Guacamole.StringWriter(stream);
     // Send text chunks
-    for (var i = 0; i < text.length; i += 4096) {
-        writer.sendText(text.substring(i, i+4096));
+    // for (var i = 0; i < text.length; i += 4096) {
+    //     writer.sendText(text.substring(i, i+4096));
+    // }
+
+    for (var i = 0; i < text.length; i++) {
+
+        // Get current codepoint
+        var codepoint = text.charCodeAt(i);
+
+        // Convert to keysym
+        var keysym;
+        if (codepoint >= 0x0100)
+            keysym = 0x01000000 | codepoint;
+        else
+            keysym = codepoint;
+
+        // Press/release key
+        terminals[tabId].guac.sendKeyEvent(1, keysym);
+        terminals[tabId].guac.sendKeyEvent(0, keysym);
     }
 
     // Close stream
-    writer.sendEnd();
+    // writer.sendEnd();
 }
 
 // We only want to copy text to the user's clipboard when they click the "Copy" button.
@@ -550,8 +568,7 @@ var guacStagingClipboard = "";
 function copy() {
     var dummy = document.createElement("input");
     document.body.appendChild(dummy);
-    dummy.style = "display: none;"
-    dummy.setAttribute('value', guacStagingClipboard);
+    dummy.value = guacStagingClipboard;
     dummy.select();
     document.execCommand("copy");
     document.body.removeChild(dummy);
