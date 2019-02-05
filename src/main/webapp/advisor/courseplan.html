@@ -39,7 +39,6 @@
         document.addEventListener('DOMContentLoaded', function () {
 
             urlRoot = window.location.href.split('/').slice(0, 3).join('/');
-            // urlRoot = "http://127.0.0.1:8086"
 
             // TODO(mierdin): throw error if no lesson ID provided
 
@@ -148,13 +147,11 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="strengthsFinderLabel">Identify your strengths</h5>
                     </div>
-                    <!-- <img class="modal-image" src="/images/error.png" style="max-width: 150px;"> -->
 
                     <div class="modal-body" style="text-align: center;">
                         <p>Answer the following questions, so we can construct a lesson plan most relevant to you!</p>
                     </div>
 
-                    <!-- This needs to have a max-height with a scroll -->
                     <div id="strengthsFinder-body" class="modal-body" style="text-align: center;">
                     </div>
                     <div class="modal-footer">
