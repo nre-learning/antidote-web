@@ -289,7 +289,7 @@ async function requestLesson() {
 
         var endpoints = liveLessonDetails.LiveEndpoints;
 
-        renderLabGuide(liveLessonDetails.LabGuide);
+        renderLabGuide(liveLessonDetails.LabGuide, liveLessonDetails.JupyterLabGuide);
 
         var diagramButton = document.getElementById("btnOpenLessonDiagram");
         var diagram = document.getElementById("lessonDiagramImg");
@@ -379,10 +379,26 @@ function updateProgressModal(liveLessonDetails) {
     }
 }
 
-function renderLabGuide(labGuideText) {
-    var converter = new showdown.Converter();
-    var labHtml = converter.makeHtml(labGuideText);
-    document.getElementById("labGuide").innerHTML = labHtml;
+function renderLabGuide(labGuideText, usesJupyter) {
+
+    if (usesJupyter) {
+        //Render iframe with jupyter notebook
+        var iframe = document.createElement('iframe');
+        iframe.width = "100%"
+        iframe.height = "100%"
+        iframe.frameBorder = "0"
+        var path = "/notebooks/lesson-" + getLessonId() + "/stage" + getLessonStage() + "/notebook.ipynb"
+        iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-jupyterlabguide" + path
+
+        document.getElementById("labGuideDiv").insertBefore(iframe, document.getElementById("labGuide"))
+    } else {
+        // Render markdown lab guide
+        var converter = new showdown.Converter();
+        var labHtml = converter.makeHtml(labGuideText);
+        document.getElementById("labGuide").innerHTML = labHtml;
+    }
+
+
 }
 
 function rescale(browserDisp, guacDisp) {
