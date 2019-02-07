@@ -1038,12 +1038,12 @@ async function verify() {
 
     verifyBtn.innerText = 'Verify'
 
-    if (response2.success == false) {
-        verifyMsg.innerText = "Failed to verify."
-        verifyMsg.style.color = "red"
-    } else {
+    if (response2.success == true) {
         verifyMsg.innerText = "Successfully verified!"
         verifyMsg.style.color = "green"
+    } else {
+        verifyMsg.innerText = "Failed to verify."
+        verifyMsg.style.color = "red"
     }
 
     // Leave message on the screen for a while
