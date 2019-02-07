@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/bootstrap.css" media="screen">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/lablayout.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
@@ -142,6 +143,8 @@
                 </button>
                 <button onclick="copy()" type="button" class="btn btn-primary btn-sm">Copy</button>
                 <button onclick="paste()" type="button" class="btn btn-primary btn-sm">Paste</button>
+                <button id="verifyBtn" onclick="verify()" type="button" class="btn btn-primary btn-sm" disabled=true>Verify</button>
+                <p style="margin: 8px;float: right;" id="verifyMsg"></p>
             </div>
         </div>
     </div>

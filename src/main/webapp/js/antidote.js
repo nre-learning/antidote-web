@@ -328,6 +328,11 @@ async function requestLesson() {
             $("#gotoNextStage").addClass('disabled');
         }
 
+        getLessonCategories()
+        if (LESSONS[getLessonId()].Stages[parseInt(getLessonStage())].VerifyCompleteness == true) {
+            document.getElementById("verifyBtn").disabled = false
+        }
+
         // for some reason, even though the syringe health checks work,
         // we still can't connect right away. Adding short sleep to account for this for now
         // TODO try removing this now that the health check is SSH based
@@ -981,4 +986,84 @@ function buildLessonPlan(strengths) {
     })
 
     $("#strengthsFinder").modal("hide");
+}
+
+async function verify() {
+
+    var verifyBtn = document.getElementById("verifyBtn");
+    verifyBtn.disabled = true
+    verifyBtn.innerHTML = '<i class="fas fa-sync fa-spin"></i>'
+
+
+    var verifyMsg = document.getElementById("verifyMsg");
+    verifyMsg.innerText = ""
+
+    var data = {};
+    data.id = getLessonId() + "-" + getSession();
+
+    // Send verification request
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", urlRoot + "/syringe/exp/livelesson/" + getLessonId() + "-" + getSession() + "/verify", false);
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send(JSON.stringify(data));
+
+    response = JSON.parse(xhttp.responseText);
+    if (xhttp.status != 200) {
+        verifyMsg.innerText = "error"
+        return
+    }
+
+    for (var i = 0; i < 15; i++) {
+
+        await sleep(2000);
+
+        // Get verification by ID
+        var xhttp2 = new XMLHttpRequest();
+        xhttp2.open("GET", urlRoot + "/syringe/exp/verification/" + response.id, false);
+        xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhttp2.send()
+
+        response2 = JSON.parse(xhttp2.responseText);
+        if (xhttp2.status != 200) {
+            verifyMsg.innerText = "error"
+            return
+        }
+
+        if (response2.working == true) {
+            continue;
+        }
+        break;
+    }
+
+    verifyBtn.disabled = false
+    verifyBtn.innerText = 'Verify'
+
+    if (response2.success == false) {
+        verifyMsg.innerText = "Failed to verify."
+        verifyMsg.style.color = "red"
+    } else {
+        verifyMsg.innerText = "Successfully verified!"
+        verifyMsg.style.color = "green"
+    }
+
+    await sleep(10000);
+
+    var fadeEffect = setInterval(function () {
+        if (!verifyMsg.style.opacity) {
+            verifyMsg.style.opacity = 1;
+        }
+        if (verifyMsg.style.opacity > 0) {
+            verifyMsg.style.opacity -= 0.1;
+        } else {
+            clearInterval(fadeEffect);
+        }
+    }, 200);
+
+    verifyMsg.innerText = ""
+    verifyMsg.style.opacity = 1
+
+    var verifyMsg = document.getElementById("verifyMsg");
+    verifyMsg.innerText = "Success!"
+    verifyBtn.disabled = false
+    verifyBtn.innerText = 'Verify'
 }
