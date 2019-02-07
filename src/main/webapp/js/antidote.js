@@ -330,7 +330,8 @@ async function requestLesson() {
 
         getLessonCategories()
         if (LESSONS[getLessonId()].Stages[parseInt(getLessonStage())].VerifyCompleteness == true) {
-            document.getElementById("verifyBtn").disabled = false
+            document.getElementById("verifyBtn").style.display = "inline-block"
+            $("#objectiveBtn").attr('data-original-title', LESSONS[getLessonId()].Stages[parseInt(getLessonStage())].VerifyObjective)
         }
 
         // for some reason, even though the syringe health checks work,
@@ -1013,9 +1014,9 @@ async function verify() {
         return
     }
 
-    for (var i = 0; i < 15; i++) {
+    for (var i = 0; i < 30; i++) {
 
-        await sleep(2000);
+        await sleep(1000);
 
         // Get verification by ID
         var xhttp2 = new XMLHttpRequest();
@@ -1035,7 +1036,6 @@ async function verify() {
         break;
     }
 
-    verifyBtn.disabled = false
     verifyBtn.innerText = 'Verify'
 
     if (response2.success == false) {
@@ -1046,8 +1046,10 @@ async function verify() {
         verifyMsg.style.color = "green"
     }
 
+    // Leave message on the screen for a while
     await sleep(10000);
 
+    // Fade out message
     var fadeEffect = setInterval(function () {
         if (!verifyMsg.style.opacity) {
             verifyMsg.style.opacity = 1;
@@ -1059,11 +1061,9 @@ async function verify() {
         }
     }, 200);
 
+    // Wait for message to fade out, and then reset elements
+    await sleep(4000);
     verifyMsg.innerText = ""
     verifyMsg.style.opacity = 1
-
-    var verifyMsg = document.getElementById("verifyMsg");
-    verifyMsg.innerText = "Success!"
     verifyBtn.disabled = false
-    verifyBtn.innerText = 'Verify'
 }

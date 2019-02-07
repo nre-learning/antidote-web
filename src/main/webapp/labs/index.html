@@ -143,7 +143,9 @@
                 </button>
                 <button onclick="copy()" type="button" class="btn btn-primary btn-sm">Copy</button>
                 <button onclick="paste()" type="button" class="btn btn-primary btn-sm">Paste</button>
-                <button id="verifyBtn" onclick="verify()" type="button" class="btn btn-primary btn-sm" disabled=true>Verify</button>
+                <button id="objectiveBtn" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom"
+                    data-original-title="This lesson has no explicit objective to accomplish. Just follow the lab guide!">Objective</button>
+                <button id="verifyBtn" onclick="verify()" type="button" class="btn btn-primary btn-sm" style="display: none;">Verify</button>
                 <p style="margin: 8px;float: right;" id="verifyMsg"></p>
             </div>
         </div>
