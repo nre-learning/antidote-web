@@ -5,6 +5,7 @@
 - Finally implement clipboard functionality; formally establish toolbar [31](https://github.com/nre-learning/antidote-web/pull/31)
 - Implement Advisor functionality [#30](https://github.com/nre-learning/antidote-web/pull/30)
 - Added ability to use jupyter notebook as lab guide  [#33](https://github.com/nre-learning/antidote-web/pull/33)
+- Add verify functionality to front-end [#34](https://github.com/nre-learning/antidote-web/pull/34)
 
 ## 0.2.0 - January 24, 2019
 
