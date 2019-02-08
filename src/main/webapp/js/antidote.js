@@ -331,6 +331,7 @@ async function requestLesson() {
         getLessonCategories()
         if (LESSONS[getLessonId()].Stages[parseInt(getLessonStage())].VerifyCompleteness == true) {
             document.getElementById("verifyBtn").style.display = "inline-block"
+            document.getElementById("objectiveBtn").style.display = "inline-block"
             $("#objectiveBtn").attr('data-original-title', LESSONS[getLessonId()].Stages[parseInt(getLessonStage())].VerifyObjective)
         }
 

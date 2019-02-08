@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="/css/bootstrap.css" media="screen">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/lablayout.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+        crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
@@ -66,7 +67,7 @@
                 // Just reset the `src` attribute, which will "un-play" the video
                 $("#lessonVideoModal iframe").attr("src", document.getElementById("lessonVideoIframe"));
             });
-            
+
 
             if (urlRoot.substring(0, 11) == "https://ptr") {
                 appendPTRBanner();
@@ -138,13 +139,15 @@
                 <button id="btnOpenLessonDiagram" data-toggle="modal" data-target="#lessonDiagramModal" type="button"
                     class="btn btn-info" disabled=true>
                     No Lesson Diagram</button>
-                <button id="btnOpenLessonVideo" data-toggle="modal" data-target="#lessonVideoModal" type="button" class="btn btn-info" disabled=true>
+                <button id="btnOpenLessonVideo" data-toggle="modal" data-target="#lessonVideoModal" type="button" class="btn btn-info"
+                    disabled=true>
                     No Lesson Video
                 </button>
                 <button onclick="copy()" type="button" class="btn btn-primary btn-sm">Copy</button>
                 <button onclick="paste()" type="button" class="btn btn-primary btn-sm">Paste</button>
-                <button id="objectiveBtn" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom"
-                    data-original-title="This lesson has no explicit objective to accomplish. Just follow the lab guide!">Objective</button>
+                <button id="objectiveBtn" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip"
+                    data-placement="bottom" data-original-title="This lesson has no explicit objective to accomplish. Just follow the lab guide!"
+                    style="display: none;">Objective</button>
                 <button id="verifyBtn" onclick="verify()" type="button" class="btn btn-primary btn-sm" style="display: none;">Verify</button>
                 <p style="margin: 8px;float: right;" id="verifyMsg"></p>
             </div>
