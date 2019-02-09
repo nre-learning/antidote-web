@@ -6,6 +6,7 @@
 - Implement Advisor functionality [#30](https://github.com/nre-learning/antidote-web/pull/30)
 - Added ability to use jupyter notebook as lab guide  [#33](https://github.com/nre-learning/antidote-web/pull/33)
 - Add verify functionality to front-end [#34](https://github.com/nre-learning/antidote-web/pull/34)
+- Change "next lab" button text to be more intuitive on the last lab [#37](https://github.com/nre-learning/antidote-web/pull/37)
 
 ## 0.2.0 - January 24, 2019
 
