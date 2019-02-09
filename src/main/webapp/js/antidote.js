@@ -319,13 +319,13 @@ async function requestLesson() {
         }
 
         var nextLessonStage = parseInt(getLessonStage()) + 1
-        console.log(nextLessonStage)
-        console.log(lessonStageCount)
         if (nextLessonStage <= lessonStageCount) {
             document.getElementById("gotoNextStage").href = "/labs/?lessonId=" + getLessonId() + "&lessonStage=" + nextLessonStage
             $("#gotoNextStage").removeClass('disabled');
+            $("#gotoNextStage")[0].innerText = 'Go to the next lab in this lesson!'
         } else {
             $("#gotoNextStage").addClass('disabled');
+            $("#gotoNextStage")[0].innerText = "That's it for this lesson!"
         }
 
         getLessonCategories()
