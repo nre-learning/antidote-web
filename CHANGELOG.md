@@ -2,6 +2,9 @@
 
 ## In development
 
+
+## v0.3.0 - February 11, 2019
+
 - Finally implement clipboard functionality; formally establish toolbar [31](https://github.com/nre-learning/antidote-web/pull/31)
 - Implement Advisor functionality [#30](https://github.com/nre-learning/antidote-web/pull/30)
 - Added ability to use jupyter notebook as lab guide  [#33](https://github.com/nre-learning/antidote-web/pull/33)
