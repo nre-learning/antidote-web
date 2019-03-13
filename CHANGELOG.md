@@ -2,6 +2,7 @@
 
 ## In development
 
+- Introduce better-looking icons for navigation [#41](https://github.com/nre-learning/antidote-web/pull/41)
 
 ## v0.3.0 - February 11, 2019
 
