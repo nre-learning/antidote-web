@@ -3,6 +3,9 @@
 ## In development
 
 
+## v0.3.3 - March 15, 2019
+
+
 ## v0.3.1 - March 15, 2019
 
 
