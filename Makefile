@@ -1,12 +1,9 @@
-all: package
+TARGET_VERSION ?= latest
 
-package:
-	rm -rf target/
-	mvn package
+all: docker
 
-	# Requirements - jdk 10.0.1, maven 3.5.4
-	# Don't forget to set the right JDK in JAVA_HOME in ~/.mavenrc
-	# on Mac this is /Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home
-	# You can see which version maven is using with mvn -v
+docker:
+	COMMIT_SHA=$(git rev-parse HEAD)
 
-	./push.sh
+	docker build --build-arg COMMIT_SHA=$$COMMIT_SHA -t antidotelabs/antidote-web:$(TARGET_VERSION) -f Dockerfile .
+	docker push antidotelabs/antidote-web:$(TARGET_VERSION)
