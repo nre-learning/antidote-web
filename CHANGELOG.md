@@ -2,13 +2,6 @@
 
 ## In development
 
-
-## v0.3.3 - March 15, 2019
-
-
-## v0.3.1 - March 15, 2019
-
-
 ## v0.3.0 - February 11, 2019
 
 - Finally implement clipboard functionality; formally establish toolbar [31](https://github.com/nre-learning/antidote-web/pull/31)
