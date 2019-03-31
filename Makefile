@@ -1,4 +1,4 @@
-TARGET_VERSION ?= latest
+TARGET_VERSION ?= release-v0.3.1
 
 all: docker
 
