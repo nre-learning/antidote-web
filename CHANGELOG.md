@@ -2,6 +2,7 @@
 
 ## In development
 
+- Generate webapp files from template [#54](https://github.com/nre-learning/antidote-web/pull/54)
 
 ## v0.3.1 - March 27, 2019
 
