@@ -6,7 +6,7 @@ templates:
 
 	@echo "Building webapp from templates in 'src/main/webapp_templates/'..."
 	@cd src/main/webapp/ && rm -rf advisor/ labs/ stats/ && mkdir -p advisor/ labs/ stats/
-	@cd src/main/webapp-templates/ && virtualenv venv/ && source venv/bin/activate && pip install -r build-requirements.txt && python generate_webapp.py $$(git rev-parse HEAD)
+	@cd src/main/webapp-templates/ && virtualenv venv/ && venv/bin/pip install -r build-requirements.txt && venv/bin/python generate_webapp.py $$(git rev-parse HEAD)
 
 docker:
 	docker build -t antidotelabs/antidote-web:$(TARGET_VERSION) -f Dockerfile .
