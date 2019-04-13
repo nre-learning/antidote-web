@@ -409,7 +409,7 @@ function sortEndpoints(endpoints) {
         if (endpoints[ep].Type == "DEVICE") {
             sortedEndpoints.push(endpoints[ep]);
         }
-    }
+    } <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 
     for (var ep in endpoints) {
         if (endpoints[ep].Type == "IFRAME") {
@@ -680,8 +680,15 @@ function appendPTRBanner() {
     console.log(buildInfo)
 
     var scripts = document.getElementsByTagName('script');
-    var lastScript = scripts[scripts.length - 2];
-    var scriptName = lastScript.src;
+    var scriptName = "";
+    for (var i in scripts) {
+        thisScript = scripts[i]
+        if (thisScript.src != null) {
+            if (thisScript.src.includes("antidote.js")) {
+                scriptName = thisScript.src
+            }
+        }
+    }
 
     var commits = {
         "antidote": buildInfo.antidoteSha,
