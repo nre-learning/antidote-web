@@ -2,57 +2,51 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>NRE Labs</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="/css/bootstrap.css" media="screen">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/lablayout.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-        crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
+    {% include 'partials/header.html' %}
     <script>
         // Initialize all tooltips
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
-
-    <script>
-
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-120903857-1']);
-        _gaq.push(['_setDomainName', "labs.networkreliability.engineering"]);
-        _gaq.push(['_setAllowLinker', true]);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-
-    </script>
-
     <script type="text/javascript" src="/guacamole-common-js/all.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
-    <script type="text/javascript" src="/js/antidote.js?{{version}}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-
-            urlRoot = window.location.href.split('/').slice(0, 3).join('/');
-
             renderLessonCategories()
+
+            ////////////////////////////
+
+            var myNode = document.getElementById("tabHeaders");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            var myNode = document.getElementById("myTabContent");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            var fakeEndpoints = {
+                "LessonUUID":"12-97so512xqz33xv0p",
+                "LessonId":12,
+                "LiveEndpoints":{
+                    "linux1":{"Name":"linux1","Type":"UTILITY","Host":"10.12.0.135","Port":2222,"Reachable":true},
+                },
+                "LessonStage":1,
+                "LabGuide":"# Sample Lab Guide\n Foobar.\n\n```\nuname -a\n```\n\u003cbutton type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"runSnippetInTab('linux1', 3)\"\u003eRun this snippet\u003c/button\u003e\n\n",
+                "LiveLessonStatus":"READY"
+            }
+            addTabs(fakeEndpoints.LiveEndpoints)
+
+            ///////////////////////////
 
             if (getLessonId() != 0) {
                 if (isMobile() == true) {
                     alert("WARNING - NRE Labs doesn't yet support mobile. You can continue, but it likely won't work. Mobile support coming soon!")
                 }
 
-                provisionLesson();
+                // provisionLesson();
             }
 
             $('#videoModal').on('show.bs.modal', function () {
@@ -67,62 +61,12 @@
                 // Just reset the `src` attribute, which will "un-play" the video
                 $("#lessonVideoModal iframe").attr("src", document.getElementById("lessonVideoIframe"));
             });
-
-
-            if (urlRoot.substring(0, 11) == "https://ptr") {
-                appendPTRBanner();
-            }
         });
     </script>
-
-
-    <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/icons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-    <link rel="manifest" href="/icons/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
-    <div class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a href="/" class="navbar-brand">
-                <img src="/images/nrelabs_long.png" style="height: 37px;" /></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul style="font-size: 25px;" class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-                    <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="https://twitter.com/NRELabs"><i title="Follow on Twitter!" class="fab fa-twitter-square"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="https://github.com/nre-learning"><i title="Check us out on Github!" class="fab fa-github-square"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="https://discord.gg/fRuSUyD"><i title="Join the conversation on Discord!" style="font-size: 24px;" class="fab fa-discord"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="http://antidoteproject.readthedocs.io/"><i title="Check out the documentation!" style="font-size: 24px;" class="fas fa-book"></i></a>
-                    </li>
-                </ul>
-                <a class="btn btn-secondary btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="/advisor/index.html">Search Lessons</a>
-            </div>
-        </div>
-    </div>
+    {% include 'partials/navbar.html' %}
 
     <div style="padding: 10px;">
         <div style="width: 40%; float: left;">
@@ -266,12 +210,7 @@
 </body>
 
 <footer id="footer" class="footer">
-    <div class="container">
-        <span class="text-muted">
-            <p>Sponsored by Juniper Networks, Inc. Your use of this site is governed by the <a href="https://labs.networkreliability.engineering/nrelabs_agreement.pdf"
-                    target="_blank">Terms of Use.</a></p>
-        </span>
-    </div>
+    {% include 'partials/footer.html' %}
 </footer>
 
 </html>

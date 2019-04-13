@@ -10,3 +10,12 @@ venv/
 
 
 target/
+
+# These are the main pages for antidote-web, and are generated at build time,
+# so we don't want these committed to the repo. See the src/main/webapp-templates/
+# directory instead.
+src/main/webapp/index.html
+src/main/webapp/jupyterlessonguides.html
+src/main/webapp/advisor/
+src/main/webapp/labs/
+src/main/webapp/stats/

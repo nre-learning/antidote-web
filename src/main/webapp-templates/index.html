@@ -2,60 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-<title>NRE Labs</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<link rel="stylesheet" href="/css/bootstrap.css" media="screen">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script>
-
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-120903857-1']);
-    _gaq.push(['_setDomainName', "labs.networkreliability.engineering"]);
-    _gaq.push(['_setAllowLinker', true]);
-    _gaq.push(['_trackPageview']);
-
-    (function () {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-
-</script>
-
-<script type="text/javascript" src="/js/antidote.js?199db8e96c29a2880f100f287b27d88e2c0b7714"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-        urlRoot = window.location.href.split('/').slice(0, 3).join('/');
-
-        if (urlRoot.substring(0, 11) == "https://ptr") {
-            appendPTRBanner();
-        }
-    });
-</script>
-
-<link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/icons/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-<link rel="manifest" href="/icons/manifest.json">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+    {% include 'partials/header.html' %}
     <script>
             document.addEventListener('DOMContentLoaded', function () {
                 $('#videoModal').on('show.bs.modal', function () {
@@ -70,33 +17,7 @@
 </head>
 
 <body>
-    <div class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <a href="/" class="navbar-brand">
-            <img src="/images/nrelabs_long.png" style="height: 37px;" /></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul style="font-size: 25px;" class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-                <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="https://twitter.com/NRELabs"><i title="Follow on Twitter!" class="fab fa-twitter-square"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="https://github.com/nre-learning"><i title="Check us out on Github!" class="fab fa-github-square"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="https://discord.gg/fRuSUyD"><i title="Join the conversation on Discord!" style="font-size: 24px;" class="fab fa-discord"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="http://antidoteproject.readthedocs.io/"><i title="Check out the documentation!" style="font-size: 24px;" class="fas fa-book"></i></a>
-                </li>
-            </ul>
-            <a class="btn btn-secondary btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="/advisor/index.html">Search Lessons</a>
-        </div>
-    </div>
-</div>
+    {% include 'partials/navbar.html' %}
 
     <div class="container">
 

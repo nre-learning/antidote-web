@@ -215,24 +215,6 @@ async function requestLesson() {
     var json = JSON.stringify(data);
 
     // Send lesson request
-    // TODO(mierdin): for all these loops, need to break if we either get a non 200 status for too long,
-    // or if the lesson fails to provision (ready: true) before a timeout. Can't just loop endlessly.
-    // for (; ;) {
-    //     var xhttp = new XMLHttpRequest();
-
-    //     // Doing synchronous calls for now, need to convert to asynchronous
-    //     xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
-    //     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    //     xhttp.send(json);
-
-    //     if (xhttp.status != 200) {
-    //         await sleep(1000);
-    //         continue;
-    //     }
-    //     break;
-    // }
-
-    // Send lesson request
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
@@ -256,7 +238,6 @@ async function requestLesson() {
         // Here we go get the livelesson we requested, verify it's ready, and once it is, start wiring up endpoints.
         var xhttp2 = new XMLHttpRequest();
         xhttp2.open("GET", urlRoot + "/syringe/exp/livelesson/" + response.id, false);
-        // xhttp2.open("GET", "https://ptr.labs.networkreliability.engineering/syringe/exp/livelesson/12-jjtigg867ghr3gye", false);
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
@@ -554,15 +535,6 @@ function pasteSend(text) {
             break
         }
     }
-
-    // Open stream (not doing this anymore, this modified the remote clipboard, and user still had to right click.
-    // Opting to just write characters via keypress.)
-    // var stream = terminals[tabId].guac.createClipboardStream("text/plain");
-    // var writer = new Guacamole.StringWriter(stream);
-    // Send text chunks
-    // for (var i = 0; i < text.length; i += 4096) {
-    //     writer.sendText(text.substring(i, i+4096));
-    // }
 
     for (var i = 0; i < text.length; i++) {
 
