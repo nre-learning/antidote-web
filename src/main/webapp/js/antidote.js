@@ -409,7 +409,7 @@ function sortEndpoints(endpoints) {
         if (endpoints[ep].Type == "DEVICE") {
             sortedEndpoints.push(endpoints[ep]);
         }
-    } <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    }
 
     for (var ep in endpoints) {
         if (endpoints[ep].Type == "IFRAME") {
