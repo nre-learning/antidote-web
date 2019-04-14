@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.0/bootstrap-slider.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.0/css/bootstrap-slider.min.css">
+    <link rel="stylesheet" href="/css/advisor.css">
+    {% include 'partials/header.html' %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            getLessonCategories()
+
+            getPrereqs()
+
+            var lessonSlug = LESSONS[getLessonId()].Slug
+            var planTitle = document.getElementById('plantitle')
+            planTitle.innerText = "Your Journey to " + lessonSlug
+
+            $('#planNamebox').on('input', function (e) {
+                if (e.target.value == "") {
+                    planTitle.innerText = "Your Journey to " + lessonSlug
+                } else {
+                    planTitle.innerText = e.target.value + "'s Journey to " + lessonSlug
+                }
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    {% include 'partials/navbar.html' %}
+
+    <div class="container">
+
+        <div class="bs-docs-section">
+
+            <div class="jumbotron">
+                <h1 class="display-4">Your Custom Learning Plan.</h1>
+                <p class="lead">Based on the suggested prerequisites for the lesson you selected, and your existing
+                    strengths,
+                    we've curated a custom learning path for you to get where you need to be.
+                </p>
+                <hr class="my-4">
+                <p>Scroll down for the lesson plan, or use the options below to print or send this plan.</p>
+                <p style="display: flex;max-width:500px" class="lead">
+                    <input id="planNamebox" class="form-control" style="font-size:30px;margin-right:10px;" type="text"
+                        placeholder="Enter your name..." aria-label="planNamebox">
+                    <button class="btn btn-primary btn-lg" onclick="window.print();" role="button">Print</button>
+                </p>
+            </div>
+            <div id="timeline" class="timeline">
+                <div style="margin:10px;">
+                    <h1 style="max-width: 700px;" id="plantitle">Your Journey to Greatness</h1>
+                    <a href="https://labs.networkreliability.engineering">https://labs.networkreliability.engineering</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="strengthsFinder" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="strengthsFinderLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="strengthsFinderLabel">Identify your strengths</h5>
+                    </div>
+
+                    <div class="modal-body" style="text-align: center;">
+                        <p>Answer the following questions, so we can construct a lesson plan most relevant to you!</p>
+                    </div>
+
+                    <div id="strengthsFinder-body" class="modal-body" style="text-align: center;">
+                    </div>
+                    <div class="modal-footer">
+                        <div id="modal-body" class="modal-body" style="text-align: right;">
+                            <button id="btnSkip" type="button" onclick="buildLessonPlan({})" class="btn btn-outline-primary">Skip</button>
+                            <button id="btnSubmit" type="button" onclick="buildLessonPlan(getStrengths())" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer id="footer">
+            {% include 'partials/footer.html' %}
+        </footer>
+
+
+    </div>
+</body>
+
+</html>
