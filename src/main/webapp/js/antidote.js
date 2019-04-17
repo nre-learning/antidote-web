@@ -44,7 +44,7 @@ function runSnippetInTab(tabName, snippetIndex) {
 
     if (typeof snippetIndex == 'number') {
         var snippetText = document.getElementById('labGuide').getElementsByTagName('pre')[parseInt(snippetIndex)].innerText;
-    } else if (typeof snippetIndex == 'object') {
+    } else {
         var snippetText = snippetIndex.parentNode.previousElementSibling.innerText;
     }
 
