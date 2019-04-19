@@ -2,6 +2,9 @@
 
 ## In development
 
+
+## v0.3.2 - April 19, 2019
+
 - Generate webapp files from template [#54](https://github.com/nre-learning/antidote-web/pull/54)
 - Update PTR banner to reflect repo changes [#57](https://github.com/nre-learning/antidote-web/pull/57)
 
