@@ -42,10 +42,15 @@ function runSnippetInTab(tabName, snippetIndex) {
     // Select tab
     $('.nav-tabs a[href="#' + tabName + '"]').tab('show')
 
+    if (typeof snippetIndex == 'number') {
+        var snippetText = document.getElementById('labGuide').getElementsByTagName('pre')[parseInt(snippetIndex)].innerText;
+    } else {
+        var snippetText = snippetIndex.parentNode.previousElementSibling.innerText;
+    }
+
     // TODO(mierdin): https://sourceforge.net/p/guacamole/discussion/1110834/thread/3243e595/
     // is this really the best way?
     // For each character in the given string
-    var snippetText = document.getElementById('labGuide').getElementsByTagName('pre')[parseInt(snippetIndex)].innerText;
     for (var i = 0; i < snippetText.length; i++) {
 
         // Get current codepoint

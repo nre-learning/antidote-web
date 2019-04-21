@@ -11,6 +11,7 @@
 ## v0.3.1 - March 27, 2019
 
 - Introduce better-looking icons for navigation [#41](https://github.com/nre-learning/antidote-web/pull/41)
+- Added option to pass number or 'this' object as the argument to runSnippetInTab() function in lesson guide [#45](https://github.com/nre-learning/antidote-web/pull/45)
 
 ## v0.3.0 - February 11, 2019
 
