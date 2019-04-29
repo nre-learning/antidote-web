@@ -703,7 +703,7 @@ function appendPTRBanner() {
 
     var curriculumLink = "<a target='_blank' href='https://github.com/nre-learning/nrelabs-curriculum/commit/" + commits.antidote + "'>" + commits.antidote.substring(0, 7) + "</a>"
     var antidoteWebLink = "<a target='_blank' href='https://github.com/nre-learning/antidote-web/commit/" + commits.antidoteweb + "'>" + commits.antidoteweb.substring(0, 7) + "</a>"
-    var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/commit/" + commits.syringe + "'>" + commits.syringe.substring(0, 7) + "</a>"
+    var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/syringe/commit/" + commits.syringe + "'>" + commits.syringe.substring(0, 7) + "</a>"
 
     var ptrBanner = document.createElement("DIV");
     ptrBanner.id = "ptrBanner"
