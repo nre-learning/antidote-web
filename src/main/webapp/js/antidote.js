@@ -107,7 +107,7 @@ function getRandomModalMessage() {
 function getLessonCategories() {
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", urlRoot + "/syringe/exp/lessondef", false);
+    xhttp.open("GET", urlRoot + "/syringe/exp/lesson", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send();
 
@@ -124,13 +124,13 @@ function getLessonCategories() {
 
     LESSONS = {}
     LESSONS_ARRAY = []
-    for (var i = 0; i < response.lessonDefs.length; i++) {
+    for (var i = 0; i < response.lessons.length; i++) {
 
         // Store contents of response to global "LESSONS" variable as object indexed by lesson ID
-        LESSONS[response.lessonDefs[i].LessonId] = response.lessonDefs[i]
+        LESSONS[response.lessons[i].LessonId] = response.lessons[i]
 
         // Also push to lesson array
-        LESSONS_ARRAY.push(response.lessonDefs[i])
+        LESSONS_ARRAY.push(response.lessons[i])
     }
 }
 
@@ -158,34 +158,34 @@ function renderLessonCategories() {
 }
 
 function renderLessonStages() {
-    var reqLessonDef = new XMLHttpRequest();
+    var reqLesson = new XMLHttpRequest();
 
     // TODO(mierdin): This is the first call to syringe, you should either here or elsewhere, handle errors and notify user.
 
     // Doing synchronous calls for now, need to convert to asynchronous
-    reqLessonDef.open("GET", urlRoot + "/syringe/exp/lessondef/" + getLessonId(), false);
-    reqLessonDef.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    reqLessonDef.send();
-    var lessonDefResponse = JSON.parse(reqLessonDef.responseText);
+    reqLesson.open("GET", urlRoot + "/syringe/exp/lesson/" + getLessonId(), false);
+    reqLesson.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    reqLesson.send();
+    var lessonResponse = JSON.parse(reqLesson.responseText);
 
-    if (reqLessonDef.status != 200) {
+    if (reqLesson.status != 200) {
         var errorMessage = document.getElementById("error-modal-body");
-        errorMessage.innerText = "Error retrieving lesson stages: " + lessonDefResponse["error"];
+        errorMessage.innerText = "Error retrieving lesson stages: " + lessonResponse["error"];
         $("#busyModal").modal("hide");
         $('#errorModal').modal({ backdrop: 'static', keyboard: false })
         return 0;
     }
 
-    for (var i = 1; i < lessonDefResponse.Stages.length; i++) {
+    for (var i = 1; i < lessonResponse.Stages.length; i++) {
         var sel = document.getElementById("lessonStagesDropdown");
         var stageEntry = document.createElement('option');
-        stageEntry.innerText = i + " - " + lessonDefResponse.Stages[i].Description
+        stageEntry.innerText = i + " - " + lessonResponse.Stages[i].Description
         sel.appendChild(stageEntry);
     }
 
     document.getElementById("lessonStagesDropdown").selectedIndex = getLessonStage() - 1;
 
-    return lessonDefResponse.Stages.length - 1;
+    return lessonResponse.Stages.length - 1;
 }
 
 function stageChange() {
@@ -795,7 +795,7 @@ function getPrereqs(lessonId) {
     // TODO(mierdin): This is the first call to syringe, you should either here or elsewhere, handle errors and notify user.
 
     // Doing synchronous calls for now, need to convert to asynchronous
-    reqLessonPrereqs.open("GET", urlRoot + "/syringe/exp/lessondef/" + getLessonId() + "/prereqs", false);
+    reqLessonPrereqs.open("GET", urlRoot + "/syringe/exp/lesson/" + getLessonId() + "/prereqs", false);
     reqLessonPrereqs.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     reqLessonPrereqs.send();
 
