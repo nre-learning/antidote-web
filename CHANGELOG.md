@@ -3,6 +3,7 @@
 ## In development
 
 - Added option to pass number or 'this' object as the argument to runSnippetInTab() function in lesson guide [#45](https://github.com/nre-learning/antidote-web/pull/45)
+- Update client-side to handle lessondef endpoint rename [#61](https://github.com/nre-learning/antidote-web/pull/61)
 
 ## v0.3.2 - April 19, 2019
 
