@@ -1052,3 +1052,49 @@ async function verify() {
     verifyMsg.style.opacity = 1
     verifyBtn.disabled = false
 }
+
+function getCollections() {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", urlRoot + "/syringe/exp/collection", false);
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send();
+    var lessonResponse = JSON.parse(xhttp.responseText);
+
+    // if (xhttp.status != 200) {
+    //     var errorMessage = document.getElementById("error-modal-body");
+    //     errorMessage.innerText = "Error retrieving lesson stages: " + lessonResponse["error"];
+    //     $("#busyModal").modal("hide");
+    //     $('#errorModal').modal({ backdrop: 'static', keyboard: false })
+    //     return 0;
+    // }
+
+    lessonResponse.collections[0].Title
+
+    for (var i = 0; i < lessonResponse.collections.length; i++) {
+
+        var c = lessonResponse.collections[i]
+
+        var collectionBox = document.createElement('a');
+        collectionBox.classList.add("list-group-item")
+        collectionBox.classList.add("list-group-item-action")
+        collectionBox.classList.add("flex-column")
+        collectionBox.classList.add("align-items-start")
+        collectionBox.href = "#" // TODO send to main site.
+
+        collectionBox.innerHTML = `
+        <img class="collection-container-img" src="` + c.Image + `" />
+        <div class="collection-container-div">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">` + c.Title + `</h5>
+                    <span class="badge badge-info">` + c.Type + `</span>
+                </div>
+                <p class="mb-1">
+                    ` + c.BriefDescription + `
+                </p>
+                <small class="text-muted">Click to view this collection</small>
+        </div>`
+
+        document.getElementById("collectionList").appendChild(collectionBox);
+    }
+}

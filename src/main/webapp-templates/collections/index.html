@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'partials/header.html' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      $('#videoModal').on('show.bs.modal', function () {
+        $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/YhbWBX71yGQ?autoplay=1&rel=0");
+      });
+
+      $("#videoModal").on('hidden.bs.modal', function (e) {
+        $("#videoModal iframe").attr("src", null);
+      });
+
+      getCollections()
+    });
+  </script>
+</head>
+
+<body>
+  {% include 'partials/navbar.html' %}
+
+  <div class="container">
+
+    <!-- Containers
+      ================================================== -->
+    <div class="bs-docs-section">
+
+      <h2>Collections</h2>
+      <link rel="stylesheet" href="../css/collections.css">
+
+      <div class="container collections-box">
+
+        <div class="collections-filter list-group">
+          <p>Filter by type:</p>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1" checked>
+            <label class="form-check-label" for="defaultCheck1">
+              Vendors
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="defaultCheck2" checked>
+            <label class="form-check-label" for="defaultCheck2">
+              Consultancies
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="defaultCheck3" checked>
+            <label class="form-check-label" for="defaultCheck3">
+              Community
+            </label>
+          </div>
+        </div>
+
+        <div id="collectionList" class="collections-list list-group">
+
+        </div>
+      </div>
+
+    </div>
+    <footer id="footer">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <p>Built by the
+            <a href="https://github.com/orgs/nre-learning/people" target="_blank">NRE Learning Team</a>
+            <p>Theme by
+              <a href="http://thomaspark.co">Thomas Park</a>. Theme code released under the
+              <a href="https://github.com/thomaspark/bootswatch/blob/master/LICENSE">MIT License</a>.</p>
+            <p>The
+              <a href="https://github.com/nre-learning/antidote" target="_blank">Antidote Project</a> is
+              published under Apache v2.</p>
+            <p>Sponsored by Juniper Networks, Inc. Your use of this site is governed by the <a
+                href="https://labs.networkreliability.engineering/nrelabs_agreement.pdf" target="_blank">Terms of
+                Use.</a></p>
+
+        </div>
+      </div>
+
+    </footer>
+  </div>
+</body>
+
+
+
+</html>

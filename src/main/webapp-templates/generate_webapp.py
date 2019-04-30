@@ -10,6 +10,7 @@ templates = [
     "advisor/courseplan.html",
     "labs/index.html",
     "stats/index.html",
+    "collections/index.html",
     'index.html',
     'jupyterlessonguides.html'
 ]
