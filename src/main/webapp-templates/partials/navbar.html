@@ -1,27 +1,59 @@
 <div class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <a href="/" class="navbar-brand">
-            <img src="/images/nrelabs_long.png" style="height: 37px;" /></a>
+        <a href="/" class="navbar-brand" style="max-width: 50%;">
+            <img src="/images/nrelabs_long.png" style="max-height: 37px;width: 100%;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul style="font-size: 25px;" class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-                <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="https://twitter.com/NRELabs"><i title="Follow on Twitter!" class="fab fa-twitter-square"></i></a>
+        <div class="navbar-collapse collapse" id="navbarResponsive" style="">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle btn btn-secondary" data-toggle="dropdown" href="#" style="font-weight: bold;" id="download">Site Navigation <span class="caret"></span></a>
+                    <div class="dropdown-menu" aria-labelledby="download">
+                        <a class="dropdown-item" href="/advisor/index.html">Lesson Catalog</a>
+                        <a class="dropdown-item" href="/advisor/index.html">Advisor</a>
+                        <a class="dropdown-item" href="/collections/index.html">Collections</a>
+                    </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="https://github.com/nre-learning"><i title="Check us out on Github!" class="fab fa-github-square"></i></a>
+                    <a class="nav-link" target="_blank" href="https://twitter.com/NRELabs">
+                        <i title="Follow on Twitter!" style="font-size: 24px;" class="fab fa-twitter-square">
+                        </i>
+                        <p class="antidote-link">Twitter</p>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="https://community.networkreliability.engineering/"><i title="Join the conversation on our community site!" style="font-size: 24px;" class="fab fa-discourse"></i></a>
+                    <a class="nav-link" target="_blank" href="https://github.com/nre-learning">
+                        <i title="Check us out on Github!" style="font-size: 24px;" class="fab fa-github-square">
+                        </i>
+                        <p class="antidote-link">Github</p>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="http://antidoteproject.readthedocs.io/"><i title="Check out the documentation!" style="font-size: 24px;" class="fas fa-book"></i></a>
+                    <a class="nav-link" target="_blank" href="https://community.networkreliability.engineering/">
+                        <i title="Join the conversation on our community site!" style="font-size: 24px;" class="fab fa-discourse">
+                        </i>
+                        <p class="antidote-link">Forums</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="http://antidoteproject.readthedocs.io/">
+                        <i title="Check out the documentation!" style="font-size: 24px;" class="fas fa-book">
+                        </i>
+                        <p class="antidote-link">Documentation</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="https://discord.gg/fRuSUyD">
+                        <i title="Join the live conversation on Discord!" style="font-size: 24px;" class="fab fa-discord">
+                        </i>
+                        <p class="antidote-link">Discord</p>
+                    </a>
                 </li>
             </ul>
-            <a class="btn btn-secondary btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="/advisor/index.html">Search Lessons</a>
         </div>
     </div>
 </div>
+
+
