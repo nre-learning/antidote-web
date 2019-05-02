@@ -3,6 +3,7 @@
 
 <head>
   {% include 'partials/header.html' %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.0/fuse.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       $('#videoModal').on('show.bs.modal', function () {
@@ -14,6 +15,12 @@
       });
 
       getCollections()
+      populateCollectionsList(COLLECTIONS_ARRAY)
+
+      // Only handles text changes. See below.
+      $('#collectionFilter').on('input', function (e) {
+        collectionsBox(e)
+      });
     });
   </script>
 </head>
@@ -27,8 +34,12 @@
       ================================================== -->
     <div class="bs-docs-section">
 
-      <h2>Collections</h2>
-      <link rel="stylesheet" href="../css/collections.css">
+      <link rel="stylesheet" href="/css/collections.css">
+      <h2 style="margin-top: 10px;">Collections</h2>
+
+      <p>Collections are a new categorization mechanism in NRE Labs to group lessons according to largely non-technical criteria.
+        Please see <a href="">the documentation on Collections for more information</a>, or start searching for collections using the tool below.
+      </p>
 
       <div class="container collections-box">
 
@@ -51,6 +62,10 @@
             <label class="form-check-label" for="defaultCheck3">
               Community
             </label>
+          </div>
+          <hr />
+          <div class="input-group mb-3">
+            <input id="collectionFilter" type="text" class="form-control" placeholder="Filter by name..." aria-label="Filter by name..." aria-describedby="basic-addon1">
           </div>
         </div>
 

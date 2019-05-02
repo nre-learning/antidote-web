@@ -1,0 +1,24 @@
+.nav-item {
+    margin: 3px;
+}
+
+@media (max-width: 400px) {
+    .jumbotron-heading,.display-4 {
+        font-size: 11vw;
+    }
+}
+
+@media (max-width: 767px) {
+    .navbar-nav {
+        flex-direction: column;
+    }
+    .antidote-link {
+        display: inline;
+    }
+}
+
+@media (min-width: 768px) {
+    .antidote-link {
+        display: none;
+    }
+}

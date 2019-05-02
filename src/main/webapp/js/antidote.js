@@ -2,6 +2,7 @@
 var urlRoot = "https://labs.networkreliability.engineering"
 var LESSONS = {};
 var LESSONS_ARRAY = [];
+var COLLECTIONS_ARRAY = [];
 
 // This function generates a unique session ID so we can make sure you consistently connect to your lab resources on the back-end.
 // We're not doing anything nefarious with this ID - this is just to make sure you have a good experience on the front-end.
@@ -1069,11 +1070,22 @@ function getCollections() {
     //     return 0;
     // }
 
-    lessonResponse.collections[0].Title
-
     for (var i = 0; i < lessonResponse.collections.length; i++) {
+        COLLECTIONS_ARRAY.push(lessonResponse.collections[i])
+    }
+}
 
-        var c = lessonResponse.collections[i]
+function populateCollectionsList(collections) {
+
+    // Zero out the list
+    var collectionList = document.getElementById("collectionList")
+    while (collectionList.firstChild) {
+        collectionList.removeChild(collectionList.firstChild);
+    }
+
+    for (var i = 0; i < collections.length; i++) {
+
+        var c = collections[i]
 
         var collectionBox = document.createElement('a');
         collectionBox.classList.add("list-group-item")
@@ -1097,4 +1109,44 @@ function getCollections() {
 
         document.getElementById("collectionList").appendChild(collectionBox);
     }
+}
+
+
+function collectionsBox(e) {
+    if (e.target.value == "") {
+        populateCollectionsList(COLLECTIONS_ARRAY);
+        return
+    }
+
+
+    var options = {
+        shouldSort: true,
+        includeScore: true,
+        threshold: 0.6,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+            "Title"
+        ]
+    };
+
+    // Handle keyboard events like this, so folks can arrow down to the one they want?
+    // if (e.code == "ArrowDown") {}
+
+    // http://fusejs.io/
+    var fuse = new Fuse(COLLECTIONS_ARRAY, options);
+    var results = fuse.search(e.target.value);
+
+    console.log(results)
+
+    var populateResults = [];
+    for (var i = 0; i < results.length; i++) {
+        if (results[i].score < 0.2) {
+            populateResults.push(results[i].item)
+        }
+    }
+
+    populateCollectionsList(populateResults);
 }

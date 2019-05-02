@@ -33,6 +33,7 @@
 .collections-filter {
     /* float: left; */
     width: 20%;
+    margin-right: 10px;
 }
 
 .collections-list {
@@ -45,3 +46,23 @@
     height: 640px;
     background-color: lightgray;
 }
+
+
+@media (max-width: 767px) {
+    /* This allows us to position the filter box above the results box when on mobile */
+    .collections-box {
+        flex-direction: column;
+    }
+    .collections-filter,
+    .collections-list {
+        width: auto;
+    }
+
+    /* We normally want the width of the text to be limited but not on mobile */
+    .collection-container-div {
+        width: auto;
+    }
+}
+
+
+
