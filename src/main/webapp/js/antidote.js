@@ -381,7 +381,7 @@ function renderLabGuide(labGuideText, usesJupyter) {
         iframe.width = "100%"
         iframe.height = "100%"
         iframe.frameBorder = "0"
-        var path = "/notebooks/lesson-" + getLessonId() + "/stage" + getLessonStage() + "/notebook.ipynb"
+        var path = "/notebooks/stage" + getLessonStage() + "/notebook.ipynb"
         iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-jupyterlabguide" + path
 
         document.getElementById("labGuideDiv").insertBefore(iframe, document.getElementById("labGuide"))
