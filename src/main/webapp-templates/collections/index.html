@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'partials/header.html' %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.0/fuse.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      $('#videoModal').on('show.bs.modal', function () {
+        $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/YhbWBX71yGQ?autoplay=1&rel=0");
+      });
+
+      $("#videoModal").on('hidden.bs.modal', function (e) {
+        $("#videoModal iframe").attr("src", null);
+      });
+
+      getCollections()
+      populateCollectionsList(COLLECTIONS_ARRAY)
+
+      // Only handles text changes. See below.
+      $('#collectionFilter').on('input', function (e) {
+        collectionsBox(e.target.value)
+      });
+    });
+  </script>
+</head>
+
+<body>
+  {% include 'partials/navbar.html' %}
+
+  <div class="container">
+
+    <!-- Containers
+      ================================================== -->
+    <div class="bs-docs-section">
+
+      <link rel="stylesheet" href="/css/collections.css">
+      <h2 style="margin-top: 10px;">Collections</h2>
+
+      <p>Collections are a new categorization mechanism in NRE Labs to group lessons according to largely non-technical
+        criteria.
+        Please see <a
+          href="https://antidoteproject.readthedocs.io/en/latest/platform/curricula/collections/index.html">the
+          documentation on Collections for more information</a>, or start searching for collections using the tool
+        below.
+      </p>
+
+      <div class="container collections-box">
+
+        <div class="collections-filter list-group">
+          <p>Filter by type:</p>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="chkVendors"
+              onchange="collectionsCheckChange()" checked>
+            <label class="form-check-label" for="chkVendors">
+              Vendors
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="chkConsultancies"
+              onchange="collectionsCheckChange()" checked>
+            <label class="form-check-label" for="chkConsultancies">
+              Consultancies
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="chkCommunity"
+              onchange="collectionsCheckChange()" checked>
+            <label class="form-check-label" for="chkCommunity">
+              Community
+            </label>
+          </div>
+          <hr />
+          <div class="input-group mb-3">
+            <input id="collectionFilter" type="text" class="form-control" placeholder="Filter by name..."
+              aria-label="Filter by name..." aria-describedby="basic-addon1">
+          </div>
+        </div>
+
+        <div id="collectionList" class="collections-list list-group">
+
+        </div>
+      </div>
+
+    </div>
+    <footer id="footer">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <p>Built by the
+            <a href="https://github.com/orgs/nre-learning/people" target="_blank">NRE Learning Team</a>
+            <p>Theme by
+              <a href="http://thomaspark.co">Thomas Park</a>. Theme code released under the
+              <a href="https://github.com/thomaspark/bootswatch/blob/master/LICENSE">MIT License</a>.</p>
+            <p>The
+              <a href="https://github.com/nre-learning/antidote" target="_blank">Antidote Project</a> is
+              published under Apache v2.</p>
+            <p>Sponsored by Juniper Networks, Inc. Your use of this site is governed by the <a
+                href="https://labs.networkreliability.engineering/nrelabs_agreement.pdf" target="_blank">Terms of
+                Use.</a></p>
+
+        </div>
+      </div>
+
+    </footer>
+  </div>
+</body>
+
+
+
+</html>

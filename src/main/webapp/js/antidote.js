@@ -2,6 +2,7 @@
 var urlRoot = "https://labs.networkreliability.engineering"
 var LESSONS = {};
 var LESSONS_ARRAY = [];
+var COLLECTIONS_ARRAY = [];
 
 // This function generates a unique session ID so we can make sure you consistently connect to your lab resources on the back-end.
 // We're not doing anything nefarious with this ID - this is just to make sure you have a good experience on the front-end.
@@ -707,7 +708,7 @@ function appendPTRBanner() {
 
     var ptrBanner = document.createElement("DIV");
     ptrBanner.id = "ptrBanner"
-    ptrBanner.style = "background-color: black;"
+    ptrBanner.style = "background-color: black;position: fixed;bottom: 0;width: 100%;height: 27px;"
     ptrBanner.innerHTML = '<span style="color: red;"><p>NRE Labs Public Test Realm. Curriculum: ' + curriculumLink + ' | Antidote-Web: ' + antidoteWebLink + ' | Syringe: ' + syringeLink + '</p></span>'
 
     document.body.appendChild(ptrBanner)
@@ -1051,4 +1052,187 @@ async function verify() {
     verifyMsg.innerText = ""
     verifyMsg.style.opacity = 1
     verifyBtn.disabled = false
+}
+
+function getCollectionId() {
+    var url = new URL(window.location.href);
+    var collectionId = url.searchParams.get("collectionId");
+    if (collectionId == null || collectionId == "") {
+        console.log("collectionId not provided")
+        console.log(url)
+        return 0;
+    }
+    return parseInt(collectionId);
+}
+
+
+function getCollections() {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", urlRoot + "/syringe/exp/collection", false);
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send();
+    var lessonResponse = JSON.parse(xhttp.responseText);
+
+    // if (xhttp.status != 200) {
+    //     var errorMessage = document.getElementById("error-modal-body");
+    //     errorMessage.innerText = "Error retrieving lesson stages: " + lessonResponse["error"];
+    //     $("#busyModal").modal("hide");
+    //     $('#errorModal').modal({ backdrop: 'static', keyboard: false })
+    //     return 0;
+    // }
+
+    for (var i = 0; i < lessonResponse.collections.length; i++) {
+        COLLECTIONS_ARRAY.push(lessonResponse.collections[i])
+    }
+}
+
+function populateCollectionsList(collections) {
+
+    // Zero out the list
+    var collectionList = document.getElementById("collectionList")
+    while (collectionList.firstChild) {
+        collectionList.removeChild(collectionList.firstChild);
+    }
+
+    for (var i = 0; i < collections.length; i++) {
+
+        var c = collections[i]
+
+        if (c.Type == "vendor" && ! document.getElementById("chkVendors").checked) {
+            continue
+        }
+
+        if (c.Type == "consultancy" && ! document.getElementById("chkConsultancies").checked) {
+            continue
+        }
+
+        if (c.Type == "community" && ! document.getElementById("chkCommunity").checked) {
+            continue
+        }
+
+        var collectionBox = document.createElement('div');
+        collectionBox.classList.add("list-group-item")
+        collectionBox.classList.add("list-group-item-action")
+        collectionBox.classList.add("flex-column")
+        collectionBox.classList.add("align-items-start")
+
+        collectionBox.innerHTML = `
+        <img class="collection-container-img" src="` + c.Image + `" />
+        <div class="collection-container-div">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">` + c.Title + `</h5>
+                    <span class="badge badge-info">` + c.Type + `</span>
+                </div>
+                <p class="mb-1">
+                    ` + c.BriefDescription + `
+                </p>
+                <a href="/collections/view.html?collectionId=` + c.Id + `" class="btn btn-primary btn-sm" role="button" aria-disabled="true">View Collection</a>
+        </div>`
+
+        document.getElementById("collectionList").appendChild(collectionBox);
+    }
+}
+
+function collectionsCheckChange() {
+    collectionsBox(document.getElementById("collectionFilter").value)
+}
+
+function collectionsBox(searchQuery) {
+    if (searchQuery == "") {
+        populateCollectionsList(COLLECTIONS_ARRAY);
+        return
+    }
+
+    var options = {
+        shouldSort: true,
+        includeScore: true,
+        threshold: 0.6,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+            "Title"
+        ]
+    };
+
+    // Handle keyboard events like this, so folks can arrow down to the one they want?
+    // if (e.code == "ArrowDown") {}
+
+    // http://fusejs.io/
+    var fuse = new Fuse(COLLECTIONS_ARRAY, options);
+    var results = fuse.search(searchQuery);
+
+    console.log(results)
+
+    var populateResults = [];
+    for (var i = 0; i < results.length; i++) {
+        if (results[i].score < 0.2) {
+            populateResults.push(results[i].item)
+        }
+    }
+
+    populateCollectionsList(populateResults);
+}
+
+function showCollectionDetails(collectionId) {
+    var xhttp2 = new XMLHttpRequest();
+    xhttp2.open("GET", urlRoot + "/syringe/exp/collection/" + collectionId, false);
+    xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp2.send()
+
+    var collectionHeader = document.getElementById("collectionName")
+
+    if (xhttp2.status != 200) {
+        collectionHeader.innerText = "Error retrieving collection"
+        collectionHeader.style = "margin-top: 10px;color: red;"
+        return
+    }
+    var collectionDetails = JSON.parse(xhttp2.responseText);
+
+    collectionHeader.innerText = collectionDetails.Title
+    document.getElementById("collectionDescription").innerText = collectionDetails.LongDescription
+    document.getElementById("collectionWebsite").innerHTML = '<a target="_blank" href="' + collectionDetails.Website + '">' + collectionDetails.Website + '</a>'
+    document.getElementById("collectionType").innerText = collectionDetails.Type
+    document.getElementById("collectionImage").src = collectionDetails.Image
+
+    if (collectionDetails.ContactEmail == null || collectionDetails.ContactEmail == "") {
+        document.getElementById("collectionEmail").innerText = "Not provided"
+    } else {
+        document.getElementById("collectionEmail").innerHTML = '<a href="mailto:' + collectionDetails.ContactEmail + '">' + collectionDetails.ContactEmail + '</a>'
+    }
+
+    if (collectionDetails.Lessons == null) {
+        var lessonRow = document.createElement('tr');
+        lessonRow.classList.add("table-default")
+
+        lessonRow.innerHTML = `
+          <th scope="row"></th>
+          <td><p>Coming soon!</p></td>
+          <td></td>`
+
+        document.getElementById("lessonRows").appendChild(lessonRow);
+        return
+    }
+
+    // Render lessons table
+    for (var i = 0; i < collectionDetails.Lessons.length; i++) {
+        lesson = collectionDetails.Lessons[i]
+        var lessonRow = document.createElement('tr');
+        lessonRow.classList.add("table-default")
+
+        // Lesson launch button in its own column. Will be invisible on mobile
+        var launchButtonColumn = `<a href="/labs/index.html?lessonId=` + lesson.lessonId + `" class="btn btn-primary btn-sm launchColumn" role="button" aria-disabled="true">Launch Lesson</a>`
+        
+        // Inline button for mobile. Will be invisible when on desktop
+        var launchButtonInline = `<a href="/labs/index.html?lessonId=` + lesson.lessonId + `" class="btn btn-primary btn-sm launchInline" role="button" aria-disabled="true">Launch Lesson</a>`
+
+        lessonRow.innerHTML = `
+          <th scope="row">` + lesson.lessonName + `</th>
+          <td><p>` + lesson.lessonDescription + `</p>` + launchButtonInline + `</td>
+          <td>` + launchButtonColumn + `</td>`
+
+        document.getElementById("lessonRows").appendChild(lessonRow);
+    }
 }
