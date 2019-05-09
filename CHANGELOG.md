@@ -5,6 +5,7 @@
 - Added option to pass number or 'this' object as the argument to runSnippetInTab() function in lesson guide [#45](https://github.com/nre-learning/antidote-web/pull/45)
 - Update client-side to handle lessondef endpoint rename [#61](https://github.com/nre-learning/antidote-web/pull/61)
 - Added collections feature [#62](https://github.com/nre-learning/antidote-web/pull/62)
+- Adjust Jupyter path based on syringe changes [#67](https://github.com/nre-learning/antidote-web/pull/67)
 
 ## v0.3.2 - April 19, 2019
 
