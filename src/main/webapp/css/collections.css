@@ -47,6 +47,28 @@
     background-color: lightgray;
 }
 
+.collections-header {
+    padding-left: 15px;
+    margin-top: 10px;
+}
+
+
+#collectionImage {
+    float: right;
+    max-width: 200px
+}
+
+.collections-meta-table {
+    max-width: 70%;
+    float: left;
+}
+
+.launchColumn {
+    display: inline;
+}
+.launchInline {
+    display: none;
+}
 
 @media (max-width: 767px) {
     /* This allows us to position the filter box above the results box when on mobile */
@@ -62,7 +84,24 @@
     .collection-container-div {
         width: auto;
     }
+
+    .collections-meta-table {
+        max-width: 100%;
+        float: left;
+    }
+
+    #collectionImage {
+        float: left;
+    }
+
+    .launchColumn {
+        display: none;
+    }
+    .launchInline {
+        display: inline;
+    }
 }
+
 
 
 

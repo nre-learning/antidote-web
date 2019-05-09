@@ -19,7 +19,7 @@
 
       // Only handles text changes. See below.
       $('#collectionFilter').on('input', function (e) {
-        collectionsBox(e)
+        collectionsBox(e.target.value)
       });
     });
   </script>
@@ -37,8 +37,12 @@
       <link rel="stylesheet" href="/css/collections.css">
       <h2 style="margin-top: 10px;">Collections</h2>
 
-      <p>Collections are a new categorization mechanism in NRE Labs to group lessons according to largely non-technical criteria.
-        Please see <a href="https://antidoteproject.readthedocs.io/en/latest/platform/curricula/collections/index.html">the documentation on Collections for more information</a>, or start searching for collections using the tool below.
+      <p>Collections are a new categorization mechanism in NRE Labs to group lessons according to largely non-technical
+        criteria.
+        Please see <a
+          href="https://antidoteproject.readthedocs.io/en/latest/platform/curricula/collections/index.html">the
+          documentation on Collections for more information</a>, or start searching for collections using the tool
+        below.
       </p>
 
       <div class="container collections-box">
@@ -46,26 +50,30 @@
         <div class="collections-filter list-group">
           <p>Filter by type:</p>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1" checked>
-            <label class="form-check-label" for="defaultCheck1">
+            <input class="form-check-input" type="checkbox" value="1" id="chkVendors"
+              onchange="collectionsCheckChange()" checked>
+            <label class="form-check-label" for="chkVendors">
               Vendors
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="1" id="defaultCheck2" checked>
-            <label class="form-check-label" for="defaultCheck2">
+            <input class="form-check-input" type="checkbox" value="1" id="chkConsultancies"
+              onchange="collectionsCheckChange()" checked>
+            <label class="form-check-label" for="chkConsultancies">
               Consultancies
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="1" id="defaultCheck3" checked>
-            <label class="form-check-label" for="defaultCheck3">
+            <input class="form-check-input" type="checkbox" value="1" id="chkCommunity"
+              onchange="collectionsCheckChange()" checked>
+            <label class="form-check-label" for="chkCommunity">
               Community
             </label>
           </div>
           <hr />
           <div class="input-group mb-3">
-            <input id="collectionFilter" type="text" class="form-control" placeholder="Filter by name..." aria-label="Filter by name..." aria-describedby="basic-addon1">
+            <input id="collectionFilter" type="text" class="form-control" placeholder="Filter by name..."
+              aria-label="Filter by name..." aria-describedby="basic-addon1">
           </div>
         </div>
 

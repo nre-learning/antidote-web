@@ -708,7 +708,7 @@ function appendPTRBanner() {
 
     var ptrBanner = document.createElement("DIV");
     ptrBanner.id = "ptrBanner"
-    ptrBanner.style = "background-color: black;"
+    ptrBanner.style = "background-color: black;position: fixed;bottom: 0;width: 100%;height: 27px;"
     ptrBanner.innerHTML = '<span style="color: red;"><p>NRE Labs Public Test Realm. Curriculum: ' + curriculumLink + ' | Antidote-Web: ' + antidoteWebLink + ' | Syringe: ' + syringeLink + '</p></span>'
 
     document.body.appendChild(ptrBanner)
@@ -1054,6 +1054,18 @@ async function verify() {
     verifyBtn.disabled = false
 }
 
+function getCollectionId() {
+    var url = new URL(window.location.href);
+    var collectionId = url.searchParams.get("collectionId");
+    if (collectionId == null || collectionId == "") {
+        console.log("collectionId not provided")
+        console.log(url)
+        return 0;
+    }
+    return parseInt(collectionId);
+}
+
+
 function getCollections() {
 
     var xhttp = new XMLHttpRequest();
@@ -1087,12 +1099,23 @@ function populateCollectionsList(collections) {
 
         var c = collections[i]
 
-        var collectionBox = document.createElement('a');
+        if (c.Type == "vendor" && ! document.getElementById("chkVendors").checked) {
+            continue
+        }
+
+        if (c.Type == "consultancy" && ! document.getElementById("chkConsultancies").checked) {
+            continue
+        }
+
+        if (c.Type == "community" && ! document.getElementById("chkCommunity").checked) {
+            continue
+        }
+
+        var collectionBox = document.createElement('div');
         collectionBox.classList.add("list-group-item")
         collectionBox.classList.add("list-group-item-action")
         collectionBox.classList.add("flex-column")
         collectionBox.classList.add("align-items-start")
-        collectionBox.href = "#" // TODO send to main site.
 
         collectionBox.innerHTML = `
         <img class="collection-container-img" src="` + c.Image + `" />
@@ -1104,20 +1127,22 @@ function populateCollectionsList(collections) {
                 <p class="mb-1">
                     ` + c.BriefDescription + `
                 </p>
-                <small class="text-muted">Click to view this collection</small>
+                <a href="/collections/view.html?collectionId=` + c.Id + `" class="btn btn-primary btn-sm" role="button" aria-disabled="true">View Collection</a>
         </div>`
 
         document.getElementById("collectionList").appendChild(collectionBox);
     }
 }
 
+function collectionsCheckChange() {
+    collectionsBox(document.getElementById("collectionFilter").value)
+}
 
-function collectionsBox(e) {
-    if (e.target.value == "") {
+function collectionsBox(searchQuery) {
+    if (searchQuery == "") {
         populateCollectionsList(COLLECTIONS_ARRAY);
         return
     }
-
 
     var options = {
         shouldSort: true,
@@ -1137,7 +1162,7 @@ function collectionsBox(e) {
 
     // http://fusejs.io/
     var fuse = new Fuse(COLLECTIONS_ARRAY, options);
-    var results = fuse.search(e.target.value);
+    var results = fuse.search(searchQuery);
 
     console.log(results)
 
@@ -1149,4 +1174,65 @@ function collectionsBox(e) {
     }
 
     populateCollectionsList(populateResults);
+}
+
+function showCollectionDetails(collectionId) {
+    var xhttp2 = new XMLHttpRequest();
+    xhttp2.open("GET", urlRoot + "/syringe/exp/collection/" + collectionId, false);
+    xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp2.send()
+
+    var collectionHeader = document.getElementById("collectionName")
+
+    if (xhttp2.status != 200) {
+        collectionHeader.innerText = "Error retrieving collection"
+        collectionHeader.style = "margin-top: 10px;color: red;"
+        return
+    }
+    var collectionDetails = JSON.parse(xhttp2.responseText);
+
+    collectionHeader.innerText = collectionDetails.Title
+    document.getElementById("collectionDescription").innerText = collectionDetails.LongDescription
+    document.getElementById("collectionWebsite").innerHTML = '<a target="_blank" href="' + collectionDetails.Website + '">' + collectionDetails.Website + '</a>'
+    document.getElementById("collectionType").innerText = collectionDetails.Type
+    document.getElementById("collectionImage").src = collectionDetails.Image
+
+    if (collectionDetails.ContactEmail == null || collectionDetails.ContactEmail == "") {
+        document.getElementById("collectionEmail").innerText = "Not provided"
+    } else {
+        document.getElementById("collectionEmail").innerHTML = '<a href="mailto:' + collectionDetails.ContactEmail + '">' + collectionDetails.ContactEmail + '</a>'
+    }
+
+    if (collectionDetails.Lessons == null) {
+        var lessonRow = document.createElement('tr');
+        lessonRow.classList.add("table-default")
+
+        lessonRow.innerHTML = `
+          <th scope="row"></th>
+          <td><p>Coming soon!</p></td>
+          <td></td>`
+
+        document.getElementById("lessonRows").appendChild(lessonRow);
+        return
+    }
+
+    // Render lessons table
+    for (var i = 0; i < collectionDetails.Lessons.length; i++) {
+        lesson = collectionDetails.Lessons[i]
+        var lessonRow = document.createElement('tr');
+        lessonRow.classList.add("table-default")
+
+        // Lesson launch button in its own column. Will be invisible on mobile
+        var launchButtonColumn = `<a href="/labs/index.html?lessonId=` + lesson.lessonId + `" class="btn btn-primary btn-sm launchColumn" role="button" aria-disabled="true">Launch Lesson</a>`
+        
+        // Inline button for mobile. Will be invisible when on desktop
+        var launchButtonInline = `<a href="/labs/index.html?lessonId=` + lesson.lessonId + `" class="btn btn-primary btn-sm launchInline" role="button" aria-disabled="true">Launch Lesson</a>`
+
+        lessonRow.innerHTML = `
+          <th scope="row">` + lesson.lessonName + `</th>
+          <td><p>` + lesson.lessonDescription + `</p>` + launchButtonInline + `</td>
+          <td>` + launchButtonColumn + `</td>`
+
+        document.getElementById("lessonRows").appendChild(lessonRow);
+    }
 }
