@@ -469,6 +469,11 @@ function addTabs(endpoints) {
                 var newGuacDiv = document.createElement("DIV");
                 newGuacDiv.id = "display" + fullName
                 newTabContent.appendChild(newGuacDiv)
+                connectData = ep.Host + ";" + pres.Port + ";" + String(document.getElementById("myTabContent").offsetWidth) + ";" + String(document.getElementById("myTabContent").offsetHeight - 42);
+                document.getElementById("myTabContent").appendChild(newTabContent);
+
+                // MUST run this after tab content has been added to the DOM
+                guacInit(fullName, connectData)
 
             } else if (pres.Type == "http") {
 
@@ -478,14 +483,13 @@ function addTabs(endpoints) {
                 iframe.frameBorder = "0"
                 iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-" + fullName + pres.IframePath
                 newTabContent.appendChild(iframe);
+                document.getElementById("myTabContent").appendChild(newTabContent);
             }
 
             document.getElementById("myTabContent").appendChild(newTabContent);
             console.log("Added " + fullName);
         }
     }
-    
-    guacInit(endpoints);
 }
 
 function sleep(ms) {
@@ -557,70 +561,60 @@ function copy() {
     document.body.removeChild(dummy);
 }
 
-
 var terminals = {};
-function guacInit(endpoints) {
+function guacInit(fullName, connectData) {
 
-    for (var e in endpoints) {
-        var ep = endpoints[e]
+    var thisTerminal = {};
 
-        for (var i = 0; i < ep.Presentations.length; i++) {
-            var pres = ep.Presentations[i]
+    var tunnel = new Guacamole.HTTPTunnel("../tunnel")
 
-            if (pres.Type == "ssh") {
+    console.log("Adding guac configuration for " + fullName)
 
-                var thisTerminal = {};
+    thisTerminal.display = document.getElementById("display" + fullName);
+    thisTerminal.guac = new Guacamole.Client(
+        tunnel
+    );
 
-                var tunnel = new Guacamole.HTTPTunnel("../tunnel")
+    thisTerminal.guac.onerror = function (error) {
+        console.log(error);
+        console.log("Problem connecting to the remote endpoint.");
+        return false
+    };
 
-                var fullName = ep.Name + "-" + pres.Name;
-
-                console.log("Adding guac configuration for " + fullName)
-
-                thisTerminal.display = document.getElementById("display" + fullName);
-                thisTerminal.guac = new Guacamole.Client(
-                    tunnel
-                );
-
-                thisTerminal.guac.onerror = function (error) {
-                    console.log(error);
-                    console.log("Problem connecting to the remote endpoint.");
-                    return false
-                };
-
-                function ingestStream(stream, mimetype) {
-                    console.log(stream);
-                    stream.onblob = function (data) {
-                        guacStagingClipboard = atob(data)
-                    }
-                }
-                thisTerminal.guac.onclipboard = ingestStream
-
-                connectData = ep.Host + ";" + pres.Port + ";" + String(document.getElementById("myTabContent").offsetWidth) + ";" + String(document.getElementById("myTabContent").offsetHeight - 42);
-                thisTerminal.guac.connect(connectData);
-
-                thisTerminal.display.appendChild(thisTerminal.guac.getDisplay().getElement());
-
-                // Disconnect on close
-                window.onunload = function () {
-                    thisTerminal.guac.disconnect();
-                }
-
-                thisTerminal.mouse = new Guacamole.Mouse(thisTerminal.guac.getDisplay().getElement());
-
-                thisTerminal.mouse.onmousedown =
-                    thisTerminal.mouse.onmouseup =
-                    thisTerminal.mouse.onmousemove = function (id) {
-                        return function (mouseState) {
-                            terminals[id].guac.sendMouseState(mouseState);
-                        }
-                    }(fullName);
-
-                terminals[fullName] = thisTerminal
-            }
+    function ingestStream(stream, mimetype) {
+        console.log(stream);
+        stream.onblob = function (data) {
+            guacStagingClipboard = atob(data)
         }
     }
+    thisTerminal.guac.onclipboard = ingestStream
 
+    thisTerminal.guac.connect(connectData);
+
+    thisTerminal.display.appendChild(thisTerminal.guac.getDisplay().getElement());
+
+    // Disconnect on close
+    window.onunload = function () {
+        thisTerminal.guac.disconnect();
+    }
+
+    thisTerminal.mouse = new Guacamole.Mouse(thisTerminal.guac.getDisplay().getElement());
+
+    thisTerminal.mouse.onmousedown =
+        thisTerminal.mouse.onmouseup =
+        thisTerminal.mouse.onmousemove = function (id) {
+            return function (mouseState) {
+                terminals[id].guac.sendMouseState(mouseState);
+            }
+        }(fullName);
+
+    terminals[fullName] = thisTerminal
+            
+
+
+    // TODO previously this ran once, outside the loop that contained the above that ran per endpoint
+    // Now that this is all run inside the function once, not sure how to position this part other
+    // than to just have it get called each time.
     var tabs = document.getElementById("myTabContent").children;
     var keyboard = new Guacamole.Keyboard(document);
     keyboard.onkeydown = function (keysym) {
