@@ -243,19 +243,20 @@ async function requestLesson() {
 
         // Here we go get the livelesson we requested, verify it's ready, and once it is, start wiring up endpoints.
         var xhttp2 = new XMLHttpRequest();
-        xhttp2.open("GET", urlRoot + "/syringe/exp/livelesson/" + response.id, false);
+        // xhttp2.open("GET", urlRoot + "/syringe/exp/livelesson/" + response.id, false);
+        xhttp2.open("GET", "https://ptr.labs.networkreliability.engineering/syringe/exp/livelesson/24-uhu0ihp54ojtn55w", false);
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
+        var liveLessonDetails = JSON.parse(xhttp2.responseText);
+
         if (xhttp2.status != 200) {
             var errorMessage = document.getElementById("error-modal-body");
-            errorMessage.innerText = "Error retrieving requested lesson: " + response["error"];
+            errorMessage.innerText = "Error retrieving requested lesson: " + liveLessonDetails["error"];
             $("#busyModal").modal("hide");
             $('#errorModal').modal({ backdrop: 'static', keyboard: false })
             return
         }
-
-        var liveLessonDetails = JSON.parse(xhttp2.responseText);
 
         updateProgressModal(liveLessonDetails);
 
@@ -273,8 +274,6 @@ async function requestLesson() {
             await sleep(500);
             continue;
         }
-
-        var endpoints = liveLessonDetails.LiveEndpoints;
 
         renderLabGuide(liveLessonDetails.LabGuide, liveLessonDetails.JupyterLabGuide);
 
@@ -326,7 +325,7 @@ async function requestLesson() {
         // we still can't connect right away. Adding short sleep to account for this for now
         // TODO try removing this now that the health check is SSH based
         await sleep(2000);
-        addTabs(endpoints);
+        addTabs(liveLessonDetails.LiveEndpoints);
         $("#busyModal").modal("hide");
         break;
     }
@@ -401,49 +400,54 @@ function rescale(browserDisp, guacDisp) {
     guacDisp.scale(scale);
 }
 
-function sortEndpoints(endpoints) {
+// function sortEndpoints(endpoints) {
 
-    var sortedEndpoints = [];
+//     var sortedEndpoints = [];
 
-    for (var ep in endpoints) {
-        if (endpoints[ep].Type == "UTILITY") {
-            sortedEndpoints.push(endpoints[ep]);
-        }
-    }
+//     for (var ep in endpoints) {
+//         if (endpoints[ep].Type == "UTILITY") {
+//             sortedEndpoints.push(endpoints[ep]);
+//         }
+//     }
 
-    for (var ep in endpoints) {
-        if (endpoints[ep].Type == "DEVICE") {
-            sortedEndpoints.push(endpoints[ep]);
-        }
-    }
+//     for (var ep in endpoints) {
+//         if (endpoints[ep].Type == "DEVICE") {
+//             sortedEndpoints.push(endpoints[ep]);
+//         }
+//     }
 
-    for (var ep in endpoints) {
-        if (endpoints[ep].Type == "IFRAME") {
-            sortedEndpoints.push(endpoints[ep]);
-        }
-    }
+//     for (var ep in endpoints) {
+//         if (endpoints[ep].Type == "IFRAME") {
+//             sortedEndpoints.push(endpoints[ep]);
+//         }
+//     }
 
-    return sortedEndpoints
-}
+//     return sortedEndpoints
+// }
 
 function addTabs(endpoints) {
 
-    endpoints = sortEndpoints(endpoints);
+    var addedFirstTab = false;
+    for (var e in endpoints) {
+        var ep = endpoints[e]
 
-    // Add Devices tabs
-    for (var i = 0; i < endpoints.length; i++) {
-        if (endpoints[i].Type == "DEVICE" || endpoints[i].Type == "UTILITY") {
-            console.log("Adding " + endpoints[i].Name);
+        for (var i = 0; i < ep.Presentations.length; i++) {
+            var pres = ep.Presentations[i]
+
+            var fullName = ep.Name + "-" + pres.Name;
+
+            // Generic wiring for a tabbed resource of any kind
+            console.log("Adding " + fullName);
             var newTabHeader = document.createElement("LI");
             newTabHeader.classList.add('nav-item');
 
             var a = document.createElement('a');
-            var linkText = document.createTextNode(endpoints[i].Name);
+            var linkText = document.createTextNode(fullName);
             a.appendChild(linkText);
             a.classList.add('nav-link');
-            a.href = "#" + endpoints[i].Name;
+            a.href = "#" + fullName;
             a.setAttribute("data-toggle", "tab");
-            if (i == 0) {
+            if (!addedFirstTab) {
                 a.classList.add('active', 'show');
             }
             newTabHeader.appendChild(a);
@@ -451,63 +455,36 @@ function addTabs(endpoints) {
             document.getElementById("tabHeaders").appendChild(newTabHeader);
 
             var newTabContent = document.createElement("DIV");
-            newTabContent.id = endpoints[i].Name;
-            newTabContent.classList.add('tab-pane', 'fade');
-            if (i == 0) {
-                newTabContent.classList.add('active', 'show');
-            }
-            // newTabContent.height="350px";
-            // newTabContent.style.height = "350px";
-            newTabContent.style = "height: 100%;";
-
-            var newGuacDiv = document.createElement("DIV");
-            newGuacDiv.id = "display" + endpoints[i].Name
-            // newGuacDiv.height="300px";
-            // newGuacDiv.style.height = "300px";
-
-
-            newTabContent.appendChild(newGuacDiv)
-
-            document.getElementById("myTabContent").appendChild(newTabContent);
-
-            console.log("Added " + endpoints[i].Name);
-        } else if (endpoints[i].Type == "IFRAME") {
-            console.log("Adding " + endpoints[i].Name);
-            var newTabHeader = document.createElement("LI");
-            newTabHeader.classList.add('nav-item');
-
-            var a = document.createElement('a');
-            var linkText = document.createTextNode(endpoints[i].Name);
-            a.appendChild(linkText);
-            a.classList.add('nav-link');
-            a.href = "#" + endpoints[i].Name;
-            a.setAttribute("data-toggle", "tab");
-            if (i == 0) {
-                a.classList.add('active', 'show');
-            }
-            newTabHeader.appendChild(a);
-
-            document.getElementById("tabHeaders").appendChild(newTabHeader);
-
-            var newTabContent = document.createElement("DIV");
-            newTabContent.id = endpoints[i].Name;
+            newTabContent.id = fullName;
             newTabContent.style = "width: 100%; height: 100%;"
             newTabContent.classList.add('tab-pane', 'fade');
-            if (i == 0) {
+            if (!addedFirstTab) {
                 newTabContent.classList.add('active', 'show');
+                addedFirstTab = true;
             }
 
-            var iframe = document.createElement('iframe');
-            iframe.width = "100%"
-            iframe.height = "100%"
-            iframe.frameBorder = "0"
-            iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-" + endpoints[i].Name + endpoints[i].IframePath
-            newTabContent.appendChild(iframe);
+            // Create presentation-specific resources
+            if (pres.Type == "ssh") {
+
+                var newGuacDiv = document.createElement("DIV");
+                newGuacDiv.id = "display" + fullName
+                newTabContent.appendChild(newGuacDiv)
+
+            } else if (pres.Type == "http") {
+
+                var iframe = document.createElement('iframe');
+                iframe.width = "100%"
+                iframe.height = "100%"
+                iframe.frameBorder = "0"
+                iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-" + fullName + pres.IframePath
+                newTabContent.appendChild(iframe);
+            }
 
             document.getElementById("myTabContent").appendChild(newTabContent);
-            console.log("Added " + endpoints[i].Name);
+            console.log("Added " + fullName);
         }
     }
+    
     guacInit(endpoints);
 }
 
@@ -584,57 +561,63 @@ function copy() {
 var terminals = {};
 function guacInit(endpoints) {
 
-    for (var i = 0; i < endpoints.length; i++) {
-        if (endpoints[i].Type == "DEVICE" || endpoints[i].Type == "UTILITY") {
+    for (var e in endpoints) {
+        var ep = endpoints[e]
 
-            var thisTerminal = {};
+        for (var i = 0; i < ep.Presentations.length; i++) {
+            var pres = ep.Presentations[i]
 
-            var tunnel = new Guacamole.HTTPTunnel("../tunnel")
+            if (pres.Type == "ssh") {
 
-            var epName = endpoints[i].Name;
+                var thisTerminal = {};
 
-            console.log("Adding guac configuration for " + epName)
+                var tunnel = new Guacamole.HTTPTunnel("../tunnel")
 
-            thisTerminal.display = document.getElementById("display" + epName);
-            thisTerminal.guac = new Guacamole.Client(
-                tunnel
-            );
+                var fullName = ep.Name + "-" + pres.Name;
 
-            thisTerminal.guac.onerror = function (error) {
-                console.log(error);
-                console.log("Problem connecting to the remote endpoint.");
-                return false
-            };
+                console.log("Adding guac configuration for " + fullName)
 
-            function ingestStream(stream, mimetype) {
-                console.log(stream);
-                stream.onblob = function (data) {
-                    guacStagingClipboard = atob(data)
-                }
-            }
-            thisTerminal.guac.onclipboard = ingestStream
+                thisTerminal.display = document.getElementById("display" + fullName);
+                thisTerminal.guac = new Guacamole.Client(
+                    tunnel
+                );
 
-            connectData = endpoints[i].Host + ";" + endpoints[i].Port + ";" + String(document.getElementById("myTabContent").offsetWidth) + ";" + String(document.getElementById("myTabContent").offsetHeight - 42);
-            thisTerminal.guac.connect(connectData);
+                thisTerminal.guac.onerror = function (error) {
+                    console.log(error);
+                    console.log("Problem connecting to the remote endpoint.");
+                    return false
+                };
 
-            thisTerminal.display.appendChild(thisTerminal.guac.getDisplay().getElement());
-
-            // Disconnect on close
-            window.onunload = function () {
-                thisTerminal.guac.disconnect();
-            }
-
-            thisTerminal.mouse = new Guacamole.Mouse(thisTerminal.guac.getDisplay().getElement());
-
-            thisTerminal.mouse.onmousedown =
-                thisTerminal.mouse.onmouseup =
-                thisTerminal.mouse.onmousemove = function (id) {
-                    return function (mouseState) {
-                        terminals[id].guac.sendMouseState(mouseState);
+                function ingestStream(stream, mimetype) {
+                    console.log(stream);
+                    stream.onblob = function (data) {
+                        guacStagingClipboard = atob(data)
                     }
-                }(epName);
+                }
+                thisTerminal.guac.onclipboard = ingestStream
 
-            terminals[epName] = thisTerminal
+                connectData = ep.Host + ";" + pres.Port + ";" + String(document.getElementById("myTabContent").offsetWidth) + ";" + String(document.getElementById("myTabContent").offsetHeight - 42);
+                thisTerminal.guac.connect(connectData);
+
+                thisTerminal.display.appendChild(thisTerminal.guac.getDisplay().getElement());
+
+                // Disconnect on close
+                window.onunload = function () {
+                    thisTerminal.guac.disconnect();
+                }
+
+                thisTerminal.mouse = new Guacamole.Mouse(thisTerminal.guac.getDisplay().getElement());
+
+                thisTerminal.mouse.onmousedown =
+                    thisTerminal.mouse.onmouseup =
+                    thisTerminal.mouse.onmousemove = function (id) {
+                        return function (mouseState) {
+                            terminals[id].guac.sendMouseState(mouseState);
+                        }
+                    }(fullName);
+
+                terminals[fullName] = thisTerminal
+            }
         }
     }
 
@@ -1236,3 +1219,11 @@ function showCollectionDetails(collectionId) {
         document.getElementById("lessonRows").appendChild(lessonRow);
     }
 }
+
+
+
+
+
+
+
+
