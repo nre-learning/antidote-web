@@ -37,7 +37,6 @@ function getLessonStage() {
     return parseInt(lessonStage);
 }
 
-// TODO(mierdin): build an extension to showdown so you don't have to provide the snippet index in the lesson guide
 function runSnippetInTab(tabName, snippetIndex) {
 
     // Select tab
@@ -243,8 +242,7 @@ async function requestLesson() {
 
         // Here we go get the livelesson we requested, verify it's ready, and once it is, start wiring up endpoints.
         var xhttp2 = new XMLHttpRequest();
-        // xhttp2.open("GET", urlRoot + "/syringe/exp/livelesson/" + response.id, false);
-        xhttp2.open("GET", "https://ptr.labs.networkreliability.engineering/syringe/exp/livelesson/24-uhu0ihp54ojtn55w", false);
+        xhttp2.open("GET", urlRoot + "/syringe/exp/livelesson/" + response.id, false);
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
@@ -338,15 +336,15 @@ function updateProgressModal(liveLessonDetails) {
     var statusMessageElement = document.getElementById("lessonStatus");
     switch (liveLessonDetails.LiveLessonStatus) {
         case "INITIAL_BOOT":
-            totalEndpoints = 0;
-            reachableEndpoints = 0;
-            for (var property in liveLessonDetails.LiveEndpoints) {
-                totalEndpoints++;
-                if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
-                    reachableEndpoints++;
-                }
+            var healthy = 0;
+            var total = 0;
+            if (liveLessonDetails.HealthyTests != null){
+                total = liveLessonDetails.HealthyTests
             }
-            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable...(" + reachableEndpoints + "/" + totalEndpoints + ")"
+            if (liveLessonDetails.TotalTests != null){
+                total = liveLessonDetails.TotalTests
+            }
+            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable...(" + healthy + "/" + total + ")"
             pBar.style = "width: 33%"
             break;
         case "CONFIGURATION":
@@ -400,41 +398,23 @@ function rescale(browserDisp, guacDisp) {
     guacDisp.scale(scale);
 }
 
-// function sortEndpoints(endpoints) {
-
-//     var sortedEndpoints = [];
-
-//     for (var ep in endpoints) {
-//         if (endpoints[ep].Type == "UTILITY") {
-//             sortedEndpoints.push(endpoints[ep]);
-//         }
-//     }
-
-//     for (var ep in endpoints) {
-//         if (endpoints[ep].Type == "DEVICE") {
-//             sortedEndpoints.push(endpoints[ep]);
-//         }
-//     }
-
-//     for (var ep in endpoints) {
-//         if (endpoints[ep].Type == "IFRAME") {
-//             sortedEndpoints.push(endpoints[ep]);
-//         }
-//     }
-
-//     return sortedEndpoints
-// }
-
 function addTabs(endpoints) {
 
     var addedFirstTab = false;
     for (var e in endpoints) {
         var ep = endpoints[e]
 
+        if (ep.Presentations == null){
+            continue
+        }
+
         for (var i = 0; i < ep.Presentations.length; i++) {
             var pres = ep.Presentations[i]
 
-            var fullName = ep.Name + "-" + pres.Name;
+            var fullName = ep.Name
+            if (ep.Presentations.length > 1) {
+                fullName = fullName + "-" + pres.Name;
+            }
 
             // Generic wiring for a tabbed resource of any kind
             console.log("Adding " + fullName);
@@ -481,15 +461,23 @@ function addTabs(endpoints) {
                 iframe.width = "100%"
                 iframe.height = "100%"
                 iframe.frameBorder = "0"
-                iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-" + fullName + pres.IframePath
+
+                // Using ep.Name here instead of fullName. The reason for this is, the backend ingress doesn't care how
+                // many iframes are open, the path is the same regardless of how many presentations.
+                // So we won't use the fullName which includes an optional differentiator - just the endpoint name.
+                // ALSO - the trailing slash is tremendously important.
+                iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-" + ep.Name + "/"
+
                 newTabContent.appendChild(iframe);
                 document.getElementById("myTabContent").appendChild(newTabContent);
             }
 
-            document.getElementById("myTabContent").appendChild(newTabContent);
             console.log("Added " + fullName);
         }
     }
+
+    // Run once, after the loop
+    guacKeyboardInit()
 }
 
 function sleep(ms) {
@@ -598,6 +586,10 @@ function guacInit(fullName, connectData) {
         thisTerminal.guac.disconnect();
     }
 
+    // TODO(mierdin): See if you can DETECT a disconnect, and build retry logic in. If fail, provide a dialog
+    // INSIDE the tab pane (per tab) that indicates a refresh is likely required
+    // Would also be nice to extend retry logic to initial connection in case something is wonky to begin with
+
     thisTerminal.mouse = new Guacamole.Mouse(thisTerminal.guac.getDisplay().getElement());
 
     thisTerminal.mouse.onmousedown =
@@ -609,12 +601,14 @@ function guacInit(fullName, connectData) {
         }(fullName);
 
     terminals[fullName] = thisTerminal
-            
 
+    console.log(terminals)
+    return true
+}
 
-    // TODO previously this ran once, outside the loop that contained the above that ran per endpoint
-    // Now that this is all run inside the function once, not sure how to position this part other
-    // than to just have it get called each time.
+// guacKeyboardInit() is designed to run once, after all of the other guac resources have been initialized.
+// All indications are that the keyboard should be attached to "document" as below.
+function guacKeyboardInit() {
     var tabs = document.getElementById("myTabContent").children;
     var keyboard = new Guacamole.Keyboard(document);
     keyboard.onkeydown = function (keysym) {
@@ -636,8 +630,6 @@ function guacInit(fullName, connectData) {
         }
     };
 
-    console.log(terminals)
-    return true
 }
 
 // Big honkin regex from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
