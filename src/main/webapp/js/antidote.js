@@ -357,15 +357,15 @@ function updateProgressModal(liveLessonDetails) {
             break;
         default:
             // Shouldn't need this since we're getting rid of the default nil value on the syringe side, but just in case...
-            totalEndpoints = 0;
-            reachableEndpoints = 0;
-            for (var property in liveLessonDetails.LiveEndpoints) {
-                totalEndpoints++;
-                if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
-                    reachableEndpoints++;
-                }
+            var healthy = 0;
+            var total = 0;
+            if (liveLessonDetails.HealthyTests != null){
+                total = liveLessonDetails.HealthyTests
             }
-            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable (" + reachableEndpoints + "/" + totalEndpoints + ")"
+            if (liveLessonDetails.TotalTests != null){
+                total = liveLessonDetails.TotalTests
+            }
+            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable...(" + healthy + "/" + total + ")"
             pBar.style = "width: 33%"
     }
 }
