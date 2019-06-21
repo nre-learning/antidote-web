@@ -339,7 +339,7 @@ function updateProgressModal(liveLessonDetails) {
             var healthy = 0;
             var total = 0;
             if (liveLessonDetails.HealthyTests != null){
-                total = liveLessonDetails.HealthyTests
+                healthy = liveLessonDetails.HealthyTests
             }
             if (liveLessonDetails.TotalTests != null){
                 total = liveLessonDetails.TotalTests
@@ -360,7 +360,7 @@ function updateProgressModal(liveLessonDetails) {
             var healthy = 0;
             var total = 0;
             if (liveLessonDetails.HealthyTests != null){
-                total = liveLessonDetails.HealthyTests
+                healthy = liveLessonDetails.HealthyTests
             }
             if (liveLessonDetails.TotalTests != null){
                 total = liveLessonDetails.TotalTests
