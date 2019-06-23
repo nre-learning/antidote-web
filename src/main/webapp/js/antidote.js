@@ -37,7 +37,6 @@ function getLessonStage() {
     return parseInt(lessonStage);
 }
 
-// TODO(mierdin): build an extension to showdown so you don't have to provide the snippet index in the lesson guide
 function runSnippetInTab(tabName, snippetIndex) {
 
     // Select tab
@@ -247,15 +246,15 @@ async function requestLesson() {
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
+        var liveLessonDetails = JSON.parse(xhttp2.responseText);
+
         if (xhttp2.status != 200) {
             var errorMessage = document.getElementById("error-modal-body");
-            errorMessage.innerText = "Error retrieving requested lesson: " + response["error"];
+            errorMessage.innerText = "Error retrieving requested lesson: " + liveLessonDetails["error"];
             $("#busyModal").modal("hide");
             $('#errorModal').modal({ backdrop: 'static', keyboard: false })
             return
         }
-
-        var liveLessonDetails = JSON.parse(xhttp2.responseText);
 
         updateProgressModal(liveLessonDetails);
 
@@ -273,8 +272,6 @@ async function requestLesson() {
             await sleep(500);
             continue;
         }
-
-        var endpoints = liveLessonDetails.LiveEndpoints;
 
         renderLabGuide(liveLessonDetails.LabGuide, liveLessonDetails.JupyterLabGuide);
 
@@ -326,7 +323,7 @@ async function requestLesson() {
         // we still can't connect right away. Adding short sleep to account for this for now
         // TODO try removing this now that the health check is SSH based
         await sleep(2000);
-        addTabs(endpoints);
+        addTabs(liveLessonDetails.LiveEndpoints);
         $("#busyModal").modal("hide");
         break;
     }
@@ -339,15 +336,15 @@ function updateProgressModal(liveLessonDetails) {
     var statusMessageElement = document.getElementById("lessonStatus");
     switch (liveLessonDetails.LiveLessonStatus) {
         case "INITIAL_BOOT":
-            totalEndpoints = 0;
-            reachableEndpoints = 0;
-            for (var property in liveLessonDetails.LiveEndpoints) {
-                totalEndpoints++;
-                if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
-                    reachableEndpoints++;
-                }
+            var healthy = 0;
+            var total = 0;
+            if (liveLessonDetails.HealthyTests != null){
+                healthy = liveLessonDetails.HealthyTests
             }
-            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable...(" + reachableEndpoints + "/" + totalEndpoints + ")"
+            if (liveLessonDetails.TotalTests != null){
+                total = liveLessonDetails.TotalTests
+            }
+            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable...(" + healthy + "/" + total + ")"
             pBar.style = "width: 33%"
             break;
         case "CONFIGURATION":
@@ -360,15 +357,15 @@ function updateProgressModal(liveLessonDetails) {
             break;
         default:
             // Shouldn't need this since we're getting rid of the default nil value on the syringe side, but just in case...
-            totalEndpoints = 0;
-            reachableEndpoints = 0;
-            for (var property in liveLessonDetails.LiveEndpoints) {
-                totalEndpoints++;
-                if (liveLessonDetails.LiveEndpoints[property].Reachable == true) {
-                    reachableEndpoints++;
-                }
+            var healthy = 0;
+            var total = 0;
+            if (liveLessonDetails.HealthyTests != null){
+                healthy = liveLessonDetails.HealthyTests
             }
-            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable (" + reachableEndpoints + "/" + totalEndpoints + ")"
+            if (liveLessonDetails.TotalTests != null){
+                total = liveLessonDetails.TotalTests
+            }
+            statusMessageElement.innerText = "Waiting for lesson endpoints to become reachable...(" + healthy + "/" + total + ")"
             pBar.style = "width: 33%"
     }
 }
@@ -401,49 +398,36 @@ function rescale(browserDisp, guacDisp) {
     guacDisp.scale(scale);
 }
 
-function sortEndpoints(endpoints) {
-
-    var sortedEndpoints = [];
-
-    for (var ep in endpoints) {
-        if (endpoints[ep].Type == "UTILITY") {
-            sortedEndpoints.push(endpoints[ep]);
-        }
-    }
-
-    for (var ep in endpoints) {
-        if (endpoints[ep].Type == "DEVICE") {
-            sortedEndpoints.push(endpoints[ep]);
-        }
-    }
-
-    for (var ep in endpoints) {
-        if (endpoints[ep].Type == "IFRAME") {
-            sortedEndpoints.push(endpoints[ep]);
-        }
-    }
-
-    return sortedEndpoints
-}
-
 function addTabs(endpoints) {
 
-    endpoints = sortEndpoints(endpoints);
+    var addedFirstTab = false;
+    for (var e in endpoints) {
+        var ep = endpoints[e]
 
-    // Add Devices tabs
-    for (var i = 0; i < endpoints.length; i++) {
-        if (endpoints[i].Type == "DEVICE" || endpoints[i].Type == "UTILITY") {
-            console.log("Adding " + endpoints[i].Name);
+        if (ep.Presentations == null){
+            continue
+        }
+
+        for (var i = 0; i < ep.Presentations.length; i++) {
+            var pres = ep.Presentations[i]
+
+            var fullName = ep.Name
+            if (ep.Presentations.length > 1) {
+                fullName = fullName + "-" + pres.Name;
+            }
+
+            // Generic wiring for a tabbed resource of any kind
+            console.log("Adding " + fullName);
             var newTabHeader = document.createElement("LI");
             newTabHeader.classList.add('nav-item');
 
             var a = document.createElement('a');
-            var linkText = document.createTextNode(endpoints[i].Name);
+            var linkText = document.createTextNode(fullName);
             a.appendChild(linkText);
             a.classList.add('nav-link');
-            a.href = "#" + endpoints[i].Name;
+            a.href = "#" + fullName;
             a.setAttribute("data-toggle", "tab");
-            if (i == 0) {
+            if (!addedFirstTab) {
                 a.classList.add('active', 'show');
             }
             newTabHeader.appendChild(a);
@@ -451,64 +435,49 @@ function addTabs(endpoints) {
             document.getElementById("tabHeaders").appendChild(newTabHeader);
 
             var newTabContent = document.createElement("DIV");
-            newTabContent.id = endpoints[i].Name;
-            newTabContent.classList.add('tab-pane', 'fade');
-            if (i == 0) {
-                newTabContent.classList.add('active', 'show');
-            }
-            // newTabContent.height="350px";
-            // newTabContent.style.height = "350px";
-            newTabContent.style = "height: 100%;";
-
-            var newGuacDiv = document.createElement("DIV");
-            newGuacDiv.id = "display" + endpoints[i].Name
-            // newGuacDiv.height="300px";
-            // newGuacDiv.style.height = "300px";
-
-
-            newTabContent.appendChild(newGuacDiv)
-
-            document.getElementById("myTabContent").appendChild(newTabContent);
-
-            console.log("Added " + endpoints[i].Name);
-        } else if (endpoints[i].Type == "IFRAME") {
-            console.log("Adding " + endpoints[i].Name);
-            var newTabHeader = document.createElement("LI");
-            newTabHeader.classList.add('nav-item');
-
-            var a = document.createElement('a');
-            var linkText = document.createTextNode(endpoints[i].Name);
-            a.appendChild(linkText);
-            a.classList.add('nav-link');
-            a.href = "#" + endpoints[i].Name;
-            a.setAttribute("data-toggle", "tab");
-            if (i == 0) {
-                a.classList.add('active', 'show');
-            }
-            newTabHeader.appendChild(a);
-
-            document.getElementById("tabHeaders").appendChild(newTabHeader);
-
-            var newTabContent = document.createElement("DIV");
-            newTabContent.id = endpoints[i].Name;
+            newTabContent.id = fullName;
             newTabContent.style = "width: 100%; height: 100%;"
             newTabContent.classList.add('tab-pane', 'fade');
-            if (i == 0) {
+            if (!addedFirstTab) {
                 newTabContent.classList.add('active', 'show');
+                addedFirstTab = true;
             }
 
-            var iframe = document.createElement('iframe');
-            iframe.width = "100%"
-            iframe.height = "100%"
-            iframe.frameBorder = "0"
-            iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-" + endpoints[i].Name + endpoints[i].IframePath
-            newTabContent.appendChild(iframe);
+            // Create presentation-specific resources
+            if (pres.Type == "ssh") {
 
-            document.getElementById("myTabContent").appendChild(newTabContent);
-            console.log("Added " + endpoints[i].Name);
+                var newGuacDiv = document.createElement("DIV");
+                newGuacDiv.id = "display" + fullName
+                newTabContent.appendChild(newGuacDiv)
+                connectData = ep.Host + ";" + pres.Port + ";" + String(document.getElementById("myTabContent").offsetWidth) + ";" + String(document.getElementById("myTabContent").offsetHeight - 42);
+                document.getElementById("myTabContent").appendChild(newTabContent);
+
+                // MUST run this after tab content has been added to the DOM
+                guacInit(fullName, connectData)
+
+            } else if (pres.Type == "http") {
+
+                var iframe = document.createElement('iframe');
+                iframe.width = "100%"
+                iframe.height = "100%"
+                iframe.frameBorder = "0"
+
+                // Using ep.Name here instead of fullName. The reason for this is, the backend ingress doesn't care how
+                // many iframes are open, the path is the same regardless of how many presentations.
+                // So we won't use the fullName which includes an optional differentiator - just the endpoint name.
+                // ALSO - the trailing slash is tremendously important.
+                iframe.src = urlRoot + "/" + getLessonId() + "-" + getSession() + "-ns-" + ep.Name + "/"
+
+                newTabContent.appendChild(iframe);
+                document.getElementById("myTabContent").appendChild(newTabContent);
+            }
+
+            console.log("Added " + fullName);
         }
     }
-    guacInit(endpoints);
+
+    // Run once, after the loop
+    guacKeyboardInit()
 }
 
 function sleep(ms) {
@@ -580,64 +549,66 @@ function copy() {
     document.body.removeChild(dummy);
 }
 
-
 var terminals = {};
-function guacInit(endpoints) {
+function guacInit(fullName, connectData) {
 
-    for (var i = 0; i < endpoints.length; i++) {
-        if (endpoints[i].Type == "DEVICE" || endpoints[i].Type == "UTILITY") {
+    var thisTerminal = {};
 
-            var thisTerminal = {};
+    var tunnel = new Guacamole.HTTPTunnel("../tunnel")
 
-            var tunnel = new Guacamole.HTTPTunnel("../tunnel")
+    console.log("Adding guac configuration for " + fullName)
 
-            var epName = endpoints[i].Name;
+    thisTerminal.display = document.getElementById("display" + fullName);
+    thisTerminal.guac = new Guacamole.Client(
+        tunnel
+    );
 
-            console.log("Adding guac configuration for " + epName)
+    thisTerminal.guac.onerror = function (error) {
+        console.log(error);
+        console.log("Problem connecting to the remote endpoint.");
+        return false
+    };
 
-            thisTerminal.display = document.getElementById("display" + epName);
-            thisTerminal.guac = new Guacamole.Client(
-                tunnel
-            );
-
-            thisTerminal.guac.onerror = function (error) {
-                console.log(error);
-                console.log("Problem connecting to the remote endpoint.");
-                return false
-            };
-
-            function ingestStream(stream, mimetype) {
-                console.log(stream);
-                stream.onblob = function (data) {
-                    guacStagingClipboard = atob(data)
-                }
-            }
-            thisTerminal.guac.onclipboard = ingestStream
-
-            connectData = endpoints[i].Host + ";" + endpoints[i].Port + ";" + String(document.getElementById("myTabContent").offsetWidth) + ";" + String(document.getElementById("myTabContent").offsetHeight - 42);
-            thisTerminal.guac.connect(connectData);
-
-            thisTerminal.display.appendChild(thisTerminal.guac.getDisplay().getElement());
-
-            // Disconnect on close
-            window.onunload = function () {
-                thisTerminal.guac.disconnect();
-            }
-
-            thisTerminal.mouse = new Guacamole.Mouse(thisTerminal.guac.getDisplay().getElement());
-
-            thisTerminal.mouse.onmousedown =
-                thisTerminal.mouse.onmouseup =
-                thisTerminal.mouse.onmousemove = function (id) {
-                    return function (mouseState) {
-                        terminals[id].guac.sendMouseState(mouseState);
-                    }
-                }(epName);
-
-            terminals[epName] = thisTerminal
+    function ingestStream(stream, mimetype) {
+        console.log(stream);
+        stream.onblob = function (data) {
+            guacStagingClipboard = atob(data)
         }
     }
+    thisTerminal.guac.onclipboard = ingestStream
 
+    thisTerminal.guac.connect(connectData);
+
+    thisTerminal.display.appendChild(thisTerminal.guac.getDisplay().getElement());
+
+    // Disconnect on close
+    window.onunload = function () {
+        thisTerminal.guac.disconnect();
+    }
+
+    // TODO(mierdin): See if you can DETECT a disconnect, and build retry logic in. If fail, provide a dialog
+    // INSIDE the tab pane (per tab) that indicates a refresh is likely required
+    // Would also be nice to extend retry logic to initial connection in case something is wonky to begin with
+
+    thisTerminal.mouse = new Guacamole.Mouse(thisTerminal.guac.getDisplay().getElement());
+
+    thisTerminal.mouse.onmousedown =
+        thisTerminal.mouse.onmouseup =
+        thisTerminal.mouse.onmousemove = function (id) {
+            return function (mouseState) {
+                terminals[id].guac.sendMouseState(mouseState);
+            }
+        }(fullName);
+
+    terminals[fullName] = thisTerminal
+
+    console.log(terminals)
+    return true
+}
+
+// guacKeyboardInit() is designed to run once, after all of the other guac resources have been initialized.
+// All indications are that the keyboard should be attached to "document" as below.
+function guacKeyboardInit() {
     var tabs = document.getElementById("myTabContent").children;
     var keyboard = new Guacamole.Keyboard(document);
     keyboard.onkeydown = function (keysym) {
@@ -659,8 +630,6 @@ function guacInit(endpoints) {
         }
     };
 
-    console.log(terminals)
-    return true
 }
 
 // Big honkin regex from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
