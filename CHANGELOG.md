@@ -6,6 +6,7 @@
 - Update client-side to handle lessondef endpoint rename [#61](https://github.com/nre-learning/antidote-web/pull/61)
 - Added collections feature [#62](https://github.com/nre-learning/antidote-web/pull/62)
 - Adjust Jupyter path based on syringe changes [#67](https://github.com/nre-learning/antidote-web/pull/67)
+- Updates to handle new presentations abstraction [#68](https://github.com/nre-learning/antidote-web/pull/68)
 
 ## v0.3.2 - April 19, 2019
 
