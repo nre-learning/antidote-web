@@ -1205,11 +1205,3 @@ function showCollectionDetails(collectionId) {
         document.getElementById("lessonRows").appendChild(lessonRow);
     }
 }
-
-
-
-
-
-
-
-
