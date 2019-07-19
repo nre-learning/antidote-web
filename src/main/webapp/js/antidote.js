@@ -275,7 +275,7 @@ async function requestLesson() {
 
         renderLabGuide(liveLessonDetails.LabGuide, liveLessonDetails.JupyterLabGuide);
 
-        if (liveLessonDetails.LupyterLabGuide) {
+        if (liveLessonDetails.JupyterLabGuide) {
             document.getElementById("btnExplainJupyter").style = "display:auto;"
         } else {
             document.getElementById("btnExplainJupyter").style = "display:none;"
