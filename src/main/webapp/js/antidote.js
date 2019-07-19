@@ -275,6 +275,12 @@ async function requestLesson() {
 
         renderLabGuide(liveLessonDetails.LabGuide, liveLessonDetails.JupyterLabGuide);
 
+        if (liveLessonDetails.JupyterLabGuide) {
+            document.getElementById("btnExplainJupyter").style = "display:auto;"
+        } else {
+            document.getElementById("btnExplainJupyter").style = "display:none;"
+        }
+
         var diagramButton = document.getElementById("btnOpenLessonDiagram");
         var diagram = document.getElementById("lessonDiagramImg");
         if (liveLessonDetails.LessonDiagram == null) {

@@ -12,8 +12,7 @@ templates = [
     "stats/index.html",
     "collections/index.html",
     "collections/view.html",
-    'index.html',
-    'jupyterlessonguides.html'
+    'index.html'
 ]
 
 for template_file in templates:
