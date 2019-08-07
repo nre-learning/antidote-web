@@ -8,6 +8,7 @@
 - Adjust Jupyter path based on syringe changes [#67](https://github.com/nre-learning/antidote-web/pull/67)
 - Updates to handle new presentations abstraction [#68](https://github.com/nre-learning/antidote-web/pull/68)
 - Add dialog explaining jupyter notebooks and link to docs [#77](https://github.com/nre-learning/antidote-web/pull/77)
+- Minor updates to collections verbiage and nav layout [#78](https://github.com/nre-learning/antidote-web/pull/78)
 
 ## v0.3.2 - April 19, 2019
 
