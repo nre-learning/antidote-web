@@ -66,9 +66,12 @@ public class GuacamoleTunnelServlet
         clientInfo.setOptimalScreenWidth(width);
         clientInfo.setOptimalScreenHeight(height);
 
+        String guacdHostname = System.getenv("GUACD_HOSTNAME");
+        log.info("GUACD_HOSTNAME: " + guacdHostname);
+
         // Connect to guacd - everything is hard-coded here.
         GuacamoleSocket socket = new ConfiguredGuacamoleSocket(
-                new InetGuacamoleSocket("localhost", 4822),
+                new InetGuacamoleSocket(guacdHostname, 4822),
                 guacConfig,
                 clientInfo
         );
