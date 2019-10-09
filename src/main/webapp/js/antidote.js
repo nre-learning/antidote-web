@@ -1,8 +1,21 @@
 // Will be overridden on page load. This is just the default
-var urlRoot = "https://labs.networkreliability.engineering"
+var urlRoot = "https://labs.networkreliability.engineering/syringe"
 var LESSONS = {};
 var LESSONS_ARRAY = [];
 var COLLECTIONS_ARRAY = [];
+
+function getUrlRoot() {
+
+    // When running antidote-web on mock data, we're running on localhost.
+    // So, statically provide Syringe location/port
+    if (window.location.href.includes("127.0.0.1")) {
+        urlRoot = "http://127.0.0.1:8086"
+    } else {
+        // For all "real" deployments, including selfmedicate, an actual domain will be used
+        // In this case, use the detected protocol+domain, and append "/syringe"
+        urlRoot = window.location.href.split('/').slice(0, 3).join('/') + "/syringe";
+    }
+}
 
 // This function generates a unique session ID so we can make sure you consistently connect to your lab resources on the back-end.
 // We're not doing anything nefarious with this ID - this is just to make sure you have a good experience on the front-end.
@@ -107,7 +120,7 @@ function getRandomModalMessage() {
 function getLessonCategories() {
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", urlRoot + "/syringe/exp/lesson", false);
+    xhttp.open("GET", urlRoot + "/exp/lesson", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send();
 
@@ -163,7 +176,7 @@ function renderLessonStages() {
     // TODO(mierdin): This is the first call to syringe, you should either here or elsewhere, handle errors and notify user.
 
     // Doing synchronous calls for now, need to convert to asynchronous
-    reqLesson.open("GET", urlRoot + "/syringe/exp/lesson/" + getLessonId(), false);
+    reqLesson.open("GET", urlRoot + "/exp/lesson/" + getLessonId(), false);
     reqLesson.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     reqLesson.send();
     var lessonResponse = JSON.parse(reqLesson.responseText);
@@ -221,7 +234,7 @@ async function requestLesson() {
 
     // Send lesson request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", urlRoot + "/syringe/exp/livelesson", false);
+    xhttp.open("POST", urlRoot + "/exp/livelesson", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send(json);
 
@@ -242,7 +255,7 @@ async function requestLesson() {
 
         // Here we go get the livelesson we requested, verify it's ready, and once it is, start wiring up endpoints.
         var xhttp2 = new XMLHttpRequest();
-        xhttp2.open("GET", urlRoot + "/syringe/exp/livelesson/" + response.id, false);
+        xhttp2.open("GET", urlRoot + "/exp/livelesson/" + response.id, false);
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send();
 
@@ -648,7 +661,7 @@ function isMobile() {
 function appendPTRBanner() {
 
     var buildInfoReq = new XMLHttpRequest();
-    buildInfoReq.open("GET", urlRoot + "/syringe/exp/syringeinfo", false);
+    buildInfoReq.open("GET", urlRoot + "/exp/syringeinfo", false);
     buildInfoReq.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     buildInfoReq.send();
 
@@ -679,7 +692,7 @@ function appendPTRBanner() {
 
     var curriculumLink = "<a target='_blank' href='https://github.com/nre-learning/nrelabs-curriculum/commit/" + commits.antidote + "'>" + commits.antidote.substring(0, 7) + "</a>"
     var antidoteWebLink = "<a target='_blank' href='https://github.com/nre-learning/antidote-web/commit/" + commits.antidoteweb + "'>" + commits.antidoteweb.substring(0, 7) + "</a>"
-    var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/syringe/commit/" + commits.syringe + "'>" + commits.syringe.substring(0, 7) + "</a>"
+    var syringeLink = "<a target='_blank' href='https://github.com/nre-learning/commit/" + commits.syringe + "'>" + commits.syringe.substring(0, 7) + "</a>"
 
     var ptrBanner = document.createElement("DIV");
     ptrBanner.id = "ptrBanner"
@@ -771,7 +784,7 @@ function getPrereqs(lessonId) {
     // TODO(mierdin): This is the first call to syringe, you should either here or elsewhere, handle errors and notify user.
 
     // Doing synchronous calls for now, need to convert to asynchronous
-    reqLessonPrereqs.open("GET", urlRoot + "/syringe/exp/lesson/" + getLessonId() + "/prereqs", false);
+    reqLessonPrereqs.open("GET", urlRoot + "/exp/lesson/" + getLessonId() + "/prereqs", false);
     reqLessonPrereqs.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     reqLessonPrereqs.send();
 
@@ -965,7 +978,7 @@ async function verify() {
 
     // Send verification request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", urlRoot + "/syringe/exp/livelesson/" + getLessonId() + "-" + getSession() + "/verify", false);
+    xhttp.open("POST", urlRoot + "/exp/livelesson/" + getLessonId() + "-" + getSession() + "/verify", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send(JSON.stringify(data));
 
@@ -981,7 +994,7 @@ async function verify() {
 
         // Get verification by ID
         var xhttp2 = new XMLHttpRequest();
-        xhttp2.open("GET", urlRoot + "/syringe/exp/verification/" + response.id, false);
+        xhttp2.open("GET", urlRoot + "/exp/verification/" + response.id, false);
         xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         xhttp2.send()
 
@@ -1044,7 +1057,7 @@ function getCollectionId() {
 function getCollections() {
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", urlRoot + "/syringe/exp/collection", false);
+    xhttp.open("GET", urlRoot + "/exp/collection", false);
     xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send();
     var lessonResponse = JSON.parse(xhttp.responseText);
@@ -1153,7 +1166,7 @@ function collectionsBox(searchQuery) {
 
 function showCollectionDetails(collectionId) {
     var xhttp2 = new XMLHttpRequest();
-    xhttp2.open("GET", urlRoot + "/syringe/exp/collection/" + collectionId, false);
+    xhttp2.open("GET", urlRoot + "/exp/collection/" + collectionId, false);
     xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp2.send()
 
