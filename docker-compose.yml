@@ -1,5 +1,7 @@
 version: "3.7"
 services:
+
+  # Primary antidote-web and guac services
   antidote-web:
     build:
       context: .
@@ -14,10 +16,20 @@ services:
       - "8080:8080"
   guacd: 
     image: "guacamole/guacd"
-  linux1: 
-    image: "antidotelabs/utility"
-  syringe-mock: 
+
+  # Fake Syringe API (no Kubernetes integration)
+  syringe-mock:
     image: "antidotelabs/syringe:latest"
     command: syringed-mock
     ports: 
       - "8086:8086"
+
+  # Some endpoints to connect to (The fake data from Syringe will point to these)
+  linux1:
+    image: "antidotelabs/utility"
+  webserver1:
+    image: "antidotelabs/webserver"
+    environment:
+      SYRINGE_FULL_REF: 1-m0w5c6xzceintfat-ns-webserver1
+    ports:
+      - "8090:8080"
