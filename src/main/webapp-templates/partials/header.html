@@ -29,7 +29,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        urlRoot = window.location.href.split('/').slice(0, 3).join('/');
+        getUrlRoot();
 
         if (urlRoot.substring(0, 11) == "https://ptr") {
             appendPTRBanner();

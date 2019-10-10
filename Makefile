@@ -13,20 +13,6 @@ docker: templates
 	docker build -t antidotelabs/antidote-web:$(TARGET_VERSION) -f Dockerfile .
 	docker push antidotelabs/antidote-web:$(TARGET_VERSION)
 
-test:
+hack: templates
 
-	docker kill aweb || true
-	docker kill guacd || true
-	docker kill linux1 || true
-	docker build --build-arg COMMIT_SHA=$$COMMIT_SHA -t antidotelabs/antidote-web:$(TARGET_VERSION) -f Dockerfile .
-
-	docker run -d --rm --name linux1 -p 2222:22 antidotelabs/utility
-	docker run -d --rm --name guacd -p 4822:4822 guacamole/guacd
-	docker run -d \
-		-e GUACD_HOSTNAME='127.0.0.1' \
-		-e POSTGRES_HOSTNAME='na' \
-		-e POSTGRES_DATABASE='na' \
-		-e POSTGRES_USER='na' \
-		-e POSTGRES_PASSWORD='na' \
-		--rm --name aweb -p 8080:8080 antidotelabs/antidote-web
-
+	docker-compose up --build
