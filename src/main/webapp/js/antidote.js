@@ -8,7 +8,7 @@ function getUrlRoot() {
 
     // When running antidote-web on mock data, we're running on localhost.
     // So, statically provide Syringe location/port
-    if (window.location.href.includes("127.0.0.1")) {
+    if (window.location.href.includes("127.0.0.1") || window.location.href.includes("localhost")) {
         urlRoot = "http://127.0.0.1:8086"
     } else {
         // For all "real" deployments, including selfmedicate, an actual domain will be used
