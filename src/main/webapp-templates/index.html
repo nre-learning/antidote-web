@@ -1,141 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    {% include 'partials/header.html' %}
-    <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                $('#videoModal').on('show.bs.modal', function () {
-                    $("#videoModal iframe").attr("src", "https://www.youtube.com/embed/YhbWBX71yGQ?autoplay=1&rel=0");
-                });
-    
-                $("#videoModal").on('hidden.bs.modal', function (e) {
-                    $("#videoModal iframe").attr("src", null);
-                });
-            });
-        </script>
-</head>
+{% block main %}
+<h1>Interactive Lessons. Unshackled.</h1>
+<h3>Learn by doing. Right now, right here, in your browser.</h3>
+<p>
+  Antidote is an open source initiative to bring interactive learning to
+  everyone. Through short, simple exercises, all right here in the browser,
+  users can learn tools, skills, and processes that will put them on the
+  path to success.
+</p>
 
-<body>
-    {% include 'partials/navbar.html' %}
+<div style="margin-top: 20px;">
+  <button class="btn cta">
+    Find Lesson Content
+  </button>
+</div>
 
-    <div class="container">
-
-        <!-- Containers
-      ================================================== -->
-        <div class="bs-docs-section">
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="bs-component">
-                        <section class="jumbotron text-center">
-                            <div class="container">
-                                <h1 class="jumbotron-heading display-4">Automation. Unshackled.</h1>
-                                <p class="lead text-muted">
-                                    Learn automation by doing it. Right now, right here, in your browser.
-                                </p>
-                                <p>
-                                    NRE Labs is a no-strings-attached, community-centered initiative to bring the
-                                    skills
-                                    of automation within reach for everyone.
-                                    Through short, simple exercises, all right here in the browser, you can learn the
-                                    tools, skills, and processes that
-                                    will put you on the path to becoming a Network Reliability Engineer.</p>
-                                <p>
-                                    <a href="#" data-toggle="modal" data-target="#videoModal" class="btn btn-primary my-2">Watch
-                                        Intro Video</a>
-                                    <a href="/advisor/index.html" class="btn btn-secondary my-2">Find Lesson Content</a>
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="bs-component">
-                        <div class="card border-primary mb-3" style="max-width: 20rem;">
-                            <div class="card-header"></div>
-                            <div class="card-body">
-                                <h4 class="card-title">Not just for experts.</h4>
-                                <p class="card-text">NRE Labs assumes nothing about your background or training.
-                                    Everything is contained in the
-                                    browser, and there's something here for everyone.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="bs-component">
-                        <div class="card border-primary mb-3" style="max-width: 20rem;">
-                            <div class="card-header"></div>
-                            <div class="card-body">
-                                <h4 class="card-title">No paywalls here.</h4>
-                                <p class="card-text">This is first and foremost an educational tool
-                                    aimed at helping the industry
-                                    consume automation more readily. So you won't find any paywalls or creepy web
-                                    trackers here.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="bs-component">
-                        <div class="card border-primary mb-3" style="max-width: 20rem;">
-                            <div class="card-header"></div>
-                            <div class="card-body">
-                                <h4 class="card-title">Open. Like, for real.</h4>
-                                <p class="card-text">NRE Labs is built on
-                                    <a href="https://github.com/nre-learning/antidote" target="_blank">Antidote,</a> an
-                                    open source project published on Github under an Apache v2 license to
-                                    make industry-wide participation a first-class citizen.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div id="videoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true" style="text-align: center;">
-                <div class="modal-dialog" style="display: inline-block;  max-width: 80%;">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <iframe width="800" height="450" src="https://www.youtube.com/embed/YhbWBX71yGQ"
-                                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="close" data-toggle="modal" data-target="#videoModal"
-                                aria-hidden="true">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <footer id="footer">
-            <div class="row">
-                <div class="col-lg-12">
-
-                    <p>Built by the
-                        <a href="https://github.com/orgs/nre-learning/people" target="_blank">NRE Learning Team</a>
-                        <p>Theme by
-                            <a href="http://thomaspark.co">Thomas Park</a>. Theme code released under the
-                            <a href="https://github.com/thomaspark/bootswatch/blob/master/LICENSE">MIT License</a>.</p>
-                        <p>The
-                            <a href="https://github.com/nre-learning/antidote" target="_blank">Antidote Project</a> is
-                            published under Apache v2.</p>
-                        <p>Sponsored by Juniper Networks, Inc. Your use of this site is governed by the <a href="https://labs.networkreliability.engineering/nrelabs_agreement.pdf"
-                                target="_blank">Terms of Use.</a></p>
-
-                </div>
-            </div>
-
-        </footer>
-    </div>
-</body>
-
-
-
-</html>
+<div class="three-col">
+  <div class="canister medium-gray">
+    <h3>Content promo</h3>
+    <p>
+      Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis
+      vestibulum. Nullam quis risus eget urna mollis ornare vel eu leo.
+      Donec sed odio dui.
+    </p>
+  </div>
+  <div class="canister medium-gray">
+    <h3>Content promo</h3>
+    <p>
+      Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis
+      vestibulum. Nullam quis risus eget urna mollis ornare vel eu leo.
+      Donec sed odio dui.
+    </p>
+  </div>
+  <div class="canister medium-gray">
+    <h3>Content promo</h3>
+    <p>
+      Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis
+      vestibulum. Nullam quis risus eget urna mollis ornare vel eu leo.
+      Donec sed odio dui.
+    </p>
+  </div>
+</div>
+{% endblock %}

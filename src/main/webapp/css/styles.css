@@ -1,0 +1,72 @@
+#catalog {
+  display: grid;
+  grid-template-rows: auto;
+}
+#catalog .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#catalog .top .right {
+  margin-left: 60px;
+}
+#catalog .top .right .canister {
+  padding-bottom: 15px;
+  min-width: 300px;
+}
+#catalog .top .right button {
+  width: 100%;
+  margin-top: 15px;
+}
+antidote-lab-context {
+  height: 100%;
+}
+#lab {
+  display: grid;
+  grid-template-rows: 65px 1fr;
+  grid-template-columns: 50% 50%;
+  grid-template-areas: "head head" "left right";
+  height: 100%;
+  min-height: 100%;
+  padding: 0 20px 25px 20px;
+  background-color: #333333;
+  overflow: auto;
+}
+#lab .header-logo {
+  position: relative;
+}
+#lab > .head {
+  grid-area: head;
+  display: flex;
+  align-items: center;
+}
+#lab > .left {
+  grid-area: left;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 2px solid #939393;
+  border-right: none;
+  overflow: auto;
+}
+#lab > .right {
+  grid-area: right;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 2px solid #939393;
+  border-left: none;
+}
+.page.course-plan .layout {
+  display: flex;
+}
+.page.course-plan .layout > .left {
+  display: flex;
+  flex-direction: column;
+}
+.page.course-plan .layout > .right {
+  display: flex;
+  flex-direction: column;
+  margin-left: 40px;
+}
+/*# sourceMappingURL=styles.css.map */
