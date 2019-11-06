@@ -7,9 +7,9 @@ function LabGuidanceButtons() {
   const lessonRequest = useContext(LessonContext);
   const detailsRequest = useContext(LiveLessonDetailsContext);
   const [modalContentType, setModalContentType] = useState(null);
-  const hasDiagram = detailsRequest.completed && detailsRequest.data.LessonDiagram;
-  const hasVideo = detailsRequest.completed && detailsRequest.data.LessonVideo;
-  const hasObjective = lessonRequest.completed && lessonRequest.data.Stages[lessonStage].VerifyObjective;
+  const hasDiagram = detailsRequest.succeeded && detailsRequest.data.LessonDiagram;
+  const hasVideo = detailsRequest.succeeded && detailsRequest.data.LessonVideo;
+  const hasObjective = lessonRequest.succeeded && lessonRequest.data.Stages[lessonStage].VerifyObjective;
   let diagramButton = '';
   let videoButton = '';
   let objectiveButton = '';
@@ -59,7 +59,7 @@ function LabGuidanceButtons() {
       ` : ''}
       ${modalContentType === 'video' ? html`
         <h1>Lesson Video</h1>
-        <div class="video-wapper">
+        <div class="video-wrapper">
           <iframe src=${detailsRequest.data.LessonVideo} frameborder="0" class="video-embed"></iframe>
         </div>
       ` : ''}

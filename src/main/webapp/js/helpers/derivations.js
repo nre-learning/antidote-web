@@ -1,7 +1,7 @@
 // maybe tack derivations onto the response objects to prevent recalc?
 
 export function derivePresentationsFromLessonDetails(detailsRequest) {
-  const endpoints = detailsRequest.completed ? detailsRequest.data.LiveEndpoints : [];
+  const endpoints = detailsRequest.succeeded ? detailsRequest.data.LiveEndpoints : [];
 
   return Object.values(endpoints).reduce((acc, ep) => {
     if (ep.Presentations) {

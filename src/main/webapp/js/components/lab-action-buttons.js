@@ -34,7 +34,7 @@ async function paste() {
 // todo: ugh fix !important in css below
 function LabActionButtons() {
   const lessonRequest = useContext(LessonContext);
-  const hasObjective = lessonRequest.completed && lessonRequest.data.Stages[lessonStage].VerifyObjective;
+  const hasObjective = lessonRequest.succeeded && lessonRequest.data.Stages[lessonStage].VerifyObjective;
   const verificationAttemptCount = useRef(0); // arbitrary varying value to include in request state to trigger a new request when incremented
   const [verificationOngoing, setVerificationOngoing] = useState(false);
   const startVerificationRequest = verificationOngoing

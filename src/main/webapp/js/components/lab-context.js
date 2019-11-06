@@ -14,7 +14,7 @@ customElements.define('antidote-lab-context', component(() => {
     }
   );
   const liveLessonDetailRequest = useLiveLessonDetails(
-    liveLessonRequest.completed ? liveLessonRequest.data.id : null
+    liveLessonRequest.succeeded ? liveLessonRequest.data.id : null
   );
 
   return html`
