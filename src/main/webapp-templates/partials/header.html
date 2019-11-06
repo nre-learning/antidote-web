@@ -1,3 +1,4 @@
+{% set header_cta_classes = header_cta_classes | default('') %}
 <header>
   <div class="header-logo light-logo"></div>
 
@@ -5,8 +6,7 @@
     {% include 'partials/main-menu-items.html' %}
   </ul>
 
-  <!--todo: add disabled state when on catalog page :/-->
-  <a class="btn cta" href="/catalog/">
+  <a class="btn cta {{ header_cta_classes }}" href="/catalog/">
     Find Lesson Content
   </a>
 
