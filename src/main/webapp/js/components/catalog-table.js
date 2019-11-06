@@ -30,7 +30,6 @@ function CatalogTable() {
     : [];
 
   return html`
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Mono|Roboto+Condensed:300,400|Roboto:300,400,500&display=fallback" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />
     <style>
       /*todo: move to nre theme?*/

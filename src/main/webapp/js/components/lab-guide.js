@@ -2,7 +2,7 @@ import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { unsafeHTML } from 'https://unpkg.com/lit-html/directives/unsafe-html.js';
 import { useEffect, useContext, component } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
 import { LiveLessonDetailsContext } from '/js/data.js';
-import { syringeServiceRoot, lessonId, lessonStage, sessionId } from "/js/helpers/page-state.js";
+import { serviceHost, syringeServiceRoot, lessonId, lessonStage, sessionId } from "/js/helpers/page-state.js";
 
 // this needs to be global since it's explicitly referenced in the markdown
 // this could eventually be scoped and bound to the appropriate buttons post-render
@@ -37,7 +37,7 @@ function LabGuide() {
   if (lessonDetailsRequest.completed) {
     if (lessonDetailsRequest.data.JupyterLabGuide) {
       const path = `/notebooks/stage${lessonStage}/notebook.ipynb`;
-      const url = `${syringeServiceRoot}/${lessonId}-${sessionId}-ns-jupyterlabguide${path}`;
+      const url = `${serviceHost}/${lessonId}-${sessionId}-ns-jupyterlabguide${path}`;
 
       guideContent = html`<iframe src="${url}"></iframe>`;
     }
@@ -51,7 +51,6 @@ function LabGuide() {
   }
 
   return html`
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Mono|Roboto+Condensed:300,400|Roboto:300,400,500&display=fallback" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />
     <style>
       :host {

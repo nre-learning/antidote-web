@@ -29,7 +29,10 @@ export function useLiveLessonDetails(liveLessonId) {
     });
 
     let attemptCount = 0;
+    let requestOngoing = false;  // prevent interval from queueing new request if previous request hasn't finished
     const fetchLoop = setInterval(async () => {
+      if (requestOngoing) return;
+
       if (attemptCount++ === 1200) {
         setRequestState({
           data: null,
@@ -41,6 +44,7 @@ export function useLiveLessonDetails(liveLessonId) {
         clearInterval(fetchLoop);
       }
 
+      requestOngoing = true;
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -72,6 +76,8 @@ export function useLiveLessonDetails(liveLessonId) {
           error: e.message,
         });
         clearInterval(fetchLoop);
+      } finally {
+        requestOngoing = false;
       }
     }, 500);
   }, [liveLessonId]);
