@@ -10,15 +10,15 @@ function makeId() {
   return text;
 }
 
-// todo: figure this out ugh
 export const [serviceHost, syringeServiceRoot] = (() => {
   switch (window.ENVIRONMENT) {
-    case "production":
-      return [window.location.origin, window.location.origin+'/syringe'];
     case "mock":
       return ['http://127.0.0.1:8086', 'http://127.0.0.1:8086'];
     case "self-medicate":
       return ['http://antidote-local:30001', 'http://antidote-local:30001/syringe'];
+    case "production":
+    default:
+      return [window.location.origin, window.location.origin+'/syringe'];
   }
 })();
 
