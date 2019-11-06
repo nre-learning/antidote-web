@@ -15,6 +15,7 @@ function Modal({show}) {
   return html`
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />
     <style>
+      /*todo move to nre-styles*/
       .modal-wrapper {
         position: fixed;
         z-index: 2;

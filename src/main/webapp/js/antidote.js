@@ -21,3 +21,4 @@ import './components/course-plan-context.js';
 import './components/course-plan.js';
 import './components/course-plan-strength-modal.js';
 import './components/ptr-banner.js';
+import './components/warn-mobile-modal.js';
