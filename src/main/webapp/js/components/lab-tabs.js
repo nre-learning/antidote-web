@@ -1,9 +1,9 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useEffect, useContext } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { LiveLessonDetailsContext } from '/js/data.js';
-import { syringeServiceRoot, serviceHost, lessonId, sessionId } from '/js/helpers/page-state.js';
-import { derivePresentationsFromLessonDetails } from '/js/helpers/derivations.js';
-import debounce from '/js/helpers/debounce.js';
+import { LiveLessonDetailsContext } from '../data.js';
+import { syringeServiceRoot, serviceHost, lessonId, sessionId } from '../helpers/page-state.js';
+import { derivePresentationsFromLessonDetails } from '../helpers/derivations.js';
+import debounce from '../helpers/debounce.js';
 import Guacamole from "https://cdn.jsdelivr.net/gh/nlundquist/guacamole-client@0.9.14/dist/guacamole-common.js";
 
 const sshTabLeftPadding = 5;

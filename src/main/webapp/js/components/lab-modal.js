@@ -1,6 +1,6 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useContext, useMemo } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { LessonContext, LiveLessonContext, LiveLessonDetailsContext } from '/js/data.js';
+import { LessonContext, LiveLessonContext, LiveLessonDetailsContext } from '../data.js';
 
 function getRandomModalMessage() {
   // Include memes? https://imgur.com/gallery/y0LQyOV

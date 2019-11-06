@@ -1,7 +1,7 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useContext } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { AllCollectionContext, CollectionFilteringContext } from "/js/data.js";
-import debounce from "/js/helpers/debounce.js";
+import { AllCollectionContext, CollectionFilteringContext } from "../data.js";
+import debounce from "../helpers/debounce.js";
 
 function getTypeSetFromCollections(collections) {
   const types = new Set();

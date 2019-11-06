@@ -1,8 +1,8 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { classMap } from 'https://unpkg.com/lit-html/directives/class-map.js';
 import { component, useContext, useState } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { syringeServiceRoot, serviceHost, collectionId } from "/js/helpers/page-state.js";
-import { AllLessonContext, LessonPrereqContext, CoursePlanStrengthsContext } from "/js/data.js";
+import { syringeServiceRoot, serviceHost, collectionId } from "../helpers/page-state.js";
+import { AllLessonContext, LessonPrereqContext, CoursePlanStrengthsContext } from "../data.js";
 
 function getDefaultStrengthsState(prereqSkills) {
   return prereqSkills.reduce((acc, skill) => {

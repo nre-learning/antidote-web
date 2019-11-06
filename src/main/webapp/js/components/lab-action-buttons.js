@@ -1,9 +1,9 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useContext, useState, useRef } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { LessonContext } from '/js/data.js';
-import { syringeServiceRoot, lessonStage, lessonId, sessionId } from '/js/helpers/page-state.js';
-import useFetch from '/js/helpers/use-fetch.js';
-import { useLessonVerificationResults } from "/js/data.js";
+import { LessonContext } from '../data.js';
+import { syringeServiceRoot, lessonStage, lessonId, sessionId } from '../helpers/page-state.js';
+import useFetch from '../helpers/use-fetch.js';
+import { useLessonVerificationResults } from "../data.js";
 
 function copy() {
   const tabsEl = document.querySelector('antidote-lab-tabs');

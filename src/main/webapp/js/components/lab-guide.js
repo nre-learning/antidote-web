@@ -1,8 +1,8 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { unsafeHTML } from 'https://unpkg.com/lit-html/directives/unsafe-html.js';
 import { useEffect, useContext, component } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { LiveLessonDetailsContext } from '/js/data.js';
-import { serviceHost, syringeServiceRoot, lessonId, lessonStage, sessionId } from "/js/helpers/page-state.js";
+import { LiveLessonDetailsContext } from '../data.js';
+import { serviceHost, syringeServiceRoot, lessonId, lessonStage, sessionId } from "../helpers/page-state.js";
 
 // this needs to be global since it's explicitly referenced in the markdown
 // this could eventually be scoped and bound to the appropriate buttons post-render

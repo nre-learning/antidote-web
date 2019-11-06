@@ -1,7 +1,7 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useContext } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { LessonContext } from '/js/data.js';
-import { lessonId, lessonStage } from "/js/helpers/page-state.js";
+import { LessonContext } from '../data.js';
+import { lessonId, lessonStage } from "../helpers/page-state.js";
 
 const navTo = (destination) => () => {
   if (typeof destination === 'number') {

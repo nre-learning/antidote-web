@@ -1,7 +1,7 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { useState, useContext, useEffect, component } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { LiveLessonDetailsContext } from '/js/data.js';
-import { derivePresentationsFromLessonDetails } from '/js/helpers/derivations.js';
+import { LiveLessonDetailsContext } from '../data.js';
+import { derivePresentationsFromLessonDetails } from '../helpers/derivations.js';
 
 function LabTabSwitcher() {
   const detailsRequest = useContext(LiveLessonDetailsContext);

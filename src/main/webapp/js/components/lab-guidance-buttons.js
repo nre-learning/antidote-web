@@ -1,7 +1,7 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useContext, useState } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { LiveLessonDetailsContext, LessonContext } from "/js/data.js";
-import { lessonStage } from '/js/helpers/page-state.js';
+import { LiveLessonDetailsContext, LessonContext } from "../data.js";
+import { lessonStage } from '../helpers/page-state.js';
 
 function LabGuidanceButtons() {
   const lessonRequest = useContext(LessonContext);
