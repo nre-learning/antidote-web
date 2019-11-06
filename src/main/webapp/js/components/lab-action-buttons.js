@@ -1,7 +1,9 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
-import { component, useContext } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { component, useContext, useState, useRef } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
 import { LessonContext } from '/js/data.js';
-import { lessonStage } from '/js/helpers/page-state.js';
+import { syringeServiceRoot, lessonStage, lessonId, sessionId } from '/js/helpers/page-state.js';
+import useFetch from '/js/helpers/use-fetch.js';
+import { useLessonVerificationResults } from "/js/data.js";
 
 function copy() {
   const tabsEl = document.querySelector('antidote-lab-tabs');
@@ -29,95 +31,46 @@ async function paste() {
   })
 }
 
-
-// todo: reimplement verify
-// async function verify() {
-//
-//   var verifyBtn = document.getElementById("verifyBtn");
-//   verifyBtn.disabled = true
-//   verifyBtn.innerHTML = '<i class="fas fa-sync fa-spin"></i>'
-//
-//
-//   var verifyMsg = document.getElementById("verifyMsg");
-//   verifyMsg.innerText = ""
-//
-//   var data = {};
-//   data.id = getLessonId() + "-" + getSession();
-//
-//   // Send verification request
-//   var xhttp = new XMLHttpRequest();
-//   xhttp.open("POST", urlRoot + "/exp/livelesson/" + getLessonId() + "-" + getSession() + "/verify", false);
-//   xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-//   xhttp.send(JSON.stringify(data));
-//
-//   response = JSON.parse(xhttp.responseText);
-//   if (xhttp.status != 200) {
-//     verifyMsg.innerText = "error"
-//     return
-//   }
-//
-//   for (var i = 0; i < 30; i++) {
-//
-//     await sleep(1000);
-//
-//     // Get verification by ID
-//     var xhttp2 = new XMLHttpRequest();
-//     xhttp2.open("GET", urlRoot + "/exp/verification/" + response.id, false);
-//     xhttp2.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-//     xhttp2.send()
-//
-//     response2 = JSON.parse(xhttp2.responseText);
-//     if (xhttp2.status != 200) {
-//       verifyMsg.innerText = "error"
-//       return
-//     }
-//
-//     if (response2.working == true) {
-//       continue;
-//     }
-//     break;
-//   }
-//
-//   verifyBtn.innerText = 'Verify'
-//
-//   if (response2.success == true) {
-//     verifyMsg.innerText = "Successfully verified!"
-//     verifyMsg.style.color = "green"
-//   } else {
-//     verifyMsg.innerText = "Failed to verify."
-//     verifyMsg.style.color = "red"
-//   }
-//
-//   // Leave message on the screen for a while
-//   await sleep(10000);
-//
-//   // Fade out message
-//   var fadeEffect = setInterval(function () {
-//     if (!verifyMsg.style.opacity) {
-//       verifyMsg.style.opacity = 1;
-//     }
-//     if (verifyMsg.style.opacity > 0) {
-//       verifyMsg.style.opacity -= 0.1;
-//     } else {
-//       clearInterval(fadeEffect);
-//     }
-//   }, 200);
-//
-//   // Wait for message to fade out, and then reset elements
-//   await sleep(4000);
-//   verifyMsg.innerText = ""
-//   verifyMsg.style.opacity = 1
-//   verifyBtn.disabled = false
-// }
-
-function verify() {
-
-}
-
 // todo: ugh fix !important in css below
 function LabActionButtons() {
   const lessonRequest = useContext(LessonContext);
   const hasObjective = lessonRequest.completed && lessonRequest.data.Stages[lessonStage].VerifyObjective;
+  const verificationAttemptCount = useRef(0); // arbitrary varying value to include in request state to trigger a new request when incremented
+  const [verificationOngoing, setVerificationOngoing] = useState(false);
+  const startVerificationRequest = verificationOngoing
+    ? useFetch(`${syringeServiceRoot}/exp/livelesson/${lessonId}-${sessionId}/verify`, {
+      method: 'POST',
+      body: JSON.stringify({ data: { id: `${lessonId}-${sessionId}` } }),
+      attemptCount: verificationAttemptCount.current
+    })
+    : {};
+  const verificationResultsRequest = startVerificationRequest.succeeded
+    ? useLessonVerificationResults(startVerificationRequest.data.id, verificationAttemptCount.current)
+    : {};
+  const verificationMessage = (() => {
+    if (verificationResultsRequest.pending) {
+      return 'Still verifying...';
+    } else if (verificationResultsRequest.succeeded) {
+      if (verificationResultsRequest.data.success) {
+        return 'Successfully verified!'
+      } else {
+        return 'Failed to verify.'
+      }
+    } else {
+      return 'An unexpected error occurred during verification.';
+    }
+  })();
+
+  function verify() {
+    verificationAttemptCount.current++;
+    setVerificationOngoing(true);
+  }
+
+  function closeVerify() {
+    setVerificationOngoing(false);
+    startVerificationRequest.reset(); // need to clear old request state in order to attempt next one
+  }
+
   const verifyButton = hasObjective
     ? html`<button class="btn primary" @click=${verify}>Verify</button>`
     : '';
@@ -134,11 +87,23 @@ function LabActionButtons() {
       button {
         margin: 15px;
       }
+      img {
+        object-fit: contain;
+      }
     </style>
   
     <button class="btn primary" @click=${copy}>Copy</button>
     <button class="btn primary" @click=${paste}">Paste</button>
     ${verifyButton}
+    
+    <antidote-modal show=${verificationOngoing}>
+      <h1>Verification</h1>
+      <p>${verificationMessage}</p>
+      ${verificationMessage === 'Still verifying...' ? html`
+        <img src="/images/flask.gif" alt="flask" />
+      `: ''}
+      <button class="btn primary" @click=${closeVerify}>Close</button>
+    </antidote-modal>
   `
 }
 
