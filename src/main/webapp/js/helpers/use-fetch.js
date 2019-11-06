@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'https://unpkg.com/haunted/haunted.js';
+import { useState, useEffect } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
 
 const defaultState = {
   data: null,

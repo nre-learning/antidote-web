@@ -1,6 +1,6 @@
-import { html } from 'https://unpkg.com/lit-html/lit-html.js';
+import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { lessonId, syringeServiceRoot } from "/js/helpers/page-state.js";
-import { component, useState } from 'https://unpkg.com/haunted/haunted.js';
+import { component, useState } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
 import useFetch from '/js/helpers/use-fetch.js';
 
 customElements.define('antidote-course-plan-context', component(() => {

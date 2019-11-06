@@ -1,5 +1,5 @@
-import { html } from 'https://unpkg.com/lit-html/lit-html.js';
-import { component, useContext } from 'https://unpkg.com/haunted/haunted.js';
+import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
+import { component, useContext } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
 import { syringeServiceRoot, serviceHost, collectionId } from "/js/helpers/page-state.js";
 import { AllLessonContext, LessonPrereqContext, CoursePlanNameContext, CoursePlanStrengthsContext } from "/js/data.js";
 

@@ -1,5 +1,5 @@
-import { html } from 'https://unpkg.com/lit-html/lit-html.js';
-import { State, useState, useEffect, useContext, createContext, component } from 'https://unpkg.com/haunted/haunted.js';
+import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
+import { State, useState, useEffect, useContext, createContext, component } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
 import { syringeServiceRoot } from "./helpers/page-state.js";
 
 // alternative to useFetch hook with modified logic that retries a request and
