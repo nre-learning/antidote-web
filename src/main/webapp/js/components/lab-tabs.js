@@ -87,7 +87,7 @@ function LabTabs() {
 
     return () => {
       disconnectResizeHandler();
-      // todo: cleanup guac clients
+      tabBodies.forEach((tab) => tab.client && tab.client.disconnect());
     }
   });
 
