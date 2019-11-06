@@ -1,12 +1,12 @@
-import '/js/data.js'; // make sure all contexts are defined
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useEffect, useRef } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { syringeServiceRoot, serviceHost, collectionId } from "/js/helpers/page-state.js";
+import { syringeServiceRoot } from "/js/helpers/page-state.js";
 import useFetch from '/js/helpers/use-fetch.js'
 
-function Advisor() {
+function Advisor({host}) {
+  const syringeServicePrefix = host ? host+'/syringe' : syringeServiceRoot;
   const awesompleteRef = useRef(null);
-  const allLessonRequest = useFetch(`${syringeServiceRoot}/exp/lesson`);
+  const allLessonRequest = useFetch(`${syringeServicePrefix}/exp/lesson`);
   const lessonOptions = allLessonRequest.succeeded
     ? allLessonRequest.data.lessons.map((l) => ({
       label: l.LessonName,
@@ -26,8 +26,7 @@ function Advisor() {
 
   function select(ev) {
     const lessonId = ev.text.value;
-    // todo: figure out host for this ughhh
-    location.href = `/advisor/courseplan.html?lessonId=${lessonId}`;
+    location.href = `${host || ''}/advisor/courseplan.html?lessonId=${lessonId}`;
   }
 
   return html`
@@ -61,6 +60,8 @@ function Advisor() {
     </div>
   `;
 }
+
+Advisor.observedAttributes = ['host'];
 
 customElements.define('antidote-advisor', component(Advisor));
 
