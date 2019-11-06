@@ -1,37 +1,36 @@
 {% extends "base.html" %}
 
+{% block main_classes %}page catalog{% endblock %}
 {% block main %}
 <antidote-catalog-context>
-  <div id="catalog">
-    <div class="top">
-      <div class="left">
-        <h1>Lesson Catalog</h1>
-        <p>
-          Already know what lesson you're looking for? That's awesome - all lessons
-          are linked below. <br/>
-          If you're looking for <a href="/collections/">collections</a>, check out
-          our list of vendors, consultants and community contributors.
-        </p>
+  <div class="top">
+    <div class="left">
+      <h1>Lesson Catalog</h1>
+      <p>
+        Already know what lesson you're looking for? That's awesome - all lessons
+        are linked below. <br/>
+        If you're looking for <a href="/collections/">collections</a>, check out
+        our list of vendors, consultants and community contributors.
+      </p>
 
-        <antidote-catalog-search></antidote-catalog-search>
-      </div>
-
-      <div class="right">
-        <div class="canister secondary">
-          <h3>Unsure where to start?</h3>
-          <p>
-            Use our self-evaluation tool to design your personalized educational
-            journey.
-          </p>
-          <a class="btn cta" href="/advisor/">
-            Find my path
-          </a>
-        </div>
-      </div>
+      <antidote-catalog-search></antidote-catalog-search>
     </div>
 
-    <antidote-catalog-filters></antidote-catalog-filters>
-    <antidote-catalog-table></antidote-catalog-table>
+    <div class="right">
+      <div class="canister secondary">
+        <h3>Unsure where to start?</h3>
+        <p>
+          Use our self-evaluation tool to design your personalized educational
+          journey.
+        </p>
+        <a class="btn cta" href="/advisor/">
+          Find my path
+        </a>
+      </div>
+    </div>
   </div>
+
+  <antidote-catalog-filters></antidote-catalog-filters>
+  <antidote-catalog-table></antidote-catalog-table>
 </antidote-catalog-context>
 {% endblock %}

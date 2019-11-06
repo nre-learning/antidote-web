@@ -1,38 +1,37 @@
 {% extends "base.html" %}
 
+{% block main_classes %}page catalog{% endblock %}
 {% block main %}
 <antidote-collections-context>
-  <div id="catalog">
-    <div class="top">
-      <div class="left">
-        <h1>Collections</h1>
-        <p>
-          Collections are a new categorization mechanism in NRE Labs to group
-          content in non-traditional ways, such as by contributing organization.
-          They can also be used to provide links to additional resources where
-          you can continue your journey to Network Reliability Engineering!
-          Please see <a href="https://antidoteproject.readthedocs.io/en/latest/platform/curricula/collections.html">
-          the documentation on Collections for more information</a>, or start
-          searching for collections using the tool below.
-        </p>
-      </div>
-
-      <div class="right">
-        <div class="canister secondary">
-          <h3>Unsure where to start?</h3>
-          <p>
-            Use our self-evaluation tool to design your personalized educational
-            journey.
-          </p>
-          <a class="btn cta" href="/advisor/">
-            Find my path
-          </a>
-        </div>
-      </div>
+  <div class="top">
+    <div class="left">
+      <h1>Collections</h1>
+      <p>
+        Collections are a new categorization mechanism in NRE Labs to group
+        content in non-traditional ways, such as by contributing organization.
+        They can also be used to provide links to additional resources where
+        you can continue your journey to Network Reliability Engineering!
+        Please see <a href="https://antidoteproject.readthedocs.io/en/latest/platform/curricula/collections.html">
+        the documentation on Collections for more information</a>, or start
+        searching for collections using the tool below.
+      </p>
     </div>
 
-    <antidote-collections-filters></antidote-collections-filters>
-    <antidote-collections-table></antidote-collections-table>
+    <div class="right">
+      <div class="canister secondary">
+        <h3>Unsure where to start?</h3>
+        <p>
+          Use our self-evaluation tool to design your personalized educational
+          journey.
+        </p>
+        <a class="btn cta" href="/advisor/">
+          Find my path
+        </a>
+      </div>
+    </div>
   </div>
+
+  <antidote-collections-filters></antidote-collections-filters>
+  <antidote-collections-table></antidote-collections-table>
 </antidote-collections-context>
 {% endblock %}

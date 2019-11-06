@@ -1,27 +1,27 @@
-#catalog {
+.page.catalog {
   display: grid;
   grid-template-rows: auto;
 }
-#catalog .top {
+.page.catalog .top {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-#catalog .top .right {
+.page.catalog .top .right {
   margin-left: 60px;
 }
-#catalog .top .right .canister {
+.page.catalog .top .right .canister {
   padding-bottom: 15px;
   min-width: 300px;
 }
-#catalog .top .right button {
+.page.catalog .top .right button {
   width: 100%;
   margin-top: 15px;
 }
 antidote-lab-context {
   height: 100%;
 }
-#lab {
+.page.lab {
   display: grid;
   grid-template-rows: 65px 1fr;
   grid-template-columns: 50% 50%;
@@ -32,15 +32,15 @@ antidote-lab-context {
   background-color: #333333;
   overflow: auto;
 }
-#lab .header-logo {
+.page.lab .header-logo {
   position: relative;
 }
-#lab > .head {
+.page.lab > .head {
   grid-area: head;
   display: flex;
   align-items: center;
 }
-#lab > .left {
+.page.lab > .left {
   grid-area: left;
   display: flex;
   flex-direction: column;
@@ -49,7 +49,7 @@ antidote-lab-context {
   border-right: none;
   overflow: auto;
 }
-#lab > .right {
+.page.lab > .right {
   grid-area: right;
   display: flex;
   flex-direction: column;
