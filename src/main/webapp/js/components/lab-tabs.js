@@ -16,8 +16,6 @@ function initGuacamoleClient(tabEl, host, port) {
 
   tabEl.client = client;
 
-  // todo: better error handling
-  // set error state via generic error context
   client.onerror = function (error) {
     console.log(error);
     console.log("Problem connecting to the remote endpoint.");
@@ -43,11 +41,6 @@ function initGuacamoleClient(tabEl, host, port) {
 
   client.connect(`${host};${port};${hostEl.offsetWidth-sshTabLeftPadding};${hostEl.offsetHeight}`);
   tabEl.appendChild(client.getDisplay().getElement());
-
-  // todo: stop this from overwriting each other
-  window.onunload = function() {
-    client.disconnect();
-  };
 
   // TODO(mierdin): See if you can DETECT a disconnect, and build retry logic in. If fail, provide a dialog
   // INSIDE the tab pane (per tab) that indicates a refresh is likely required
@@ -97,6 +90,14 @@ function LabTabs() {
       // todo: cleanup guac clients
     }
   });
+
+  // disconnect all tabs when closing window
+  useEffect(() => {
+    window.addEventListener('unload', () => {
+      const tabBodies = Array.from(this.host.shadowRoot.children).filter((el) => el.tagName === 'DIV');
+      tabBodies.forEach((tab) => tab.client && tab.client.disconnect());
+    })
+  }, []);
 
   // render a container for every tab
   return html`
