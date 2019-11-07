@@ -13,6 +13,7 @@ docker: templates
 	docker build -t antidotelabs/antidote-web:$(TARGET_VERSION) -f Dockerfile .
 	docker push antidotelabs/antidote-web:$(TARGET_VERSION)
 
+hack: export ANTIDOTE_WEB_ENV = mock
 hack: templates
 
 	docker-compose up --build
