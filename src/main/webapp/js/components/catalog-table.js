@@ -60,7 +60,7 @@ function CatalogTable() {
       <tbody>
       ${lessons.map((lesson) => html`
         <tr>
-          <td>
+          <td class="title">
             <a href="/labs/?lessonId=${lesson.LessonId}&lessonStage=1">
               ${lesson.LessonName}
             </a>
