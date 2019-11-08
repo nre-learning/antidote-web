@@ -3,6 +3,7 @@
 ## In development
 
 - Re-vamp developer experience with compose file and mock data [#81](https://github.com/nre-learning/antidote-web/pull/81)
+- Update ToU link [#86](https://github.com/nre-learning/antidote-web/pull/86)
 
 ## v0.4.0 - August 07, 2019
 
