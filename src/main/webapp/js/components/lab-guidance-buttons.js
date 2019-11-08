@@ -16,7 +16,7 @@ function LabGuidanceButtons() {
 
   if (hasDiagram) {
     diagramButton = html`
-      <button class="btn cta" @click=${() => setModalContentType('diagram')}>
+      <button class="btn secondary" @click=${() => setModalContentType('diagram')}>
         Diagram
       </button>
     `;
@@ -24,7 +24,7 @@ function LabGuidanceButtons() {
 
   if (hasVideo) {
     videoButton = html`
-      <button class="btn cta" @click=${() => setModalContentType('video')}>
+      <button class="btn secondary" @click=${() => setModalContentType('video')}>
         Video
       </button>
     `;
@@ -32,7 +32,7 @@ function LabGuidanceButtons() {
 
   if (hasObjective) {
     objectiveButton = html`
-      <button class="btn cta" @click=${() => setModalContentType('objective')}>
+      <button class="btn secondary" @click=${() => setModalContentType('objective')}>
         Objective
       </button>
     `;
@@ -41,8 +41,7 @@ function LabGuidanceButtons() {
   return html`
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />
     <style>
-      .btn.cta {
-        padding: 5px 30px;
+      .btn.secondary {      
         margin-right: 15px;
       }
       img {

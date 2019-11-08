@@ -88,7 +88,7 @@ function CoursePlanStrengthModal() {
         </ul>
       `)}
       
-      <button class="btn secondary" @click=${skip}>Skip</button>
+      <button class="btn support" @click=${skip}>Skip</button>
       <button class="btn primary" @click=${submit}>Submit</button>
     </antidote-modal>
   `;

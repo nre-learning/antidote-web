@@ -48,7 +48,7 @@ function LabStageSelector() {
       }  
     </style>
     <div class="buttons">
-      <button class="btn secondary ${disablePrevious}"
+      <button class="btn support ${disablePrevious}"
         @click=${navTo('previous')}>
         < Previous
       </button>

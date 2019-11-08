@@ -50,8 +50,8 @@ function Advisor({host}) {
             @awesomplete-select=${select}
             class="awesomeplete" />
       </div>
-    
-      <button class="btn cta">Search Lesson Content</button>
+        
+      <button class="btn secondary">Search Lesson Content</button>
     
       <aside class="small">
         Use the box above to say what you want to learn, and we’ll work with you
