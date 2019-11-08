@@ -56,8 +56,8 @@ function CollectionsTable() {
       </thead>
       <tbody>
       ${collections.map((collection) => html`
-        <tr class="title">
-          <td>
+        <tr>
+          <td class="title">
             <a href="view.html?collectionId=${collection.Id}">
               ${collection.Title}
             </a>
