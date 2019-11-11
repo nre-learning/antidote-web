@@ -8,7 +8,7 @@ function CoursePlan() {
   const prereqRequest = useContext(LessonPrereqContext);
   const [coursePlanName] = useContext(CoursePlanNameContext);
   const [strengths] = useContext(CoursePlanStrengthsContext);
-  const prereqLessons = allLessonsRequest.succeeded && prereqRequest.succeeded
+  const prereqLessons = allLessonsRequest.succeeded && prereqRequest.succeeded && prereqRequest.data.prereqs
     ? prereqRequest.data.prereqs.map((prereqId) => allLessonsRequest.data.lessons.find((l) => l.LessonId === prereqId))
     : [];
 

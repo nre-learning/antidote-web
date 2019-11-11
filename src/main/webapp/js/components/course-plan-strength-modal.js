@@ -1,6 +1,6 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { classMap } from 'https://unpkg.com/lit-html/directives/class-map.js';
-import { component, useContext, useState } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { component, useContext, useState, useEffect } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
 import { syringeServiceRoot, serviceHost, collectionId } from "../helpers/page-state.js";
 import { AllLessonContext, LessonPrereqContext, CoursePlanStrengthsContext } from "../data.js";
 
@@ -16,7 +16,7 @@ function CoursePlanStrengthModal() {
   const allLessonsRequest = useContext(AllLessonContext);
   const prereqRequest = useContext(LessonPrereqContext);
   const [_, setExportedStrengthsState] = useContext(CoursePlanStrengthsContext);
-  const prereqLessons = allLessonsRequest.succeeded && prereqRequest.succeeded
+  const prereqLessons = allLessonsRequest.succeeded && prereqRequest.succeeded && prereqRequest.data.prereqs
     ? prereqRequest.data.prereqs.map((prereqId) => allLessonsRequest.data.lessons.find((l) => l.LessonId === prereqId))
     : [];
   const prereqSkills = prereqLessons.map((l) => l.Slug);
@@ -54,7 +54,7 @@ function CoursePlanStrengthModal() {
       }
     </style>    
 
-    <antidote-modal show=${open}>
+    <antidote-modal show=${open && prereqSkills.length > 0}>   
       <h1>Identify your strengths</h1>
       <p>Answer the following questions, so we can construct the lesson plan 
       most relevant to you!</p>
