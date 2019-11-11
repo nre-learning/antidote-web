@@ -35,12 +35,13 @@ function CoursePlan() {
     </style>
     
     <h1>${coursePlanName || 'Your'} Journey to Derick's Troubleshooting Wizardry</h1>
-    <div class="path">
-      ${prereqLessons.map((lesson, i) => html`
-        <div class="path-numbers">
+    ${prereqLessons.map((lesson, i) => html`
+      <div class="path-item">
+        <div class="number">
           <img src="/images/${i+1}.svg" alt="${i+1}"/>
+          <div class="line"></div>
         </div>
-        <div class="canister secondary full-width">
+        <div class="canister secondary">
           <h3>
             <a href="/labs?lessonId=${lesson.LessonId}&lessonStage=1">
               ${lesson.LessonName}
@@ -50,22 +51,22 @@ function CoursePlan() {
           ${strengths ? html`
             <span class="expertise skill-${strengths[lesson.Slug]}">
               ${strengths[lesson.Slug] <= 3 ? html`
-                <img src="/images/beginner-icon.svg" alt="beginner logo" />
+                <img src="/images/beginner-icon.svg" alt="beginner logo" class="icon" />
                 Let's get learning.
               ` : ''}
               ${strengths[lesson.Slug] === 4 ? html`
-                <img src="/images/intermediate-icon.svg" alt="intermediate logo" />
+                <img src="/images/intermediate-icon.svg" alt="intermediate logo" class="icon" />
                 Let's do a quick review.
               ` : ''}
               ${strengths[lesson.Slug] === 5 ? html`
-                <img src="/images/expert-icon.svg" alt="expert logo" />
+                <img src="/images/expert-icon.svg" alt="expert logo" class="icon" />
                 You're an expert!
               ` : ''}
             </span>
           `: ''}
-        </div>      
-      `)}
-    </div> 
+        </div>
+      </div>       
+    `)}
   `;
 }
 
