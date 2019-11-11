@@ -17,7 +17,7 @@ function ProgressBar({percent}) {
       .progress-bar {
           background-color: #1a1a1a;
           height: 30px;
-          width: 450px;
+          width: 100%;
           margin: 20px auto 0 auto;
           border-radius: 5px;
           box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;
