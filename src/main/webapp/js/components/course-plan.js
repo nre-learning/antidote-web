@@ -34,7 +34,7 @@ function CoursePlan() {
       }
     </style>
     
-    <h1>${coursePlanName || 'Your'} Journey to Derick's Troubleshooting Wizardry</h1>
+    <h1>${coursePlanName ? coursePlanName+"'s" : 'Your'} Journey to Derick's Troubleshooting Wizardry</h1>
     ${prereqLessons.map((lesson, i) => html`
       <div class="path-item">
         <div class="number">
