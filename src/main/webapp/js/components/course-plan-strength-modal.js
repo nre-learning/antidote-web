@@ -44,27 +44,14 @@ function CoursePlanStrengthModal() {
   return html`
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />
     <style>
-      /* todo: move to nre-styles */
-      .pagination-list {
-        margin-top: 30px;
-        width: auto !important;
-        position: relative;
-        z-index: 0; 
-        /*god damn these hacks*/
-      }
-      .pagination-list > li:first-child {
-        margin-left: 0 !important;
-      }
-      .pagination-list > li:last-child {
-        margin-right: 0 !important;
-      }
-      .pagination-list li::before {
-        top: 7px !important;
-      }
       .buttons {
         display: flex;
-        justify-content: space-between;      
+        justify-content: space-between;
+        margin-top: 30px;      
       }  
+      .btn {      
+        width: 44%;
+      }
     </style>    
 
     <antidote-modal show=${open}>
@@ -76,20 +63,27 @@ function CoursePlanStrengthModal() {
         <h3>How well do you know ${skill}?</h3>
         <ul class="pagination-list">  
           <li class=${classMap({active: localStrengthsState[skill] === 1})} 
+              data-line="Not at all"
               @click=${setStrength(skill, 1)}></li>
-          <li class=${classMap({active: localStrengthsState[skill] === 2})} 
+          <li class=${classMap({active: localStrengthsState[skill] === 2})}
+              data-line="Beginner" 
               @click=${setStrength(skill, 2)}></li>
-          <li class=${classMap({active: localStrengthsState[skill] === 3})} 
+          <li class=${classMap({active: localStrengthsState[skill] === 3})}
+              data-line="Intermediate" 
               @click=${setStrength(skill, 3)}></li>
-          <li class=${classMap({active: localStrengthsState[skill] === 4})} 
+          <li class=${classMap({active: localStrengthsState[skill] === 4})}
+              data-line="Advanced" 
               @click=${setStrength(skill, 4)}></li>
-          <li class=${classMap({active: localStrengthsState[skill] === 5})} 
+          <li class=${classMap({active: localStrengthsState[skill] === 5})}
+              data-line="Expert" 
               @click=${setStrength(skill, 5)}></li>
         </ul>
       `)}
       
-      <button class="btn support" @click=${skip}>Skip</button>
-      <button class="btn primary" @click=${submit}>Submit</button>
+      <div class="buttons">
+        <button class="btn support" @click=${skip}>Skip</button>
+        <button class="btn primary" @click=${submit}>Submit</button>
+      </div>
     </antidote-modal>
   `;
 }
