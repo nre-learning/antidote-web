@@ -102,8 +102,9 @@ function LabModal() {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />
     <style>
       img {
+        display: block;      
         object-fit: contain;
-        margin-top: 30px;
+        margin: 30px auto 0 auto;
       }
     </style>
     <antidote-modal show=${content !== ''}>
