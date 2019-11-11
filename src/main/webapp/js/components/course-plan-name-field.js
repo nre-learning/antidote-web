@@ -11,7 +11,7 @@ function CoursePlanNameField() {
   }, 250);
 
   return html`
-    <link rel="stylesheet" href="http://10.0.75.1:8081/styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />
     <style>
       :host {
         display: block;       
