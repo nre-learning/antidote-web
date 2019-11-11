@@ -13,8 +13,13 @@ function CatalogSearch() {
 
   return html`
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />
+    <style>
+      :host {
+        display: block;
+      }
+    </style>  
     <label>
-      <span>Search</span>
+      <span>Search</span>     
       <input type="text" placeholder="Lesson Title"
         @keyup=${change} @change=${change} />
     </label>
