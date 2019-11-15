@@ -5,7 +5,7 @@ all: templates docker
 templates:
 
 	@echo "Building webapp from templates in 'src/main/webapp_templates/'..."
-	@cd src/main/webapp/ && rm -rf advisor/ labs/ stats/  collections/ && mkdir -p advisor/ labs/ stats/ collections/
+	@cd src/main/webapp/ && rm -rf advisor/ labs/ stats/ collections/ catalog/ && mkdir -p advisor/ labs/ stats/ collections/ catalog/
 	@cd src/main/webapp-templates/ && virtualenv venv/ && venv/bin/pip install -r build-requirements.txt && venv/bin/python generate_webapp.py
 
 docker: templates
