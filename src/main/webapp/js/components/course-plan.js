@@ -72,7 +72,7 @@ function CoursePlan() {
       </div>       
     `)}
   `;
-}
+};
 
 customElements.define('antidote-course-plan', component(CoursePlan));
 
