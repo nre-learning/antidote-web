@@ -1,21 +1,21 @@
-import { useLiveLessonDetails } from '../data.js';
+import '../data.js';
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { sessionId, lessonId, lessonStage, syringeServiceRoot} from "../helpers/page-state.js";
 import { component } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
 import useFetch from '../helpers/use-fetch.js';
+import usePollingRequest from '../helpers/use-polling-request.js';
 
 customElements.define('antidote-lab-context', component(() => {
   const lessonRequest = useFetch(`${syringeServiceRoot}/exp/lesson/${lessonId}`);
-  const liveLessonRequest = useFetch(
-    `${syringeServiceRoot}/exp/livelesson`,
-    {
+  const liveLessonDetailRequest = usePollingRequest({
+    initialRequestURL: `${syringeServiceRoot}/exp/livelesson`,
+    initialRequestOptions: {
       method: 'POST',
       body: JSON.stringify({ lessonId, lessonStage, sessionId })
-    }
-  );
-  const liveLessonDetailRequest = useLiveLessonDetails(
-    liveLessonRequest.succeeded ? liveLessonRequest.data.id : null
-  );
+    },
+    progressRequestURL: ({id}) => `${syringeServiceRoot}/exp/livelesson/${id}`,
+    isProgressComplete: ({LiveLessonStatus}) => LiveLessonStatus === 'READY',
+  });
 
   return html`
     <style>
@@ -29,11 +29,9 @@ customElements.define('antidote-lab-context', component(() => {
       }
     </style>
     <antidote-lesson-context-provider .value=${lessonRequest}>
-    <antidote-live-lesson-context-provider .value=${liveLessonRequest}>
-    <antidote-live-lesson-details-context-provider .value=${liveLessonDetailRequest}>    
+    <antidote-live-lesson-details-context-provider .value=${liveLessonDetailRequest}>   
       <slot></slot>
     </antidote-live-lesson-details-context-provider>      
-    </antidote-live-lesson-context-provider>      
     </antidote-lesson-context-provider>
   `
 }));

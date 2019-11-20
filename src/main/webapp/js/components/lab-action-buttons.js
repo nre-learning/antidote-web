@@ -2,8 +2,7 @@ import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useContext, useState, useRef } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
 import { LessonContext } from '../data.js';
 import { syringeServiceRoot, lessonStage, lessonId, sessionId } from '../helpers/page-state.js';
-import useFetch from '../helpers/use-fetch.js';
-import { useLessonVerificationResults } from "../data.js";
+import usePollingRequest from '../helpers/use-polling-request.js';
 
 function copy() {
   const tabsEl = document.querySelector('antidote-lab-tabs');
@@ -36,22 +35,22 @@ function LabActionButtons() {
   const lessonRequest = useContext(LessonContext);
   const hasObjective = lessonRequest.succeeded && lessonRequest.data.Stages[lessonStage].VerifyObjective;
   const verificationAttemptCount = useRef(0); // arbitrary varying value to include in request state to trigger a new request when incremented
-  const [verificationOngoing, setVerificationOngoing] = useState(false);
-  const startVerificationRequest = verificationOngoing
-    ? useFetch(`${syringeServiceRoot}/exp/livelesson/${lessonId}-${sessionId}/verify`, {
+  const [verifyModalOpen, setVerifyModalOpen] = useState(false);
+  const verificationRequest = verifyModalOpen ? usePollingRequest({
+    initialRequestURL: `${syringeServiceRoot}/exp/livelesson/${lessonId}-${sessionId}/verify`,
+    initialRequestOptions: {
       method: 'POST',
       body: JSON.stringify({ data: { id: `${lessonId}-${sessionId}` } }),
       attemptCount: verificationAttemptCount.current
-    })
-    : {};
-  const verificationResultsRequest = startVerificationRequest.succeeded
-    ? useLessonVerificationResults(startVerificationRequest.data.id, verificationAttemptCount.current)
-    : {};
+    },
+    progressRequestURL: ({id}) => `${syringeServiceRoot}/exp/verification/${id}`,
+    isProgressComplete: ({working}) => !working,
+  }) : {};
   const verificationMessage = (() => {
-    if (verificationResultsRequest.pending) {
+    if (verificationRequest.pending) {
       return 'Still verifying...';
-    } else if (verificationResultsRequest.succeeded) {
-      if (verificationResultsRequest.data.success) {
+    } else if (verificationRequest.succeeded) {
+      if (verificationRequest.data.success) {
         return 'Successfully verified!'
       } else {
         return 'Failed to verify.'
@@ -63,12 +62,11 @@ function LabActionButtons() {
 
   function verify() {
     verificationAttemptCount.current++;
-    setVerificationOngoing(true);
+    setVerifyModalOpen(true);
   }
 
   function closeVerify() {
-    setVerificationOngoing(false);
-    startVerificationRequest.reset(); // need to clear old request state in order to attempt next one
+    setVerifyModalOpen(false);
   }
 
   const verifyButton = hasObjective
@@ -90,19 +88,32 @@ function LabActionButtons() {
       img {
         object-fit: contain;
       }
+      antidote-model {
+        text-align: center;
+      }
     </style>
   
     <button class="btn primary" @click=${copy}>Copy</button>
     <button class="btn primary" @click=${paste}">Paste</button>
     ${verifyButton}
     
-    <antidote-modal show=${verificationOngoing}>
+    <antidote-modal show=${verifyModalOpen}>
+      <style> 
+        :host {
+          text-align: center;
+        }
+        h1 {
+          text-align: left;
+        }
+      </style>
       <h1>Verification</h1>
       <p>${verificationMessage}</p>
       ${verificationMessage === 'Still verifying...' ? html`
         <img src="/images/flask.gif" alt="flask" />
       `: ''}
-      <button class="btn primary" @click=${closeVerify}>Close</button>
+      <div>
+        <button class="btn primary" @click=${closeVerify}>Close</button>
+      </div>     
     </antidote-modal>
   `
 }

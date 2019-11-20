@@ -12,7 +12,6 @@ const defaultState = {
 // request lifecycle
 export default function useFetch(url, options) {
   const [requestState, setRequestState] = useState(defaultState);
-  requestState.reset = () => setRequestState(defaultState);
 
   useEffect(async () => {
     setRequestState({

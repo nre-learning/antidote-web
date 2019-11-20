@@ -1,6 +1,6 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useContext, useMemo } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { LessonContext, LiveLessonContext, LiveLessonDetailsContext } from '../data.js';
+import { LessonContext, LiveLessonDetailsContext } from '../data.js';
 
 function getRandomModalMessage() {
   // Include memes? https://imgur.com/gallery/y0LQyOV
@@ -21,19 +21,12 @@ function getRandomModalMessage() {
 
 function LabModal() {
   const lessonRequest = useContext(LessonContext);
-  const liveLessonRequest = useContext(LiveLessonContext);
   const detailRequest = useContext(LiveLessonDetailsContext);
   const content = useMemo(() => {
     if (lessonRequest.error) {
       console.error(lessonRequest.error);
       return html`
       <h3>Error retrieving lesson: ${lessonRequest.error}</h3>
-    `;
-    }
-    else if (liveLessonRequest.error) {
-      console.error(liveLessonRequest.error);
-      return html`
-      <h3>Error starting lesson: ${liveLessonRequest.error}</h3>
     `;
     }
     else if (detailRequest.error) {
@@ -49,13 +42,6 @@ function LabModal() {
       <p>${getRandomModalMessage()}</p>
     `;
     }
-    else if (!liveLessonRequest.completed) {
-      return html`
-      <h3>Starting lesson...</h3>
-      <img src="/images/flask.gif" alt="loading flask" />
-      <p>${getRandomModalMessage()}</p>
-    `;
-    }
     else if (!detailRequest.completed) {
       return html`
       <h3>Waiting for lesson to finish initializing...</h3>
@@ -66,10 +52,8 @@ function LabModal() {
     return '';
   }, [
     lessonRequest.completed,
-    liveLessonRequest.completed,
     detailRequest.completed,
     lessonRequest.error,
-    liveLessonRequest.error,
     detailRequest.error,
   ]);
 
