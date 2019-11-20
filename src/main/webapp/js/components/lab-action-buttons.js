@@ -88,9 +88,6 @@ function LabActionButtons() {
       img {
         object-fit: contain;
       }
-      antidote-model {
-        text-align: center;
-      }
     </style>
   
     <button class="btn primary" @click=${copy}>Copy</button>
