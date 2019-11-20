@@ -7,7 +7,7 @@ customElements.define('antidote-course-plan-context', component(() => {
   const allLessonRequest = useFetch(`${syringeServiceRoot}/exp/lesson`);
   const lessonPrereqRequest = useFetch(`${syringeServiceRoot}/exp/lesson/${lessonId}/prereqs`);
   const [name, setName] = useState(null);
-  const [strengths, setStrengths] = useState(null);
+  const [strengths, setStrengths] = useState({});
 
   return html`
     <style>

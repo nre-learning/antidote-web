@@ -9,7 +9,7 @@ function CatalogSearch() {
   const change = debounce(function change() {
     filterState.searchString = this.value.length > 0 ? this.value.toLowerCase() : null;
     setFilterState(filterState);
-  }, 500);
+  }, 200);
 
   return html`
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />

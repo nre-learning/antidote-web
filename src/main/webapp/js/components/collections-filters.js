@@ -22,7 +22,7 @@ function CollectionsFilters() {
     return debounce(function() {
       filterState[filterName] = this.value || null;
       setFilterState(filterState);
-    }, 500);
+    }, 200);
   }
 
   return html`

@@ -28,7 +28,7 @@ function CatalogFilters() {
 
       filterState[filterName] = value;
       setFilterState(filterState);
-    }, 500);
+    }, 200);
   }
 
   return html`

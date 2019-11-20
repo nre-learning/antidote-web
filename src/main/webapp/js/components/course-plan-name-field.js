@@ -8,7 +8,7 @@ function CoursePlanNameField() {
 
   const change = debounce(function change() {
     setName(this.value.length > 0 ? this.value : null);
-  }, 250);
+  }, 200);
 
   return html`
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" />

@@ -1,15 +1,19 @@
 import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
 import { component, useContext } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
-import { syringeServiceRoot, serviceHost, collectionId } from "../helpers/page-state.js";
 import { AllLessonContext, LessonPrereqContext, CoursePlanNameContext, CoursePlanStrengthsContext } from "../data.js";
+import { lessonId } from "../helpers/page-state.js";
 
 function CoursePlan() {
   const allLessonsRequest = useContext(AllLessonContext);
-  const prereqRequest = useContext(LessonPrereqContext);
   const [coursePlanName] = useContext(CoursePlanNameContext);
   const [strengths] = useContext(CoursePlanStrengthsContext);
-  const prereqLessons = allLessonsRequest.succeeded && prereqRequest.succeeded && prereqRequest.data.prereqs
-    ? prereqRequest.data.prereqs.map((prereqId) => allLessonsRequest.data.lessons.find((l) => l.LessonId === prereqId))
+  const lesson = allLessonsRequest.succeeded
+    ? allLessonsRequest.data.lessons.find((l) => l.LessonId === lessonId)
+    : null;
+  const planLessons = lesson
+    ? (lesson.Prereqs || []).map((prereqId) =>
+      allLessonsRequest.data.lessons.find((l) => l.LessonId === prereqId)
+    ).concat(lesson)
     : [];
 
   return html`
@@ -23,7 +27,7 @@ function CoursePlan() {
       .expertise > img {
         margin-right: 5px;
       }
-      .skill-1, .skill-2, .skill-3 {
+      .skill-1, .skill-2, .skill-3, .skill-undefined {
         color: #c35b56;
       }
       .skill-4 {
@@ -34,8 +38,8 @@ function CoursePlan() {
       }
     </style>
     
-    <h1>${coursePlanName ? coursePlanName+"'s" : 'Your'} Journey to Derick's Troubleshooting Wizardry</h1>
-    ${prereqLessons.map((lesson, i) => html`
+    <h1>${coursePlanName ? coursePlanName+"'s" : 'Your'} Journey to ${(lesson || {}).Slug}</h1>
+    ${planLessons.map((lesson, i) => html`
       <div class="path-item">
         <div class="number">
           <img src="/images/${i+1}.svg" alt="${i+1}"/>
@@ -50,7 +54,7 @@ function CoursePlan() {
           <p>${lesson.Description}</p>
           ${strengths ? html`
             <span class="expertise skill-${strengths[lesson.Slug]}">
-              ${strengths[lesson.Slug] <= 3 ? html`
+              ${strengths[lesson.Slug] <= 3 || strengths[lesson.Slug] === undefined ? html`
                 <img src="/images/beginner-icon.svg" alt="beginner logo" class="icon" />
                 Let's get learning.
               ` : ''}
