@@ -10,15 +10,16 @@ function makeId() {
   return text;
 }
 
-export const [serviceHost, syringeServiceRoot] = (() => {
+export const [serviceHost, syringeServiceRoot, sshServiceHost] = (() => {
   switch (window.ENVIRONMENT) {
     case "mock":
-      return ['http://127.0.0.1:8086', 'http://127.0.0.1:8086'];
+      return ['127.0.0.1:8086', '127.0.0.1:8086', '127.0.0.1:30010'];
     case "self-medicate":
-      return ['http://antidote-local:30001', 'http://antidote-local:30001/syringe'];
+      return ['antidote-local:30001', 'antidote-local:30001/syringe', 'antidote-local:30010'];
     case "production":
     default:
-      return [window.location.origin, window.location.origin+'/syringe'];
+      // todo: confirm with Matthew that this path will host the socket server
+      return [window.location.origin, window.location.origin+'/syringe', window.location.origin+'/ssh'];
   }
 })();
 

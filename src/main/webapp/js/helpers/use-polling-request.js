@@ -1,5 +1,4 @@
-import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
-import { State, useState, useEffect, useContext, useRef, createContext, component } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { useState, useEffect, useRef } from 'haunted';
 import useFetch from './use-fetch.js';
 
 // provides the state of a request done by sending a request to one endpoint to

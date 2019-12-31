@@ -1,5 +1,5 @@
-import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
-import { component, useContext, useMemo } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { html } from 'lit-html';
+import { component, useContext, useMemo } from 'haunted';
 import { LessonContext, LiveLessonDetailsContext } from '../data.js';
 
 function getRandomModalMessage() {

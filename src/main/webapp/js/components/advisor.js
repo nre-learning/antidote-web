@@ -1,5 +1,5 @@
-import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
-import { component, useEffect, useRef } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { html } from 'lit-html';
+import { component, useEffect, useRef } from 'haunted';
 import { syringeServiceRoot } from "../helpers/page-state.js";
 import useFetch from '../helpers/use-fetch.js'
 
