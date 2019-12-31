@@ -20,3 +20,6 @@ src/main/webapp/catalog/
 src/main/webapp/labs/
 src/main/webapp/stats/
 src/main/webapp/collections/
+
+# Web app node resources
+src/main/webapp/node_modules/

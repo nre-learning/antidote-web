@@ -1,5 +1,5 @@
-import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
-import { component, useContext} from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { html } from 'lit-html';
+import { component, useContext} from 'haunted';
 import { AllCollectionContext, CollectionFilteringContext } from "../data.js";
 
 function doFiltering(collections, filteringState) {

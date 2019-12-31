@@ -1,6 +1,6 @@
-import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
-import { classMap } from 'https://unpkg.com/lit-html/directives/class-map.js';
-import { component, useContext, useState, useEffect } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { html } from 'lit-html';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { component, useContext, useState, useEffect } from 'haunted';
 import { syringeServiceRoot, serviceHost, collectionId } from "../helpers/page-state.js";
 import { AllLessonContext, LessonPrereqContext, CoursePlanStrengthsContext } from "../data.js";
 

@@ -2,6 +2,7 @@ import "./components/modal.js";
 import "./components/select.js";
 import "./components/progress-bar.js";
 import "./components/advisor.js";
+import "./components/terminal.js";
 import './components/lab-context.js';
 import "./components/lab-stage-selector.js";
 import "./components/lab-tabs.js";

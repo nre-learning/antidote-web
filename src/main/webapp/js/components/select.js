@@ -1,5 +1,6 @@
-import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
-import { component, useContext, useEffect, useRef } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { html } from 'lit-html';
+import { component, useContext, useEffect, useRef } from 'haunted';
+import Awesomplete from 'awesomplete';
 
 // Awesomplete options to be included when multi-select is enabled
 const multiSelectOptions = {

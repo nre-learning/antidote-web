@@ -1,5 +1,5 @@
-import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
-import { useState, useContext, useEffect, component } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { html } from 'lit-html';
+import { useState, useContext, useEffect, component } from 'haunted';
 import { LiveLessonDetailsContext } from '../data.js';
 import { derivePresentationsFromLessonDetails } from '../helpers/derivations.js';
 

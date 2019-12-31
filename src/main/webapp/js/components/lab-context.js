@@ -1,7 +1,7 @@
 import '../data.js';
-import { html } from 'https://unpkg.com/lit-html@^1.0.0/lit-html.js';
+import { html } from 'lit-html';
 import { sessionId, lessonId, lessonStage, syringeServiceRoot} from "../helpers/page-state.js";
-import { component } from 'https://unpkg.com/haunted@^4.0.0/haunted.js';
+import { component } from 'haunted';
 import useFetch from '../helpers/use-fetch.js';
 import usePollingRequest from '../helpers/use-polling-request.js';
 
