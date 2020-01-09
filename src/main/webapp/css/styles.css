@@ -26,13 +26,27 @@ antidote-lab-context {
   grid-template-rows: 65px 1fr;
   grid-template-columns: 50% 50%;
   grid-template-areas: "head head" "left right";
-  height: 100%;
+  height: var(--vv-height, 100vh);
   padding: 0 20px 25px 20px;
   background-color: #333333;
   overflow: auto;
 }
+@media (max-width: 1023px) {
+  .page.lab {
+    grid-template-rows: 45px 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "head" "right";
+    padding: 0 10px 10px 10px;
+  }
+}
 .page.lab .header-logo {
   position: relative;
+}
+@media (max-width: 1023px) {
+  .page.lab .header-logo {
+    height: 58px;
+    width: 64px;
+  }
 }
 .page.lab > .head {
   grid-area: head;
@@ -48,13 +62,22 @@ antidote-lab-context {
   border-right: none;
   overflow: auto;
 }
+@media (max-width: 1023px) {
+  .page.lab > .left {
+    display: none;
+  }
+}
 .page.lab > .right {
   grid-area: right;
   display: flex;
   flex-direction: column;
   background-color: white;
   border: 2px solid #939393;
-  border-left: none;
+}
+@media (min-width: 1023px) {
+  .page.lab > .right {
+    border-left: none;
+  }
 }
 .page.course-plan .layout {
   display: flex;

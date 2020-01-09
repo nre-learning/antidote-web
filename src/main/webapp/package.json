@@ -4,23 +4,11 @@
   "description": "scripts and components for use in any app integrating with an Antidote project backend",
   "main": "js/antidote.js",
   "dependencies": {
-    "awesomplete": "^1.1.5",
-    "es-module-shims": "^0.4.6",
-    "haunted": "^4.6.3",
-    "lit-html": "^1.1.2",
-    "resize-observer-polyfill": "^1.5.1",
-    "showdown": "^1.9.1",
-    "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0",
-    "webcomponentsjs": "^1.0.2",
-    "xterm": "^4.3.0",
-    "xterm-addon-fit": "^0.3.0",
-    "xterm-addon-webgl": "^0.4.1"
+    "antidote-ui-components": "nlundquist/antidote-ui-components#road-to-release"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^2.2.0",
     "@rollup/plugin-node-resolve": "^6.0.0",
-    "less": "^3.10.3",
     "rollup": "^1.27.12",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-terser": "^5.1.3"

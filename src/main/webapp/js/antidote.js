@@ -1,27 +1,13 @@
-import "./components/modal.js";
-import "./components/select.js";
-import "./components/progress-bar.js";
-import "./components/advisor.js";
-import "./components/terminal.js";
-import './components/lab-context.js';
-import "./components/lab-stage-selector.js";
-import "./components/lab-tabs.js";
-import "./components/lab-tab-switcher.js";
-import "./components/lab-action-buttons.js";
-import "./components/lab-guidance-buttons.js";
-import "./components/lab-guide.js";
-import "./components/lab-modal.js";
-import './components/catalog-context.js';
-import './components/catalog-table.js';
-import './components/catalog-filters.js';
-import './components/catalog-search.js';
-import './components/collections-context.js';
-import './components/collections-table.js';
-import './components/collections-filters.js';
-import './components/collection-details.js';
-import './components/course-plan-context.js';
-import './components/course-plan.js';
-import './components/course-plan-strength-modal.js';
-import './components/course-plan-name-field.js';
-import './components/ptr-banner.js';
-import './components/warn-mobile-modal.js';
+// Notes on Bundling:
+// This module imports all the dependencies used by the Antidote web application. After running the
+// bundler this results in a monolithic file containing all JS dependencies needed for the app.
+//
+// Keeping this monolithic was done for simplicities sake.
+// Individual bundles could be made for each page, but that is a unnecessary optimization given the
+// rather small size of the monolithic bundle.
+
+// required for correct lab page height on iOS
+import 'antidote-ui-components/helpers/visual-viewport-height';
+
+// import all components exported by antidote-ui-components
+import 'antidote-ui-components';
