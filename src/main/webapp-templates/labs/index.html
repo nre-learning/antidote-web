@@ -10,12 +10,15 @@
 
     <div class="left">
       <antidote-lab-guide></antidote-lab-guide>
-      <antidote-lab-stage-selector></antidote-lab-stage-selector>
     </div>
 
     <div class="right">
-      <antidote-lab-tab-switcher></antidote-lab-tab-switcher>
-      <antidote-lab-tabs></antidote-lab-tabs>
+      <antidote-lab-tab-switcher>
+        <li id="mobile-guide"><h3>Lesson</h3></li>
+      </antidote-lab-tab-switcher>
+      <antidote-lab-tabs>
+        <antidote-lab-guide slot="mobile-guide"></antidote-lab-guide>
+      </antidote-lab-tabs>
       <antidote-lab-action-buttons></antidote-lab-action-buttons>
     </div>
   </div>
