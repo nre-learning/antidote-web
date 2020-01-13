@@ -6,10 +6,9 @@
 
 <link href="http://at.alicdn.com/t/font_o5hd5vvqpoqiwwmi.css" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css?family=PT+Mono|Roboto+Condensed:300,400|Roboto:300,400,500&display=fallback" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/nlundquist/nre-styles@latest/dist/styles.css" rel="stylesheet" />
+<!--<link href="http://127.0.0.1:8081/dist/styles.css" rel="stylesheet" />-->
+<link href="/node_modules/nre-styles/dist/styles.css" rel="stylesheet" />
 <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet" crossorigin="anonymous" />
-<!-- todo: move styles into global style sheet? -->
-<link href="/css/styles.css" rel="stylesheet" />
 
 <script>
   window.ENVIRONMENT = "{{ env['ANTIDOTE_WEB_ENV'] or 'production' }}";
@@ -17,8 +16,6 @@
 </script>
 <script type="module" src="/js/bundles/antidote.js"></script>
 <script src="/js/no-module.js" nomodule></script>
-
-<!--todo: renable google analytics-->
 
 <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
