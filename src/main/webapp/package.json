@@ -5,8 +5,8 @@
   "main": "js/antidote.js",
   "dependencies": {
     "antidote-localizations": "nlundquist/antidote-localizations",
-    "antidote-ui-components": "nlundquist/antidote-ui-components#road-to-release",
-    "nre-styles": "nlundquist/nre-styles#road-to-release"
+    "antidote-ui-components": "nlundquist/antidote-ui-components",
+    "nre-styles": "nlundquist/nre-styles"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^2.2.0",
