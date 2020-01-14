@@ -21,7 +21,7 @@ templates = [
 for template_file in templates:
     template = templateEnv.get_template(template_file)
     outputText = template.render(antidote_version=commitHash, env=os.environ)
-    path = "../webapp/%s" % template_file
+    path = "../src/%s" % template_file
 
     os.makedirs(os.path.dirname(path), exist_ok=True)
 
