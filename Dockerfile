@@ -10,3 +10,7 @@ RUN cd /build && npm install && npm run build
 
 FROM nginx
 COPY --from=NPM_BUILD /build /usr/share/nginx/html
+
+COPY launch.sh /
+
+CMD ["/launch.sh"]
