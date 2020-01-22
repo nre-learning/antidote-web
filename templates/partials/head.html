@@ -13,6 +13,7 @@
 <script>
   window.ENVIRONMENT = "{{ env['ANTIDOTE_WEB_ENV'] or 'production' }}";
   window.COMMIT_HASH = "{{ antidote_version }}";
+  window.WEBSSH2_LOCATION = ""; // DO NOT TOUCH - see antidote-web docker container launch script.
 </script>
 <script type="module" src="/js/bundles/antidote.js"></script>
 <script src="/js/no-module.js" nomodule></script>
