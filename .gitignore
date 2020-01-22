@@ -15,8 +15,11 @@ target/
 # so we don't want these committed to the repo. See the src/main/webapp-templates/
 # directory instead.
 src/main/webapp/index.html
-src/main/webapp/jupyterlessonguides.html
 src/main/webapp/advisor/
+src/main/webapp/catalog/
 src/main/webapp/labs/
 src/main/webapp/stats/
 src/main/webapp/collections/
+
+# Web app node resources
+src/main/webapp/node_modules/
