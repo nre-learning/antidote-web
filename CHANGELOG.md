@@ -2,6 +2,8 @@
 
 ## In development
 
+- Remove Guacamole and other minor fixes [#90](https://github.com/nre-learning/antidote-web/pull/90)
+- Webapp Redesign [#85](https://github.com/nre-learning/antidote-web/pull/85)
 - Re-vamp developer experience with compose file and mock data [#81](https://github.com/nre-learning/antidote-web/pull/81)
 - Update ToU link [#86](https://github.com/nre-learning/antidote-web/pull/86)
 
