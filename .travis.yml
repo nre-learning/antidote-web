@@ -1,5 +1,4 @@
-language: java
+language: javascript
 install:
   - ./check-changelog.sh
-  - mvn package
 sudo: false
