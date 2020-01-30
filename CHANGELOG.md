@@ -6,6 +6,7 @@
 - Webapp Redesign [#85](https://github.com/nre-learning/antidote-web/pull/85)
 - Re-vamp developer experience with compose file and mock data [#81](https://github.com/nre-learning/antidote-web/pull/81)
 - Update ToU link [#86](https://github.com/nre-learning/antidote-web/pull/86)
+- Update link to collections docs [#96](https://github.com/nre-learning/antidote-web/pull/96)
 
 ## v0.4.0 - August 07, 2019
 
