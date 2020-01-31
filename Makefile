@@ -20,3 +20,18 @@ hack: export ANTIDOTE_WEB_ENV = mock
 hack: templates
 
 	docker-compose up --build
+
+release: templates
+	@rm -f src/package.json.new && cat src/package.json \
+		| jq '.dependencies["antidote-localizations"] = "nre-learning/antidote-localizations#$(TARGET_VERSION)"' \
+		| jq '.dependencies["antidote-ui-components"] = "nre-learning/antidote-ui-components#$(TARGET_VERSION)"' \
+		| jq '.dependencies["nre-styles"] = "nre-learning/nre-styles#$(TARGET_VERSION)"' \
+		> src/package.json.new && \
+		rm -f src/package.json && mv src/package.json.new src/package.json
+
+	npm version --no-git-tag-version $(TARGET_VERSION)
+	npm install
+	npm run build
+
+
+
