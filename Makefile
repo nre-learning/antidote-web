@@ -23,9 +23,9 @@ hack: templates
 
 release: templates
 	@rm -f src/package.json.new && cat src/package.json \
-		| jq '.dependencies["antidote-localizations"] = "nre-learning/antidote-localizations#$(TARGET_VERSION)"' \
-		| jq '.dependencies["antidote-ui-components"] = "nre-learning/antidote-ui-components#$(TARGET_VERSION)"' \
-		| jq '.dependencies["nre-styles"] = "nre-learning/nre-styles#$(TARGET_VERSION)"' \
+		| jq '.dependencies["antidote-localizations"] = "nre-learning/antidote-localizations#v$(TARGET_VERSION)"' \
+		| jq '.dependencies["antidote-ui-components"] = "nre-learning/antidote-ui-components#v$(TARGET_VERSION)"' \
+		| jq '.dependencies["nre-styles"] = "nre-learning/nre-styles#v$(TARGET_VERSION)"' \
 		> src/package.json.new && \
 		rm -f src/package.json && mv src/package.json.new src/package.json
 

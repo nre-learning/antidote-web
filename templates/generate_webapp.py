@@ -23,7 +23,10 @@ for template_file in templates:
     outputText = template.render(antidote_version=commitHash, env=os.environ)
     path = "../src/%s" % template_file
 
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    try:
+        os.makedirs(os.path.dirname(path))
+    except FileExistsError:
+        pass
 
     with open(path, "w+") as f:
         f.write(outputText)
