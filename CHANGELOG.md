@@ -2,6 +2,9 @@
 
 ## In development
 
+
+## v0.5.0 - February 01, 2020
+
 - Remove Guacamole and other minor fixes [#90](https://github.com/nre-learning/antidote-web/pull/90)
 - Webapp Redesign [#85](https://github.com/nre-learning/antidote-web/pull/85)
 - Re-vamp developer experience with compose file and mock data [#81](https://github.com/nre-learning/antidote-web/pull/81)
