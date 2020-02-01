@@ -29,9 +29,7 @@ release: templates
 		> src/package.json.new && \
 		rm -f src/package.json && mv src/package.json.new src/package.json
 
-	npm version --no-git-tag-version $(TARGET_VERSION)
-	npm install
-	npm run build
+	cd src/ && npm version --no-git-tag-version $(TARGET_VERSION) && npm install
 
-
+	# && npm run build
 
