@@ -55,7 +55,7 @@ function Advisor({host}) {
     
       <aside class="small">
         Use the box above to say what you want to learn, and we’ll work with you
-        to build a relevant learning path. Try “Python” or “StackStorm”!
+        to build a relevant learning path. Try “Ansible” or “Git”!
       </aside>
     </div>
   `;
