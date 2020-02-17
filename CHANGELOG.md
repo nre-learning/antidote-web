@@ -3,6 +3,9 @@
 ## In development
 
 
+## v0.5.1 - February 17, 2020
+
+
 ## v0.5.0 - February 01, 2020
 
 - Remove Guacamole and other minor fixes [#90](https://github.com/nre-learning/antidote-web/pull/90)
