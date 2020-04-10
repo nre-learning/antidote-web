@@ -19,7 +19,10 @@ docker: templates
 hack: export ANTIDOTE_WEB_ENV = mock
 hack: templates
 
-	docker-compose up --build
+	cd src/ && npm install && npm run build
+
+	docker-compose build --no-cache
+	docker-compose up
 
 release: templates
 	@rm -f src/package.json.new && cat src/package.json \
@@ -31,5 +34,6 @@ release: templates
 
 	cd src/ && npm version --no-git-tag-version $(TARGET_VERSION) && npm install
 
+	# TODO(mierdin): This was commented out - is this not needed?
 	# && npm run build
 

@@ -1,35 +1,51 @@
+# This compose file is meant to be used for developing on antidote-web or one of the related projects
+# such as antidote-ui-components. By default, it starts a single container for the web front end and
+# assumes the rest is running elsewhere. However, if you wish, you can un-comment the additional sections
+# below to get additional development-time tools.
+
 version: "3.7"
 services:
 
-  # Primary antidote-web and guac services
+  # This section is left uncommented by default, so out of the box you get a running webserver with
+  # current antidote-web code.
+  #
   antidote-web:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./hack/Dockerfile-dev
     environment:
-      GUACD_HOSTNAME: 'guacd'
-      POSTGRES_HOSTNAME: 'na'
-      POSTGRES_DATABASE: 'na'
-      POSTGRES_USER: 'na'
-      POSTGRES_PASSWORD: 'na'
+      WEBSSH2_LOCATION: 'http://127.0.0.1:30010'
     ports:
-      - "8080:8080"
-  guacd: 
-    image: "guacamole/guacd"
+      - "8080:80"
 
-  # Fake Syringe API (no Kubernetes integration)
-  syringe-mock:
-    image: "antidotelabs/syringe:latest"
-    command: syringed-mock
-    ports: 
-      - "8086:8086"
-
-  # Some endpoints to connect to (The fake data from Syringe will point to these)
-  linux1:
-    image: "antidotelabs/utility"
-  webserver1:
-    image: "antidotelabs/webserver"
-    environment:
-      SYRINGE_FULL_REF: 1-m0w5c6xzceintfat-ns-webserver1
+  # This section runs an instance of antidoted here with only the API service enabled. You can then use
+  # "antictl" to create mock instances of livelessons with arbitrary data for testing antidote-web
+  # functionality on top of the Antidote API (make sure you pull the same version of antictl - it may
+  # be helpful to run antictl in the same container below, using "docker exec")
+  #
+  antidote-core:
+    image: "antidotelabs/antidote-core:latest"
     ports:
-      - "8090:8080"
+      - "8086:8086"   # REST
+      - "50099:50099" # gRPC
+    volumes:
+      - ./hack/antidoted-config.yaml:/antidoted-config.yaml
+      - ./hack/fakecurriculum:/fakecurriculum
+    command: antidoted --config /antidoted-config.yaml
+  nats-server:  # required by antidoted
+    image: "nats"
+    ports:
+      - "4222:4222"
+      - "6222:6222"
+      - "8222:8222"
+
+  # You may also wish to test in-browser terminal functionality. In this case, some endpoints can be
+  # provided here. You'll have to provide the IP address of these containers in your mock livelesson
+  # data.
+  #
+  # linux1:
+  #   image: "antidotelabs/utility"
+  # webserver1:
+  #   image: "antidotelabs/webserver"
+  #   ports:
+  #     - "8090:8080"

@@ -1,0 +1,9 @@
+# This is a DEVELOPMENT dockerfile, and therefore includes no npm build
+# steps. It is assumed this has already been run, and therefore needs only
+# a webserver. It is also not meant to be built directly, but rather through
+# the provided Makefile ("make hack")
+
+FROM nginx
+COPY src/ /usr/share/nginx/html
+COPY launch.sh /
+CMD ["/launch.sh"]
