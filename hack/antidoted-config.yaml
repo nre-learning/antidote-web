@@ -1,0 +1,6 @@
+---
+curriculumDir: "/fakecurriculum"
+instanceId: antidote-web-dev
+enabledServices:
+- api
+natsUrl: "nats://nats-server:4222"

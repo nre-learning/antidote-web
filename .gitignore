@@ -22,3 +22,5 @@ src/collections/
 
 # Web app node resources
 src/node_modules/
+src/js/bundles/
+src/package-lock.json

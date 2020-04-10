@@ -2,6 +2,7 @@
 
 ## In development
 
+- Re-vamp antidote-web developer experience [#100](https://github.com/nre-learning/antidote-web/pull/100)
 
 ## v0.5.1 - February 17, 2020
 
