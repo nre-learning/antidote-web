@@ -23,8 +23,16 @@ services:
   # functionality on top of the Antidote API (make sure you pull the same version of antictl - it may
   # be helpful to run antictl in the same container below, using "docker exec")
   #
+  # nats-server:  # required by antidoted
+  #   image: "nats"
+  #   ports:
+  #     - "4222:4222"
+  #     - "6222:6222"
+  #     - "8222:8222"
   # antidote-core:
   #   image: "antidotelabs/antidote-core:latest"
+  #   depends_on:
+  #   - nats-server
   #   ports:
   #     - "8086:8086"   # REST
   #     - "50099:50099" # gRPC
@@ -32,12 +40,6 @@ services:
   #     - ./hack/antidoted-config.yaml:/antidoted-config.yaml
   #     - ./hack/fakecurriculum:/fakecurriculum
   #   command: antidoted --config /antidoted-config.yaml
-  # nats-server:  # required by antidoted
-  #   image: "nats"
-  #   ports:
-  #     - "4222:4222"
-  #     - "6222:6222"
-  #     - "8222:8222"
 
   # You may also wish to test in-browser terminal functionality. In this case, some endpoints can be
   # provided here. You'll have to provide the IP address of these containers in your mock livelesson
