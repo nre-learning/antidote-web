@@ -12,6 +12,9 @@ templates:
 
 docker: templates
 
+	# Get rid of node_modules in src/ so we don't copy into the container (it will generate its own)
+	rm -rf src/node_modules/
+
 	# No cache is important because of external deps
 	docker build --no-cache -t antidotelabs/antidote-web:$(TARGET_VERSION) -f Dockerfile .
 	docker push antidotelabs/antidote-web:$(TARGET_VERSION)
