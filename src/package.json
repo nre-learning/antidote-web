@@ -1,12 +1,12 @@
 {
   "name": "antidote-web",
-  "version": "1.0.0",
+  "version": "0.6.0",
   "description": "scripts and components for use in any app integrating with an Antidote project backend",
   "main": "js/antidote.js",
   "dependencies": {
-    "antidote-localizations": "nre-learning/antidote-localizations",
-    "antidote-ui-components": "nre-learning/antidote-ui-components",
-    "nre-styles": "nre-learning/nre-styles"
+    "antidote-localizations": "nre-learning/antidote-localizations#v0.6.0",
+    "antidote-ui-components": "nre-learning/antidote-ui-components#v0.6.0",
+    "nre-styles": "nre-learning/nre-styles#v0.6.0"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^2.2.0",
