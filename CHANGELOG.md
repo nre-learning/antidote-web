@@ -3,6 +3,9 @@
 ## In development
 
 
+## v0.6.1 - May 03, 2020
+
+
 ## v0.6.0 - April 18, 2020
 
 - Re-vamp antidote-web developer experience [#100](https://github.com/nre-learning/antidote-web/pull/100)
