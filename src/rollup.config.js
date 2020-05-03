@@ -44,6 +44,10 @@ export default {
             namedExports: {
                 // needed for xterm compatibility w/ rollup
                 'xterm': [ 'Terminal' ]
+
+                // If you're using  a local path for the antidote-ui-components path, you will need to use this
+                // instead of the above.
+                // '../../antidote-ui-components/node_modules/xterm/lib/xterm.js': [ 'Terminal' ]
             },
         }),
         production && terser() // minify, but only in production

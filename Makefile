@@ -22,6 +22,9 @@ docker: templates
 hack: export ANTIDOTE_WEB_ENV = mock
 hack: templates
 
+	# Just to make sure we pick up the latest for this at dev time
+	rm -rf src/node_modules/nre-styles/
+
 	cd src/ && npm install && npm run build
 
 	docker-compose build --no-cache
