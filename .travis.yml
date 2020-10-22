@@ -1,4 +1,0 @@
-language: minimal
-install:
-  - ./check-changelog.sh
-sudo: false
