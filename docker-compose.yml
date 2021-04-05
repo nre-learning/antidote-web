@@ -6,47 +6,55 @@
 version: "3.7"
 services:
 
-  # This section is left uncommented by default, so out of the box you get a running webserver with
-  # current antidote-web code.
-  #
+  # This section will build the antidote-web container from source, which also pulls in all dependencies listed in package.json
+  # See README for more details.
   antidote-web:
     build:
       context: .
       dockerfile: ./hack/Dockerfile-dev
     environment:
-      WEBSSH2_LOCATION: 'http://127.0.0.1:30010'
+      WEBSSH2_LOCATION: 'http://127.0.0.1:8081'
     ports:
       - "8080:80"
+  # WebSSH2 is also required for terminal functionality - provides a websocket-to-ssh proxy for the front-end
+  webssh2:
+    image: "antidotelabs/webssh2:ping-timeout"
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./hack/websshconfig.json:/usr/src/config.json
 
   # This section runs an instance of antidoted here with only the API service enabled. You can then use
   # "antictl" to create mock instances of livelessons with arbitrary data for testing antidote-web
-  # functionality on top of the Antidote API (make sure you pull the same version of antictl - it may
-  # be helpful to run antictl in the same container below, using "docker exec")
-  #
-  # nats-server:  # required by antidoted
-  #   image: "nats"
-  #   ports:
-  #     - "4222:4222"
-  #     - "6222:6222"
-  #     - "8222:8222"
-  # antidote-core:
-  #   image: "antidotelabs/antidote-core:latest"
-  #   depends_on:
-  #   - nats-server
-  #   ports:
-  #     - "8086:8086"   # REST
-  #     - "50099:50099" # gRPC
-  #   volumes:
-  #     - ./hack/antidoted-config.yaml:/antidoted-config.yaml
-  #     - ./hack/fakecurriculum:/fakecurriculum
-  #   command: antidoted --config /antidoted-config.yaml
+  # functionality on top of the Antidote API
+  antidote-core:
+    image: "antidotelabs/antidote-core:latest"
+    depends_on:
+    - nats-server
+    ports:
+      - "8086:8086"   # REST
+      - "50099:50099" # gRPC
+    volumes:
+      - ./hack:/hack
 
-  # You may also wish to test in-browser terminal functionality. In this case, some endpoints can be
-  # provided here. You'll have to provide the IP address of these containers in your mock livelesson
-  # data.
-  #
-  # linux1:
-  #   image: "antidotelabs/utility"
+      # NOTE - must first clone https://github.com/nre-learning/antidote-test-curriculum as a sibling directory to antidote-web.
+      #
+      # You are welcome to use another antidote curriculum, such as NRE Labs, but you'll have to change the mapping here.
+      - ../antidote-test-curriculum:/antidote-test-curriculum
+    command: antidoted --config /hack/antidoted-config.yaml
+  nats-server:  # Pub/sub server required by antidoted
+    image: "nats"
+    ports:
+      - "4222:4222"
+      - "6222:6222"
+      - "8222:8222"
+
+  # Some example endpoints are provided here for convenience. Note that the IP address provided in the mock livelesson in the `hack/` directory is the docker bridge,
+  # which will allow connectivity here over the mapped port.
+  linux1:
+    image: "antidotelabs/utility"
+    ports:
+    - "2222:22"
   # webserver1:
   #   image: "antidotelabs/webserver"
   #   ports:

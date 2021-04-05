@@ -2,6 +2,8 @@
 
 ## In development
 
+- Enhancements to the developer workflow [#102](https://github.com/nre-learning/antidote-web/pull/102/)
+
 
 ## v0.7.0 - December 14, 2020
 

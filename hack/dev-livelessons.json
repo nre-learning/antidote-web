@@ -1,0 +1,33 @@
+[
+  {
+    "ID": "abcdef",
+    "SessionID": "antidotedevmode",
+    "LessonSlug": "test-lesson",
+    "LiveEndpoints": {
+      "linux1": {
+        "Name": "linux1",
+        "Image": "utility",
+        "Ports": [
+          2222
+        ],
+        "LivePresentations": [
+          {
+            "Name": "cli",
+            "Port": 2222,
+            "Type": "ssh"
+          }
+        ],
+        "Host": "172.17.0.1",
+        "SSHUser": "antidote",
+        "SSHPassword": "antidotepassword"
+      }
+    },
+    "LessonStage": 1,
+    "Status": "READY",
+    "Diagram": "a lovely diagram",
+    "Video": "baby shark",
+    "Error": false,
+    "HealthyTests": 4,
+    "TotalTests": 4
+  }
+]
