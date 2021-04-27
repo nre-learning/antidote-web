@@ -4,6 +4,5 @@
 # the provided Makefile ("make hack")
 
 FROM nginx
-COPY src/ /usr/share/nginx/html
 COPY launch.sh /
 CMD ["/launch.sh"]
