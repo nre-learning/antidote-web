@@ -16,6 +16,10 @@
     "rollup-plugin-terser": "^5.1.3"
   },
   "scripts": {
+    "dev": "CLEAN_INSTALL=true COMPOSE_UP=true sh scripts/dev.sh",
+    "dev:up": "COMPOSE_UP=true sh scripts/dev.sh",
+    "dev:down": "COMPOSE_DOWN=true sh scripts/dev.sh",
+    "dev-restart": "COMPOSE_RESTART=true sh scripts/dev.sh",
     "build": "npx rollup -c",
     "watch": "npx rollup -cw",
     "test": "echo \"Error: no test specified\" && exit 1"
