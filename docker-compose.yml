@@ -16,6 +16,8 @@ services:
       WEBSSH2_LOCATION: 'http://127.0.0.1:8081'
     ports:
       - "8080:80"
+    volumes:
+      - './src:/usr/share/nginx/html'
   # WebSSH2 is also required for terminal functionality - provides a websocket-to-ssh proxy for the front-end
   webssh2:
     image: "antidotelabs/webssh2:ping-timeout"
